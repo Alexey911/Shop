@@ -1,5 +1,6 @@
 package com.zhytnik.shop.domain.dynamic;
 
+import com.zhytnik.shop.backend.access.DynamicAccessor;
 import com.zhytnik.shop.domain.IBasicEntity;
 
 /**
@@ -15,4 +16,8 @@ public interface IDynamicEntity extends IBasicEntity {
     Object[] getDynamicFieldsValues();
 
     void setDynamicFieldsValues(Object[] values);
+
+    DynamicAccessor getDynamicAccessor();
+
+    void setDynamicAccessor(DynamicAccessor accessor);
 }

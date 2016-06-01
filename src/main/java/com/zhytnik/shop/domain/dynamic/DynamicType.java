@@ -2,10 +2,7 @@ package com.zhytnik.shop.domain.dynamic;
 
 import com.zhytnik.shop.domain.DomainObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -15,10 +12,12 @@ import java.util.List;
 @Entity(name = "T_DYNAMIC_TYPE")
 public class DynamicType extends DomainObject {
 
+    public static final String DYNAMIC_ID_FIELD = "ID";
+
     @Column(name = "NAME", unique = true)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<ColumnType> columns;
 
     public String getName() {

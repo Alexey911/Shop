@@ -21,11 +21,10 @@ public class DynamicAccessor {
 
     private IDynamicEntity entity;
 
-    private Set<Integer> changedFields;
+    private Set<Integer> changedFields = newHashSet();
 
     public DynamicAccessor(IDynamicEntity entity) {
         this.entity = entity;
-        changedFields = newHashSet();
         initializeMapping();
     }
 

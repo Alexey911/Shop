@@ -17,9 +17,14 @@ public class DomainObject implements IDomainObject {
     private Long id;
 
     @Column(name = "CHANGE_DATE", nullable = false)
-    private Date changeDate;
+    private Date changeDate = new Date();
 
     public DomainObject() {
+        id = DomainObjectUtil.nextId();
+    }
+
+    public DomainObject(Long id){
+        this.id = id;
     }
 
     @Override

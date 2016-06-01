@@ -1,5 +1,6 @@
 package com.zhytnik.shop.backend;
 
+import com.zhytnik.shop.backend.tool.TypeUtil;
 import com.zhytnik.shop.domain.dynamic.ColumnType;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.exeception.InfrastructureException;
@@ -9,9 +10,8 @@ import org.hibernate.mapping.Table;
 
 import java.sql.Types;
 import java.util.List;
-import java.util.Map;
 
-import static com.google.common.collect.Maps.newHashMap;
+import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
 import static java.lang.String.format;
 
 /**
@@ -20,18 +20,7 @@ import static java.lang.String.format;
  */
 public class TableScriptGenerator {
 
-    private static Map<PrimitiveType, Integer> TYPE_MAPPING;
-
     private Dialect dialect;
-
-    static {
-        TYPE_MAPPING = newHashMap();
-        TYPE_MAPPING.put(PrimitiveType.INTEGER, Types.INTEGER);
-        TYPE_MAPPING.put(PrimitiveType.STRING, Types.CHAR);
-        TYPE_MAPPING.put(PrimitiveType.DOUBLE, Types.DOUBLE);
-        TYPE_MAPPING.put(PrimitiveType.BOOLEAN, Types.BOOLEAN);
-        TYPE_MAPPING.put(PrimitiveType.DATE, Types.DATE);
-    }
 
     public String generate(String tableName, List<ColumnType> columnTypes) {
         final Table table = new Table(tableName);
@@ -47,7 +36,7 @@ public class TableScriptGenerator {
     }
 
     private Column generateIdColumn() {
-        final Column column = new Column("ID");
+        final Column column = new Column(DYNAMIC_ID_FIELD);
         column.setSqlType(dialect.getTypeName(Types.INTEGER));
         column.setUnique(true);
         column.setNullable(false);
@@ -62,7 +51,7 @@ public class TableScriptGenerator {
     }
 
     private String getSqlType(PrimitiveType type) {
-        Integer code = TYPE_MAPPING.get(type);
+        Integer code = TypeUtil.getSqlTypeCode(type);
         if (code == null) failOnUnknownType(type);
         return dialect.getTypeName(code);
     }

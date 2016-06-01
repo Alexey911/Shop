@@ -30,8 +30,7 @@ public class ProductService {
 
     public Product create() {
         Product p = new Product();
-        dao.initialize(p);
-        p.setAccessor(new DynamicAccessor(p));
+        p.setDynamicAccessor(new DynamicAccessor(p));
         return p;
     }
 
@@ -41,12 +40,17 @@ public class ProductService {
     }
 
     public Product load(Long id) {
+        dao.setClass(Product.class);
         return dao.findById(id);
     }
 
     public void update(Product p) {
         validator.validate(p);
         dao.update(p);
+    }
+
+    public void delete(Long id) {
+        dao.delete(id);
     }
 
     public void setDao(DynamicEntityDao<Product> dao) {

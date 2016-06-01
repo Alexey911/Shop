@@ -25,10 +25,10 @@ public class Product extends VersionableDomainObject implements IDynamicEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     private MultilanguageString description;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Category category;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<Supply> supplies;
 
     @ElementCollection
@@ -36,10 +36,10 @@ public class Product extends VersionableDomainObject implements IDynamicEntity {
     @Column(name = "VALUE")
     private Set<String> keywords;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<Comment> comments;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private DynamicType type;
 
     @Transient
@@ -124,11 +124,16 @@ public class Product extends VersionableDomainObject implements IDynamicEntity {
         dynamicValues = values;
     }
 
-    public DynamicAccessor getAccessor() {
-        return accessor != null ? accessor : new DynamicAccessor(this);
+    @Override
+    public DynamicAccessor getDynamicAccessor() {
+        if (accessor == null) {
+            accessor = new DynamicAccessor(this);
+        }
+        return accessor;
     }
 
-    public void setAccessor(DynamicAccessor accessor) {
+    @Override
+    public void setDynamicAccessor(DynamicAccessor accessor) {
         this.accessor = accessor;
     }
 }
