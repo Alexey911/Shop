@@ -10,7 +10,7 @@ import java.util.Locale;
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-@Entity(name = "T_M_TR")
+@Entity(name = "T_MULTI_TR")
 public class MultilanguageTranslation extends DomainObject {
 
     @Column(name = "LANGUAGE", nullable = false)

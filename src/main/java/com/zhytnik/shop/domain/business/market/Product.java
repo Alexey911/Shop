@@ -1,38 +1,51 @@
 package com.zhytnik.shop.domain.business.market;
 
 import com.zhytnik.shop.backend.access.DynamicAccessor;
-import com.zhytnik.shop.domain.BasicEntity;
+import com.zhytnik.shop.domain.VersionableDomainObject;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.text.MultilanguageString;
 
+import javax.persistence.*;
 import java.util.Set;
 
 /**
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-//@Entity(name = "PRODUCT")
-public class Product extends BasicEntity implements IDynamicEntity {
+@Entity(name = "T_PRODUCT")
+public class Product extends VersionableDomainObject implements IDynamicEntity {
 
+    @Column(name = "SHORT_NAME", length = 30)
     private String shortName;
 
+    @ManyToOne(cascade = CascadeType.ALL)
     private MultilanguageString title;
 
+    @ManyToOne(cascade = CascadeType.ALL)
     private MultilanguageString description;
 
+    @ManyToOne
     private Category category;
 
+    @ManyToMany
     private Set<Supply> supplies;
 
+    @ElementCollection
+    @CollectionTable(name = "T_KEYWORDS", joinColumns = @JoinColumn(name = "T_PRODUCT_ID"))
+    @Column(name = "VALUE")
     private Set<String> keywords;
 
+    @ManyToMany
     private Set<Comment> comments;
 
+    @ManyToOne
     private DynamicType type;
 
+    @Transient
     private Object[] dynamicValues;
 
+    @Transient
     private transient DynamicAccessor accessor;
 
     public String getShortName() {
@@ -112,7 +125,7 @@ public class Product extends BasicEntity implements IDynamicEntity {
     }
 
     public DynamicAccessor getAccessor() {
-        return accessor;
+        return accessor != null ? accessor : new DynamicAccessor(this);
     }
 
     public void setAccessor(DynamicAccessor accessor) {

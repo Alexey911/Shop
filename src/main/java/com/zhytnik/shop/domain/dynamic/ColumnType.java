@@ -9,7 +9,7 @@ import javax.persistence.Entity;
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-@Entity(name = "COLUMN_TYPE")
+@Entity(name = "T_COLUMN_TYPE")
 public class ColumnType extends DomainObject {
 
     @Column(name = "NAME")

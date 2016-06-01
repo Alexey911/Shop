@@ -2,6 +2,7 @@ package com.zhytnik.shop.domain.business.market;
 
 import com.zhytnik.shop.domain.DomainObject;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 @Entity(name = "T_COMMENT")
 public class Comment extends DomainObject {
 
+    @Column(name = "MESSAGE")
     private String text;
 
     public String getText() {

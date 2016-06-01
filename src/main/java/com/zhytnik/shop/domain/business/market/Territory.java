@@ -1,18 +1,29 @@
-package com.zhytnik.shop.domain.business.location;
+package com.zhytnik.shop.domain.business.market;
 
 import com.zhytnik.shop.domain.DomainObject;
 import com.zhytnik.shop.domain.text.MultilanguageString;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 /**
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-public abstract class Place extends DomainObject {
+@Entity(name = "T_TERRITORY")
+public class Territory extends DomainObject {
 
+    @OneToOne
     private MultilanguageString name;
 
+    @OneToOne
+    private MultilanguageString description;
+
+    @Column(name = "latitude")
     private Double latitude;
 
+    @Column(name = "longitude")
     private Double longitude;
 
     public MultilanguageString getName() {
@@ -37,5 +48,13 @@ public abstract class Place extends DomainObject {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public MultilanguageString getDescription() {
+        return description;
+    }
+
+    public void setDescription(MultilanguageString description) {
+        this.description = description;
     }
 }

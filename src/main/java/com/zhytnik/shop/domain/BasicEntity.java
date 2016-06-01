@@ -11,10 +11,6 @@ import java.io.Serializable;
 @MappedSuperclass
 public class BasicEntity extends DomainObject implements IBasicEntity, Serializable {
 
-//    @Version
-//    @Column(name = "VERSION", precision = 10)
-//    private Long version;
-
     @Column(name = "DELETED")
     private boolean deleteFlag;
 

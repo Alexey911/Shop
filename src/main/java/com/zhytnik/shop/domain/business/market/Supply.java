@@ -1,8 +1,11 @@
 package com.zhytnik.shop.domain.business.market;
 
 import com.zhytnik.shop.domain.BasicEntity;
-import com.zhytnik.shop.domain.business.location.Place;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -10,17 +13,23 @@ import java.util.Set;
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
+@Entity(name = "T_SUPPLY")
 public class Supply extends BasicEntity {
 
+    @ManyToOne
     private Seller seller;
 
+    @Column(name = "PRICE")
     private BigDecimal price;
 
+    @ManyToOne
     private Currency currency;
 
-    private Place homeland;
+    @ManyToOne
+    private Territory homeland;
 
-    private Set<Place> market;
+    @ManyToMany
+    private Set<Territory> market;
 
     public Seller getSeller() {
         return seller;
@@ -46,19 +55,19 @@ public class Supply extends BasicEntity {
         this.currency = currency;
     }
 
-    public Place getHomeland() {
+    public Territory getHomeland() {
         return homeland;
     }
 
-    public void setHomeland(Place homeland) {
+    public void setHomeland(Territory homeland) {
         this.homeland = homeland;
     }
 
-    public Set<Place> getMarket() {
+    public Set<Territory> getMarket() {
         return market;
     }
 
-    public void setMarket(Set<Place> market) {
+    public void setMarket(Set<Territory> market) {
         this.market = market;
     }
 }
