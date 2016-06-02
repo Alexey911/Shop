@@ -64,7 +64,7 @@ public class DynamicAccessor {
     }
 
     private boolean hasChanges(Object newValue, Object oldValue) {
-        return oldValue == newValue && oldValue != null && oldValue.hashCode() == newValue.hashCode();
+        return oldValue != newValue || oldValue != null && oldValue.hashCode() != newValue.hashCode();
     }
 
     public Object get(String field) {
