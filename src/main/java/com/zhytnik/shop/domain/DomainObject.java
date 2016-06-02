@@ -20,10 +20,10 @@ public class DomainObject implements IDomainObject {
     private Date changeDate = new Date();
 
     public DomainObject() {
-        id = DomainObjectUtil.nextId();
+        id = DomainObjectUtil.getInstance().getNextId();
     }
 
-    public DomainObject(Long id){
+    public DomainObject(Long id) {
         this.id = id;
     }
 

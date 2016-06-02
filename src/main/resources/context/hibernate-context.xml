@@ -25,4 +25,10 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <context:component-scan base-package="com.zhytnik.shop"/>
+
+    <bean name="domainObjectUtil"
+          class="com.zhytnik.shop.domain.DomainObjectUtil"
+          scope="singleton"
+          lazy-init="false"
+          p:dataSource-ref="dataSource"/>
 </beans>
