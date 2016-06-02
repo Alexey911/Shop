@@ -1,5 +1,6 @@
 package com.zhytnik.shop.backend.dao;
 
+import com.zhytnik.shop.backend.tool.DatabaseUtil;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.exeception.NotFoundException;
@@ -88,7 +89,7 @@ public class DynamicUtil {
     }
 
     private static Update prepareUpdate(IDynamicEntity entity) {
-        final Update update = new Update(new Oracle10gDialect());
+        final Update update = new Update(DatabaseUtil.getDialect());
         update.setTableName(entity.getDynamicType().getName()).
                 addWhereColumn(DYNAMIC_ID_FIELD, Long.toString(entity.getId()));
 
@@ -103,7 +104,7 @@ public class DynamicUtil {
     }
 
     private static Insert prepareInsert(IDynamicEntity entity) {
-        final Insert insert = new Insert(new Oracle10gDialect());
+        final Insert insert = new Insert(DatabaseUtil.getDialect());
         insert.setTableName(entity.getDynamicType().getName());
 
         final List<DynamicField> columns = getColumns(entity);
@@ -117,7 +118,7 @@ public class DynamicUtil {
     }
 
     private static Select prepareLoad(IDynamicEntity entity) {
-        final Select select = new Select(new Oracle10gDialect());
+        final Select select = new Select(DatabaseUtil.getDialect());
         select.setFromClause(entity.getDynamicType().getName()).
                 setSelectClause(initialSelect(entity)).
                 setWhereClause(DYNAMIC_ID_FIELD + " = " + entity.getId());
