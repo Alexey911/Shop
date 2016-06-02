@@ -9,8 +9,8 @@ import javax.persistence.Entity;
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-@Entity(name = "T_COLUMN_TYPE")
-public class ColumnType extends DomainObject {
+@Entity(name = "T_FIELD")
+public class DynamicField extends DomainObject {
 
     @Column(name = "NAME")
     private String name;

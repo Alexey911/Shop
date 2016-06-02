@@ -4,7 +4,6 @@ import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import static com.zhytnik.shop.backend.dao.DynamicUtil.*;
 
@@ -12,7 +11,6 @@ import static com.zhytnik.shop.backend.dao.DynamicUtil.*;
  * @author Alexey Zhytnik
  * @since 01.06.2016
  */
-@Component
 public class DynamicEntityDao<T extends IDynamicEntity> {
 
     @Autowired

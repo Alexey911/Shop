@@ -1,9 +1,8 @@
 package com.zhytnik.shop.backend;
 
 import com.zhytnik.shop.backend.tool.TypeUtil;
-import com.zhytnik.shop.domain.dynamic.ColumnType;
+import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
-import com.zhytnik.shop.exeception.InfrastructureException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
@@ -22,16 +21,14 @@ public class TableScriptGenerator {
 
     private Dialect dialect;
 
-    public String generate(String tableName, List<ColumnType> columnTypes) {
+    public String generate(String tableName, List<DynamicField> fields) {
         final Table table = new Table(tableName);
 
-        table.addColumn(generateIdColumn());
-
-        for (ColumnType columnType : columnTypes) {
-            final Column column = createColumn(columnType);
+        for (DynamicField field : fields) {
+            final Column column = createColumn(field);
             table.addColumn(column);
         }
-
+        table.addColumn(generateIdColumn());
         return generateScript(table, dialect);
     }
 
@@ -43,21 +40,16 @@ public class TableScriptGenerator {
         return column;
     }
 
-    private Column createColumn(ColumnType columnType) {
-        final Column column = new Column(columnType.getName());
-        column.setSqlType(getSqlType(columnType.getType()));
-        column.setNullable(!columnType.isRequired());
+    private Column createColumn(DynamicField field) {
+        final Column column = new Column(field.getName());
+        column.setSqlType(getSqlType(field.getType()));
+        column.setNullable(!field.isRequired());
         return column;
     }
 
     private String getSqlType(PrimitiveType type) {
         Integer code = TypeUtil.getSqlTypeCode(type);
-        if (code == null) failOnUnknownType(type);
         return dialect.getTypeName(code);
-    }
-
-    private String failOnUnknownType(PrimitiveType type) {
-        throw new InfrastructureException(format("Unmapped type \"%s\"", type));
     }
 
     private String generateScript(Table table, Dialect dialect) {

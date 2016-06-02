@@ -1,8 +1,6 @@
 package com.zhytnik.shop.service;
 
-import com.zhytnik.shop.backend.TypeCreator;
-import com.zhytnik.shop.backend.access.DynamicAccessor;
-import com.zhytnik.shop.backend.dao.DynamicEntityDao;
+import com.zhytnik.shop.backend.dao.ProductDao;
 import com.zhytnik.shop.backend.validator.DynamicEntityValidator;
 import com.zhytnik.shop.domain.business.market.Product;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
@@ -17,21 +15,17 @@ import org.springframework.stereotype.Component;
 public class ProductService {
 
     @Autowired
-    private DynamicEntityDao<Product> dao;
+    private ProductDao dao;
 
     private DynamicEntityValidator validator = new DynamicEntityValidator();
 
-    @Autowired
-    private TypeCreator typeCreator;
+    public Product createByType(DynamicType type) {
+        final Product product = new Product();
+        product.setDynamicType(type);
 
-    public void create(DynamicType type) {
-        typeCreator.create(type);
-    }
-
-    public Product create() {
-        Product p = new Product();
-        p.setDynamicAccessor(new DynamicAccessor(p));
-        return p;
+        final int dynamicFieldCount = type.getFields().size();
+        product.setDynamicFieldsValues(new Object[dynamicFieldCount]);
+        return product;
     }
 
     public void save(Product p) {
@@ -40,7 +34,6 @@ public class ProductService {
     }
 
     public Product load(Long id) {
-        dao.setClass(Product.class);
         return dao.findById(id);
     }
 
@@ -53,7 +46,7 @@ public class ProductService {
         dao.delete(id);
     }
 
-    public void setDao(DynamicEntityDao<Product> dao) {
+    public void setDao(ProductDao dao) {
         this.dao = dao;
     }
 }

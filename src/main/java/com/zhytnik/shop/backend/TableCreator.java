@@ -19,7 +19,7 @@ public class TableCreator {
 
     public void createTable(DynamicType type) {
         generator.setDialect(new Oracle10gDialect());
-        final String script = generator.generate(type.getName(), type.getColumns());
+        final String script = generator.generate(type.getName(), type.getFields());
         scriptExecutor.execute(script);
     }
 

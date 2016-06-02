@@ -1,7 +1,6 @@
 package com.zhytnik.shop.backend.dao;
 
-import com.zhytnik.shop.backend.tool.TypeUtil;
-import com.zhytnik.shop.domain.dynamic.ColumnType;
+import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.exeception.NotFoundException;
 import org.hibernate.SQLQuery;
@@ -17,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import static com.zhytnik.shop.backend.tool.TypeUtil.getTypeConverter;
 import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
 
 /**
@@ -28,46 +28,53 @@ public class DynamicUtil {
     private DynamicUtil() {
     }
 
-    public static void persistDynamic(Session session, IDynamicEntity entity) {
-        preparePersistDynamic(entity);
+    static void persistDynamic(Session session, IDynamicEntity entity) {
         final Insert insert = prepareInsert(entity);
         final SQLQuery query = session.createSQLQuery(insert.toStatementString());
         query.executeUpdate();
     }
 
-    private static void preparePersistDynamic(IDynamicEntity entity) {
-        entity.getDynamicAccessor().set(DYNAMIC_ID_FIELD, entity.getId());
-    }
-
-    public static void updateDynamic(Session session, IDynamicEntity entity) {
-        if (entity.getDynamicAccessor().getChangesFieldIds().isEmpty()) return;
+    static void updateDynamic(Session session, IDynamicEntity entity) {
+        if (!hasChanges(entity)) return;
         final Update update = prepareUpdate(entity);
         final SQLQuery query = session.createSQLQuery(update.toStatementString());
         query.executeUpdate();
     }
 
-    public static void loadDynamic(Session session, IDynamicEntity entity) {
+    private static boolean hasChanges(IDynamicEntity entity) {
+        return !entity.getDynamicAccessor().getChangesFieldIds().isEmpty();
+    }
+
+    @SuppressWarnings("unchecked")
+    static void loadDynamic(Session session, IDynamicEntity entity) {
         final Select select = prepareLoad(entity);
         final SQLQuery query = session.createSQLQuery(select.toStatementString());
-        for (ColumnType column : getColumns(entity)) {
-            query.addScalar(column.getName(), TypeUtil.getTypeConverter(column.getType()));
-        }
+        setResultTransform(query, entity);
         query.executeUpdate();
-        query.setResultTransformer(Transformers.TO_LIST);
 
         final List<List<?>> entities = query.list();
         if (entities.isEmpty()) throw new NotFoundException();
 
-        final List<?> fieldsValues = entities.get(0);
-        final Object[] values = new Object[fieldsValues.size()];
-        for (int i = 0; i < fieldsValues.size(); i++) {
-            values[i] = fieldsValues.get(i);
-        }
-
-        entity.setDynamicFieldsValues(values);
+        entity.setDynamicFieldsValues(extractDynamicData(entities.get(0)));
     }
 
-    public static void deleteDynamic(Session session, IDynamicEntity entity) {
+    private static void setResultTransform(SQLQuery query, IDynamicEntity entity) {
+        for (DynamicField column : getColumns(entity)) {
+            query.addScalar(column.getName(), getTypeConverter(column.getType()));
+        }
+        query.setResultTransformer(Transformers.TO_LIST);
+    }
+
+    private static Object[] extractDynamicData(List<?> data) {
+        final int size = data.size();
+        final Object[] values = new Object[size];
+        for (int i = 0; i < size; i++) {
+            values[i] = data.get(i);
+        }
+        return values;
+    }
+
+    static void deleteDynamic(Session session, IDynamicEntity entity) {
         final Delete delete = prepareDelete(entity);
         final SQLQuery query = session.createSQLQuery(delete.toStatementString());
         query.executeUpdate();
@@ -85,14 +92,12 @@ public class DynamicUtil {
         update.setTableName(entity.getDynamicType().getName()).
                 addWhereColumn(DYNAMIC_ID_FIELD, Long.toString(entity.getId()));
 
-        final List<ColumnType> columns = getColumns(entity);
-        final Object[] fields = entity.getDynamicFieldsValues();
+        final List<DynamicField> columns = getColumns(entity);
+        final Object[] values = entity.getDynamicFieldsValues();
         final Set<Integer> changes = entity.getDynamicAccessor().getChangesFieldIds();
 
-        for (int i = 0; i < columns.size(); i++) {
-            if (changes.contains(i)) {
-                update.addColumn(columns.get(i).getName(), fields[i].toString());
-            }
+        for (int change : changes) {
+            update.addColumn(columns.get(change).getName(), values[change].toString());
         }
         return update;
     }
@@ -101,12 +106,13 @@ public class DynamicUtil {
         final Insert insert = new Insert(new Oracle10gDialect());
         insert.setTableName(entity.getDynamicType().getName());
 
-        final List<ColumnType> columns = getColumns(entity);
-        final Object[] fields = entity.getDynamicFieldsValues();
+        final List<DynamicField> columns = getColumns(entity);
+        final Object[] values = entity.getDynamicFieldsValues();
 
         for (int i = 0; i < columns.size(); i++) {
-            insert.addColumn(columns.get(i).getName(), fields[i].toString());
+            insert.addColumn(columns.get(i).getName(), values[i].toString());
         }
+        insert.addColumn(DYNAMIC_ID_FIELD, Long.toString(entity.getId()));
         return insert;
     }
 
@@ -114,14 +120,14 @@ public class DynamicUtil {
         final Select select = new Select(new Oracle10gDialect());
         select.setFromClause(entity.getDynamicType().getName()).
                 setSelectClause(initialSelect(entity)).
-                setWhereClause("ID = " + entity.getId());
+                setWhereClause(DYNAMIC_ID_FIELD + " = " + entity.getId());
         return select;
     }
 
     private static String initialSelect(IDynamicEntity entity) {
-        final List<ColumnType> columns = getColumns(entity);
+        final List<DynamicField> columns = getColumns(entity);
         final StringBuilder select = new StringBuilder(columns.size() * 15 + 10);
-        final Iterator<ColumnType> iterator = columns.iterator();
+        final Iterator<DynamicField> iterator = columns.iterator();
 
         while (iterator.hasNext()) {
             select.append(iterator.next().getName());
@@ -132,7 +138,7 @@ public class DynamicUtil {
         return select.toString();
     }
 
-    private static List<ColumnType> getColumns(IDynamicEntity entity) {
-        return entity.getDynamicType().getColumns();
+    private static List<DynamicField> getColumns(IDynamicEntity entity) {
+        return entity.getDynamicType().getFields();
     }
 }

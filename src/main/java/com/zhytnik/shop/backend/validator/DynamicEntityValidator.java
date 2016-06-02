@@ -1,6 +1,6 @@
 package com.zhytnik.shop.backend.validator;
 
-import com.zhytnik.shop.domain.dynamic.ColumnType;
+import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.exeception.ValidationException;
@@ -19,11 +19,11 @@ public class DynamicEntityValidator implements Validator<IDynamicEntity> {
 
     @Override
     public void validate(IDynamicEntity entity) {
-        final List<ColumnType> columns = entity.getDynamicType().getColumns();
+        final List<DynamicField> columns = entity.getDynamicType().getFields();
         final Object[] values = entity.getDynamicFieldsValues();
 
         for (int i = 0; i < columns.size(); i++) {
-            final ColumnType type = columns.get(i);
+            final DynamicField type = columns.get(i);
             final Object value = values[i];
 
             if (type.isRequired() && value == null) {
@@ -35,7 +35,7 @@ public class DynamicEntityValidator implements Validator<IDynamicEntity> {
         }
     }
 
-    private void failOnEmptyRequiredField(ColumnType type) {
+    private void failOnEmptyRequiredField(DynamicField type) {
         throw new ValidationException(format("Required field \"%s\" is empty", type.getName()));
     }
 }

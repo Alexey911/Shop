@@ -1,7 +1,7 @@
 package com.zhytnik.shop.backend;
 
 import com.zhytnik.shop.backend.validator.DynamicTypeValidator;
-import com.zhytnik.shop.domain.dynamic.ColumnType;
+import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,13 +23,13 @@ public class TypeCreator {
 
     public void create(DynamicType type) {
         validator.validate(type);
-        initialOrder(type.getColumns());
+        initialOrder(type.getFields());
         creator.createTable(type);
     }
 
-    private void initialOrder(List<ColumnType> columns) {
+    private void initialOrder(List<DynamicField> columns) {
         int order = 0;
-        for (ColumnType column : columns) {
+        for (DynamicField column : columns) {
             column.setOrder(order++);
         }
     }

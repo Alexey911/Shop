@@ -9,7 +9,7 @@ import java.util.List;
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-@Entity(name = "T_DYNAMIC_TYPE")
+@Entity(name = "T_TYPE")
 public class DynamicType extends DomainObject {
 
     public static final String DYNAMIC_ID_FIELD = "ID";
@@ -18,7 +18,7 @@ public class DynamicType extends DomainObject {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<ColumnType> columns;
+    private List<DynamicField> fields;
 
     public String getName() {
         return name;
@@ -28,11 +28,11 @@ public class DynamicType extends DomainObject {
         this.name = name;
     }
 
-    public List<ColumnType> getColumns() {
-        return columns;
+    public List<DynamicField> getFields() {
+        return fields;
     }
 
-    public void setColumns(List<ColumnType> columns) {
-        this.columns = columns;
+    public void setFields(List<DynamicField> fields) {
+        this.fields = fields;
     }
 }

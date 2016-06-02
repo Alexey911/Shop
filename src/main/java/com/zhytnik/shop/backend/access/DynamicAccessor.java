@@ -1,7 +1,8 @@
 package com.zhytnik.shop.backend.access;
 
-import com.zhytnik.shop.domain.dynamic.ColumnType;
+import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
+import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.exeception.InfrastructureException;
 
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
+import static com.zhytnik.shop.backend.tool.TypeUtil.getNativeClass;
 import static java.lang.String.format;
 
 /**
@@ -30,21 +32,35 @@ public class DynamicAccessor {
 
     private void initializeMapping() {
         mapping = newHashMap();
-        for (ColumnType column : entity.getDynamicType().getColumns()) {
+        for (DynamicField column : entity.getDynamicType().getFields()) {
             mapping.put(column.getName(), column.getOrder());
         }
     }
 
     public void set(String field, Object value) {
-        Integer pos = mapping.get(field);
+        final Integer pos = mapping.get(field);
         if (pos == null) failOnUnknownAccessField(field);
         setValue(value, pos);
     }
 
     private void setValue(Object newValue, Integer pos) {
         final Object oldValue = entity.getDynamicFieldsValues()[pos];
+        checkTypeCast(getFieldTypeByPosition(pos), newValue);
         if (hasChanges(newValue, oldValue)) changedFields.add(pos);
         entity.getDynamicFieldsValues()[pos] = newValue;
+    }
+
+    private void checkTypeCast(Class clazz, Object value) {
+        boolean valid = clazz.equals(value.getClass());
+        if (!valid) {
+            throw new InfrastructureException(format("Can't cast value \"%s\" to \"%s\" class",
+                    value, clazz));
+        }
+    }
+
+    private Class getFieldTypeByPosition(Integer pos) {
+        final PrimitiveType type = entity.getDynamicType().getFields().get(pos).getType();
+        return getNativeClass(type);
     }
 
     private boolean hasChanges(Object newValue, Object oldValue) {
@@ -52,7 +68,7 @@ public class DynamicAccessor {
     }
 
     public Object get(String field) {
-        Integer pos = mapping.get(field);
+        final Integer pos = mapping.get(field);
         if (pos == null) failOnUnknownAccessField(field);
         return entity.getDynamicFieldsValues()[pos];
     }

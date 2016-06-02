@@ -1,12 +1,15 @@
 package com.zhytnik.shop.backend.tool;
 
+import com.google.common.collect.ImmutableMap;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
+import com.zhytnik.shop.exeception.InfrastructureException;
 import org.hibernate.type.*;
 
 import java.sql.Types;
+import java.util.Date;
 import java.util.Map;
 
-import static com.google.common.collect.Maps.newHashMap;
+import static java.lang.String.format;
 
 /**
  * @author Alexey Zhytnik
@@ -14,33 +17,55 @@ import static com.google.common.collect.Maps.newHashMap;
  */
 public class TypeUtil {
 
-    private static Map<PrimitiveType, Integer> TYPE_MAPPING;
     private static Map<PrimitiveType, Type> TYPE_CONVERTER;
+    private static Map<PrimitiveType, Integer> TYPE_MAPPING;
+    private static Map<PrimitiveType, Class> TYPE_REFLECTION;
 
     static {
-        TYPE_MAPPING = newHashMap();
-        TYPE_MAPPING.put(PrimitiveType.LONG, Types.BIGINT);
-        TYPE_MAPPING.put(PrimitiveType.STRING, Types.CHAR);
-        TYPE_MAPPING.put(PrimitiveType.DOUBLE, Types.DOUBLE);
-        TYPE_MAPPING.put(PrimitiveType.BOOLEAN, Types.BOOLEAN);
-        TYPE_MAPPING.put(PrimitiveType.DATE, Types.DATE);
+        TYPE_MAPPING = ImmutableMap.<PrimitiveType, Integer>builder().
+                put(PrimitiveType.LONG, Types.BIGINT).
+                put(PrimitiveType.STRING, Types.CHAR).
+                put(PrimitiveType.DOUBLE, Types.DOUBLE).
+                put(PrimitiveType.BOOLEAN, Types.BOOLEAN).
+                put(PrimitiveType.DATE, Types.DATE).build();
 
-        TYPE_CONVERTER = newHashMap();
-        TYPE_CONVERTER.put(PrimitiveType.LONG, LongType.INSTANCE);
-        TYPE_CONVERTER.put(PrimitiveType.STRING, StringType.INSTANCE);
-        TYPE_CONVERTER.put(PrimitiveType.DOUBLE, DoubleType.INSTANCE);
-        TYPE_CONVERTER.put(PrimitiveType.BOOLEAN, BooleanType.INSTANCE);
-        TYPE_CONVERTER.put(PrimitiveType.DATE, DateType.INSTANCE);
+        TYPE_REFLECTION = ImmutableMap.<PrimitiveType, Class>builder().
+                put(PrimitiveType.LONG, Long.class).
+                put(PrimitiveType.STRING, String.class).
+                put(PrimitiveType.DOUBLE, Double.class).
+                put(PrimitiveType.BOOLEAN, Boolean.class).
+                put(PrimitiveType.DATE, Date.class).build();
+
+        TYPE_CONVERTER = ImmutableMap.<PrimitiveType, Type>builder().
+                put(PrimitiveType.LONG, LongType.INSTANCE).
+                put(PrimitiveType.STRING, StringType.INSTANCE).
+                put(PrimitiveType.DOUBLE, DoubleType.INSTANCE).
+                put(PrimitiveType.BOOLEAN, BooleanType.INSTANCE).
+                put(PrimitiveType.DATE, DateType.INSTANCE).build();
     }
 
     private TypeUtil() {
     }
 
     public static Integer getSqlTypeCode(PrimitiveType type) {
-        return TYPE_MAPPING.get(type);
+        final Integer code = TYPE_MAPPING.get(type);
+        if (code == null) failOnUnknownType(type);
+        return code;
     }
 
     public static Type getTypeConverter(PrimitiveType type) {
-        return TYPE_CONVERTER.get(type);
+        final Type converter = TYPE_CONVERTER.get(type);
+        if (converter == null) failOnUnknownType(type);
+        return converter;
+    }
+
+    public static Class getNativeClass(PrimitiveType type) {
+        final Class clazz = TYPE_REFLECTION.get(type);
+        if (clazz == null) failOnUnknownType(type);
+        return clazz;
+    }
+
+    private static String failOnUnknownType(PrimitiveType type) {
+        throw new InfrastructureException(format("Unmapped type \"%s\"", type));
     }
 }
