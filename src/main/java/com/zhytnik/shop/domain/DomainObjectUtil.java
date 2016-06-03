@@ -13,7 +13,7 @@ public class DomainObjectUtil {
 
     private static DomainObjectUtil instance;
 
-    private volatile boolean generate = true;
+    private ThreadLocal<Boolean> generate = new ThreadLocal<>();
 
     @Autowired
     private DataSource dataSource;
@@ -23,13 +23,22 @@ public class DomainObjectUtil {
     }
 
     public Long getNextId() {
-        if (!generate) return null;
+        if (!isGenerateEnable()) return null;
         final JdbcTemplate template = new JdbcTemplate(dataSource);
         return template.queryForObject("SELECT ID_SEQUENCE.nextval FROM DUAL", Long.class);
     }
 
-    public void setGenerate(boolean generate) {
-        this.generate = generate;
+    private boolean isGenerateEnable() {
+        final Boolean enable = generate.get();
+        return enable == null || enable;
+    }
+
+    public void setGenerate(boolean value) {
+        generate.set(value);
+    }
+
+    public void resetGenerate() {
+        generate.remove();
     }
 
     public void setDataSource(DataSource dataSource) {

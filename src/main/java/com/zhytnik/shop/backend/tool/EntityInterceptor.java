@@ -29,7 +29,7 @@ public class EntityInterceptor extends EmptyInterceptor {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         } finally {
-            util.setGenerate(true);
+            util.resetGenerate();
         }
         return super.instantiate(entityName, entityMode, id);
     }
