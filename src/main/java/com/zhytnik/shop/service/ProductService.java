@@ -2,10 +2,13 @@ package com.zhytnik.shop.service;
 
 import com.zhytnik.shop.backend.dao.ProductDao;
 import com.zhytnik.shop.backend.validator.DynamicEntityValidator;
-import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
+import com.zhytnik.shop.domain.market.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Alexey Zhytnik
@@ -40,6 +43,14 @@ public class ProductService {
     public void update(Product p) {
         validator.validate(p);
         dao.update(p);
+    }
+
+    public List<Product> loadAll() {
+        return dao.loadAll();
+    }
+
+    public List<Product> findByKeywords(String... keywords) {
+        return dao.findByKeywords(keywords);
     }
 
     public void delete(Long id) {

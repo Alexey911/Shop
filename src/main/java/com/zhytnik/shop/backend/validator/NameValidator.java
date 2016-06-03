@@ -13,7 +13,6 @@ import java.util.Set;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.io.Files.readLines;
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 
 /**
  * @author Alexey Zhytnik
@@ -27,9 +26,7 @@ public class NameValidator implements Validator<String> {
 
     @Override
     public void validate(String name) {
-        if (keywords.contains(name)) {
-            failOnUsingReservedWord(name);
-        }
+        checkReservedWordOverlap(name);
 
         if (name.length() > MAX_LENGTH) {
             failWithLengthExcess(name);
@@ -39,8 +36,10 @@ public class NameValidator implements Validator<String> {
         }
     }
 
-    private void failOnUsingReservedWord(String name) {
-        throw new InfrastructureException(format("Using reserved word \"%s\"", name));
+    private void checkReservedWordOverlap(String name) {
+        if (keywords.contains(name.toLowerCase())) {
+            throw new InfrastructureException(format("Using reserved word \"%s\"", name));
+        }
     }
 
     // valid values: 'a'-'z', 'A'-'Z', '-', '_'
@@ -69,8 +68,10 @@ public class NameValidator implements Validator<String> {
         } catch (IOException e) {
             throw new InfrastructureException(e);
         }
-        for (String rowKeyWords : data) {
-            keywords.addAll(asList(rowKeyWords.split(";")));
+        for (String rowKeywords : data) {
+            for (String keyword : rowKeywords.split(";")) {
+                keywords.add(keyword.toLowerCase());
+            }
         }
         return keywords;
     }

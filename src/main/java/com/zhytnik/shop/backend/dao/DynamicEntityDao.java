@@ -1,9 +1,12 @@
 package com.zhytnik.shop.backend.dao;
 
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 import static com.zhytnik.shop.backend.dao.DynamicUtil.*;
 
@@ -14,9 +17,9 @@ import static com.zhytnik.shop.backend.dao.DynamicUtil.*;
 public class DynamicEntityDao<T extends IDynamicEntity> {
 
     @Autowired
-    private SessionFactory sessionFactory;
+    protected SessionFactory sessionFactory;
 
-    private Class<T> clazz;
+    protected Class<T> clazz;
 
     public DynamicEntityDao() {
     }
@@ -51,10 +54,33 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
 
     public T findById(Long id) {
         final Session session = openSession();
-        final T entity = session.load(clazz, id);
+        final T entity = session.get(clazz, id);
         loadDynamic(session, entity);
         closeSession(session);
         return entity;
+    }
+
+    public List<T> loadAll() {
+        final Session session = openSession();
+        return loadByCriteria(session, session.createCriteria(clazz));
+    }
+
+    public List<T> load(int start, int finish) {
+        final Session session = openSession();
+        final Criteria criteria = session.createCriteria(clazz);
+        criteria.setFirstResult(start);
+        criteria.setMaxResults(finish);
+        return loadByCriteria(session, criteria);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected List<T> loadByCriteria(Session session, Criteria criteria) {
+        final List<T> entities = criteria.list();
+        for (T entity : entities) {
+            loadDynamic(session, entity);
+        }
+        closeSession(session);
+        return entities;
     }
 
     protected Session openSession() {
