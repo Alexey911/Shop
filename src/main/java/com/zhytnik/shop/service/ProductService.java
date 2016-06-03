@@ -1,6 +1,7 @@
 package com.zhytnik.shop.service;
 
 import com.zhytnik.shop.backend.dao.ProductDao;
+import com.zhytnik.shop.backend.dao.search.Filter;
 import com.zhytnik.shop.backend.validator.DynamicEntityValidator;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.market.product.Product;
@@ -8,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
+
+import static com.zhytnik.shop.backend.dao.DynamicUtil.setDynamicValues;
 
 /**
  * @author Alexey Zhytnik
@@ -27,7 +29,7 @@ public class ProductService {
         product.setDynamicType(type);
 
         final int dynamicFieldCount = type.getFields().size();
-        product.setDynamicFieldsValues(new Object[dynamicFieldCount]);
+        setDynamicValues(product, new Object[dynamicFieldCount]);
         return product;
     }
 
@@ -51,6 +53,10 @@ public class ProductService {
 
     public List<Product> findByKeywords(String... keywords) {
         return dao.findByKeywords(keywords);
+    }
+
+    public List<Product> findByFilter(DynamicType type, Filter filter) {
+        return dao.findByQuery(type, filter);
     }
 
     public void delete(Long id) {

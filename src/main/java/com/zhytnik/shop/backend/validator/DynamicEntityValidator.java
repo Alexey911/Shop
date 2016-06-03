@@ -7,6 +7,7 @@ import com.zhytnik.shop.exeception.ValidationException;
 
 import java.util.List;
 
+import static com.zhytnik.shop.backend.dao.DynamicUtil.getDynamicValues;
 import static java.lang.String.format;
 
 /**
@@ -20,7 +21,7 @@ public class DynamicEntityValidator implements Validator<IDynamicEntity> {
     @Override
     public void validate(IDynamicEntity entity) {
         final List<DynamicField> columns = entity.getDynamicType().getFields();
-        final Object[] values = entity.getDynamicFieldsValues();
+        final Object[] values = getDynamicValues(entity);
 
         for (int i = 0; i < columns.size(); i++) {
             final DynamicField type = columns.get(i);

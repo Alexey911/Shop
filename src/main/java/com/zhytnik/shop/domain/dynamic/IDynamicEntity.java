@@ -13,8 +13,10 @@ public interface IDynamicEntity extends IBasicEntity {
 
     void setDynamicType(DynamicType type);
 
+    @Deprecated
     Object[] getDynamicFieldsValues();
 
+    @Deprecated
     void setDynamicFieldsValues(Object[] values);
 
     DynamicAccessor getDynamicAccessor();

@@ -1,5 +1,7 @@
 package com.zhytnik.shop.backend.dao;
 
+import com.zhytnik.shop.backend.dao.search.Filter;
+import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -54,7 +56,7 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
 
     public T findById(Long id) {
         final Session session = openSession();
-        final T entity = session.get(clazz, id);
+        final T entity = session.load(clazz, id);
         loadDynamic(session, entity);
         closeSession(session);
         return entity;
@@ -62,7 +64,7 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
 
     public List<T> loadAll() {
         final Session session = openSession();
-        return loadByCriteria(session, session.createCriteria(clazz));
+        return findByCriteria(session, session.createCriteria(clazz));
     }
 
     public List<T> load(int start, int finish) {
@@ -70,11 +72,21 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
         final Criteria criteria = session.createCriteria(clazz);
         criteria.setFirstResult(start);
         criteria.setMaxResults(finish);
-        return loadByCriteria(session, criteria);
+        return findByCriteria(session, criteria);
+    }
+
+    public List<T> findByQuery(DynamicType type, Filter filter) {
+        if (filter.isEmpty()) {
+            return loadAll();
+        }
+        final Session session = openSession();
+        final List<T> entities = DynamicUtil.findByQuery(clazz, session, type, filter);
+        closeSession(session);
+        return entities;
     }
 
     @SuppressWarnings("unchecked")
-    protected List<T> loadByCriteria(Session session, Criteria criteria) {
+    protected List<T> findByCriteria(Session session, Criteria criteria) {
         final List<T> entities = criteria.list();
         for (T entity : entities) {
             loadDynamic(session, entity);

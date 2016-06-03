@@ -1,5 +1,6 @@
 package com.zhytnik.shop.backend.access;
 
+import com.zhytnik.shop.backend.dao.DynamicUtil;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
+import static com.zhytnik.shop.backend.dao.DynamicUtil.getDynamicValue;
 import static com.zhytnik.shop.backend.tool.TypeUtil.getNativeClass;
 import static java.lang.String.format;
 
@@ -44,10 +46,10 @@ public class DynamicAccessor {
     }
 
     private void setValue(Object newValue, Integer pos) {
-        final Object oldValue = entity.getDynamicFieldsValues()[pos];
+        final Object oldValue = getDynamicValue(entity, pos);
         checkTypeCast(getFieldTypeByPosition(pos), newValue);
         if (hasChanges(newValue, oldValue)) changedFields.add(pos);
-        entity.getDynamicFieldsValues()[pos] = newValue;
+        DynamicUtil.setDynamicValue(entity, pos, newValue);
     }
 
     private void checkTypeCast(Class clazz, Object value) {
@@ -70,7 +72,7 @@ public class DynamicAccessor {
     public Object get(String field) {
         final Integer pos = mapping.get(field);
         if (pos == null) failOnUnknownAccessField(field);
-        return entity.getDynamicFieldsValues()[pos];
+        return getDynamicValue(entity, pos);
     }
 
     private void failOnUnknownAccessField(String field) {

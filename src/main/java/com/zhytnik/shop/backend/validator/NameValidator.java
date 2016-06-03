@@ -44,7 +44,7 @@ public class NameValidator implements Validator<String> {
 
     // valid values: 'a'-'z', 'A'-'Z', '-', '_'
     private boolean isValid(char c) {
-        return (c >= 97 && c <= 122) || (c >= 65 && c <= 90) || c == 95 || c == 46;
+        return (c >= 97 && c <= 122) || (c >= 65 && c <= 90) || c == 95 || c == 45;
     }
 
     private void failWithLengthExcess(String name) {

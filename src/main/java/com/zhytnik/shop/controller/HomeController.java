@@ -1,6 +1,7 @@
 package com.zhytnik.shop.controller;
 
 import com.zhytnik.shop.backend.access.DynamicAccessor;
+import com.zhytnik.shop.backend.dao.search.Filter;
 import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
@@ -17,6 +18,8 @@ import java.util.Collections;
 import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
+import static com.zhytnik.shop.backend.dao.search.Relation.MORE;
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.LONG;
 
 @Controller
@@ -55,8 +58,13 @@ public class HomeController {
         DynamicAccessor accessor = product.getDynamicAccessor();
         accessor.set("my_field", 5L);
 
+        product.setKeywords(newHashSet("a", "b"));
+
         productService.save(product);
-        productService.load(132L);
+
+        productService.findByFilter(type, new Filter().add(customField, MORE, 4));
+
+        productService.load(product.getId());
 
         return new ModelAndView("welcome", "message", new Date());
     }
