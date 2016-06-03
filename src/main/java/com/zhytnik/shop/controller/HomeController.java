@@ -31,6 +31,7 @@ public class HomeController {
         customField.setName("my_field");
         customField.setRequired(true);
         customField.setType(LONG);
+        customField.setOrder(0);
 
         final DynamicType type = new DynamicType();
         type.setName("my_type");
@@ -44,7 +45,7 @@ public class HomeController {
         accessor.set("my_field", 5L);
 
         productService.save(product);
-        productService.load(product.getId());
+        productService.load(132L);
 
         return new ModelAndView("welcome", "message", new Date());
     }

@@ -17,8 +17,6 @@ public class TableCreator {
     @Autowired
     private ScriptExecutor scriptExecutor;
 
-
-
     private TableScriptGenerator generator = new TableScriptGenerator();
 
     public void createTable(DynamicType type) {

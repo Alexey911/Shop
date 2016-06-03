@@ -17,7 +17,7 @@ public class DynamicType extends DomainObject {
     @Column(name = "NAME", unique = true)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DynamicField> fields;
 
     public String getName() {

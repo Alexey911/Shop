@@ -5,18 +5,22 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd">
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/data/jpa
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <bean name="sessionFactory"
           class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
           p:configLocation="classpath:hibernate.cfg.xml"
           p:dataSource-ref="dataSource"
-          p:packagesToScan="com.zhytnik.shop"/>
+          p:packagesToScan="com.zhytnik.shop"
+          p:entityInterceptor-ref="interceptor"/>
 
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate5.HibernateTransactionManager"
@@ -28,7 +32,24 @@
 
     <bean name="domainObjectUtil"
           class="com.zhytnik.shop.domain.DomainObjectUtil"
-          scope="singleton"
-          lazy-init="false"
+          scope="singleton" lazy-init="false"
           p:dataSource-ref="dataSource"/>
+
+    <bean name="interceptor" class="com.zhytnik.shop.backend.tool.EntityInterceptor"
+          p:domainObjectUtil-ref="domainObjectUtil"/>
+
+    <jpa:repositories base-package="com.zhytnik.shop.backend.repository"/>
+
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:jpaDialect-ref="jpaDialect"
+          p:jpaVendorAdapter-ref="jpaVendorAdapter"
+          p:packagesToScan="com.zhytnik.shop"/>
+
+    <bean id="jpaVendorAdapter"
+          class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+          p:database="ORACLE" p:databasePlatform="org.hibernate.dialect.Oracle10gDialect"/>
+
+    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
 </beans>

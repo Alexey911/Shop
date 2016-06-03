@@ -1,7 +1,7 @@
 package com.zhytnik.shop.domain.business.market;
 
 import com.zhytnik.shop.backend.access.DynamicAccessor;
-import com.zhytnik.shop.domain.VersionableDomainObject;
+import com.zhytnik.shop.domain.VersionableEntity;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.text.MultilanguageString;
@@ -14,7 +14,7 @@ import java.util.Set;
  * @since 28.05.2016
  */
 @Entity(name = "T_PRODUCT")
-public class Product extends VersionableDomainObject implements IDynamicEntity {
+public class Product extends VersionableEntity implements IDynamicEntity {
 
     @Column(name = "SHORT_NAME", length = 30)
     private String shortName;

@@ -9,7 +9,7 @@ import javax.persistence.Version;
  * @since 01.06.2016
  */
 @MappedSuperclass
-public class VersionableDomainObject extends BasicEntity implements IVersionableEntity {
+public class VersionableEntity extends BasicEntity implements IVersionableEntity {
 
     @Version
     @Column(name = "VERSION", precision = 10)

@@ -1,6 +1,6 @@
 package com.zhytnik.shop.domain.text;
 
-import com.zhytnik.shop.domain.VersionableDomainObject;
+import com.zhytnik.shop.domain.VersionableEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import java.util.Set;
  * @since 28.05.2016
  */
 @Entity(name = "T_MULTI_STR")
-public class MultilanguageString extends VersionableDomainObject {
+public class MultilanguageString extends VersionableEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     private Set<MultilanguageTranslation> translations;
