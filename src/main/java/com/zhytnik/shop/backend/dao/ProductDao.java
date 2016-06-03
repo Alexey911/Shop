@@ -1,6 +1,6 @@
 package com.zhytnik.shop.backend.dao;
 
-import com.zhytnik.shop.domain.business.market.Product;
+import com.zhytnik.shop.domain.market.product.Product;
 import org.springframework.stereotype.Component;
 
 /**

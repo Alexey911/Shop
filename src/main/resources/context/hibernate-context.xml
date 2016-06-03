@@ -52,4 +52,7 @@
           p:database="ORACLE" p:databasePlatform="org.hibernate.dialect.Oracle10gDialect"/>
 
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+
+    <bean id="nameValidator" class="com.zhytnik.shop.backend.validator.NameValidator"
+          p:keywordsFile="${file.keywords}"/>
 </beans>

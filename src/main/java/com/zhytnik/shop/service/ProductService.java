@@ -2,7 +2,7 @@ package com.zhytnik.shop.service;
 
 import com.zhytnik.shop.backend.dao.ProductDao;
 import com.zhytnik.shop.backend.validator.DynamicEntityValidator;
-import com.zhytnik.shop.domain.business.market.Product;
+import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

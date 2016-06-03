@@ -1,9 +1,14 @@
-package com.zhytnik.shop.domain.business.market;
+package com.zhytnik.shop.domain.market.product;
 
 import com.zhytnik.shop.backend.access.DynamicAccessor;
 import com.zhytnik.shop.domain.VersionableEntity;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
+import com.zhytnik.shop.domain.historizable.IHistorizable;
+import com.zhytnik.shop.domain.historizable.IHistorizableDescription;
+import com.zhytnik.shop.domain.market.Category;
+import com.zhytnik.shop.domain.market.Comment;
+import com.zhytnik.shop.domain.market.Supply;
 import com.zhytnik.shop.domain.text.MultilanguageString;
 
 import javax.persistence.*;
@@ -14,7 +19,7 @@ import java.util.Set;
  * @since 28.05.2016
  */
 @Entity(name = "T_PRODUCT")
-public class Product extends VersionableEntity implements IDynamicEntity {
+public class Product extends VersionableEntity implements IDynamicEntity, IHistorizable<ProductPointer> {
 
     @Column(name = "SHORT_NAME", length = 30)
     private String shortName;
@@ -47,6 +52,12 @@ public class Product extends VersionableEntity implements IDynamicEntity {
 
     @Transient
     private transient DynamicAccessor accessor;
+
+    @Column(name = "CODE")
+    private Long code;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private ProductDescription history;
 
     public String getShortName() {
         return shortName;
@@ -111,6 +122,7 @@ public class Product extends VersionableEntity implements IDynamicEntity {
 
     @Override
     public void setDynamicType(DynamicType type) {
+        accessor = null;
         this.type = type;
     }
 
@@ -135,5 +147,25 @@ public class Product extends VersionableEntity implements IDynamicEntity {
     @Override
     public void setDynamicAccessor(DynamicAccessor accessor) {
         this.accessor = accessor;
+    }
+
+    @Override
+    public Long getCode() {
+        return code;
+    }
+
+    @Override
+    public void setCode(Long code) {
+        this.code = code;
+    }
+
+    @Override
+    public IHistorizableDescription<ProductPointer> getHistorizableDescription() {
+        return history;
+    }
+
+    @Override
+    public void setHistorizableDescription(IHistorizableDescription<ProductPointer> description) {
+        this.history = (ProductDescription) description;
     }
 }

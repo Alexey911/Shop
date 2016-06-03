@@ -1,9 +1,11 @@
 package com.zhytnik.shop.controller;
 
 import com.zhytnik.shop.backend.access.DynamicAccessor;
-import com.zhytnik.shop.domain.business.market.Product;
+import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
+import com.zhytnik.shop.domain.market.product.ProductDescription;
+import com.zhytnik.shop.domain.market.product.ProductPointer;
 import com.zhytnik.shop.service.ProductService;
 import com.zhytnik.shop.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -40,6 +43,14 @@ public class HomeController {
         typeService.create(type);
 
         final Product product = productService.createByType(type);
+        ProductDescription desc = new ProductDescription();
+
+        ProductPointer pointer = new ProductPointer();
+        pointer.setSlices(Collections.singleton(product));
+
+        desc.setHistorizablePointer(pointer);
+
+        product.setHistorizableDescription(desc);
 
         DynamicAccessor accessor = product.getDynamicAccessor();
         accessor.set("my_field", 5L);

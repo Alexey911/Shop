@@ -1,4 +1,4 @@
-package com.zhytnik.shop.domain.business.market;
+package com.zhytnik.shop.domain.market;
 
 import com.zhytnik.shop.domain.DomainObject;
 import com.zhytnik.shop.domain.text.MultilanguageString;

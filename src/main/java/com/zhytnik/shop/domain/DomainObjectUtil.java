@@ -13,7 +13,7 @@ public class DomainObjectUtil {
 
     private static DomainObjectUtil instance;
 
-    private volatile boolean generate;
+    private volatile boolean generate = true;
 
     @Autowired
     private DataSource dataSource;

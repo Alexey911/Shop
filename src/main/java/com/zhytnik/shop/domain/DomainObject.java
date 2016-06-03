@@ -20,7 +20,9 @@ public class DomainObject implements IDomainObject {
     private Date changeDate = new Date();
 
     public DomainObject() {
-        id = DomainObjectUtil.getInstance().getNextId();
+        if(DomainObjectUtil.getInstance() != null) {
+            id = DomainObjectUtil.getInstance().getNextId();
+        }
     }
 
     public DomainObject(Long id) {
