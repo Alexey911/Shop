@@ -21,11 +21,10 @@ import static java.lang.String.format;
  */
 public class DynamicAccessor {
 
-    private Map<String, Integer> mapping;
-
     private IDynamicEntity entity;
 
     private Set<Integer> changedFields = newHashSet();
+    private Map<String, Integer> mapping = newHashMap();
 
     public DynamicAccessor(IDynamicEntity entity) {
         this.entity = entity;
@@ -33,7 +32,6 @@ public class DynamicAccessor {
     }
 
     private void initializeMapping() {
-        mapping = newHashMap();
         for (DynamicField column : entity.getDynamicType().getFields()) {
             mapping.put(column.getName(), column.getOrder());
         }

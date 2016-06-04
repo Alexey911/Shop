@@ -5,6 +5,8 @@ import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.text.MultilanguageString;
 import com.zhytnik.shop.domain.text.MultilanguageTranslation;
 
+import static com.zhytnik.shop.datahelper.DynamicTypeDH.createTypeWithSingleField;
+
 /**
  * @author Alexey Zhytnik
  * @since 04.06.2016
@@ -12,6 +14,10 @@ import com.zhytnik.shop.domain.text.MultilanguageTranslation;
 public class ProductDH {
 
     private ProductDH() {
+    }
+
+    public static Product createProduct() {
+        return createProductByType(createTypeWithSingleField());
     }
 
     public static Product createProductByType(DynamicType type) {

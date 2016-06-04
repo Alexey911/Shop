@@ -122,7 +122,7 @@ public class Product extends VersionableEntity implements IDynamicEntity, IHisto
 
     @Override
     public void setDynamicType(DynamicType type) {
-        accessor = null;
+        resetAccessor();
         this.type = type;
     }
 
@@ -147,6 +147,10 @@ public class Product extends VersionableEntity implements IDynamicEntity, IHisto
     @Override
     public void setDynamicAccessor(DynamicAccessor accessor) {
         this.accessor = accessor;
+    }
+
+    public void resetAccessor() {
+        accessor = null;
     }
 
     @Override
