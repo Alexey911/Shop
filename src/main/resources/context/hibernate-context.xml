@@ -64,4 +64,7 @@
 
     <bean id="productValidator" class="com.zhytnik.shop.backend.validator.ProductValidator"
           p:dynamicValidator-ref="typeValidator"/>
+
+    <bean id="template" class="org.springframework.jdbc.core.JdbcTemplate"
+          p:dataSource-ref="dataSource"/>
 </beans>
