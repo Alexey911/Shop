@@ -1,6 +1,5 @@
 package com.zhytnik.shop.backend.tool;
 
-import com.zhytnik.shop.backend.tool.TypeUtil;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import org.hibernate.dialect.Dialect;
@@ -11,7 +10,6 @@ import java.sql.Types;
 import java.util.List;
 
 import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
-import static java.lang.String.format;
 
 /**
  * @author Alexey Zhytnik

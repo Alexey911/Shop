@@ -4,6 +4,7 @@ import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.exeception.InfrastructureException;
+import com.zhytnik.shop.exeception.NotSupportedOperationException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -20,6 +21,7 @@ import static com.zhytnik.shop.backend.dao.search.Relation.*;
 import static com.zhytnik.shop.backend.tool.TypeUtil.getTypeConverter;
 import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.*;
+import static java.lang.String.format;
 
 /**
  * @author Alexey Zhytnik
@@ -95,13 +97,13 @@ public class SearchBuilder {
 
     private static void checkTypeSupport(PrimitiveType type) {
         if (!SUPPORTED_OPERATIONS.containsKey(type)) {
-            throw new InfrastructureException(String.format("Not supported type \"%s\"", type));
+            throw new NotSupportedOperationException(format("Not supported type \"%s\"", type));
         }
     }
 
     private static void checkOperationSupport(PrimitiveType type, Relation relation) {
         if (!SUPPORTED_OPERATIONS.get(type).contains(relation)) {
-            throw new InfrastructureException(String.format("Type \"%s\" not supports \"%s\"", type, relation));
+            throw new NotSupportedOperationException(format("Type \"%s\" not supports \"%s\"", type, relation));
         }
     }
 
