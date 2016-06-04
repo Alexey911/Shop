@@ -39,8 +39,12 @@ public class ProductService {
         dao.persist(p);
     }
 
-    public Product load(Long id) {
+    public Product loadById(Long id) {
         return dao.findById(id);
+    }
+
+    public Product loadByCode(Long code){
+        return dao.findByCode(code);
     }
 
     public void update(Product p) {

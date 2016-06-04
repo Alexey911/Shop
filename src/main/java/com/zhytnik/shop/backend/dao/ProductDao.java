@@ -1,6 +1,7 @@
 package com.zhytnik.shop.backend.dao;
 
 import com.zhytnik.shop.domain.market.product.Product;
+import com.zhytnik.shop.exeception.NotFoundException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -29,6 +30,19 @@ public class ProductDao extends DynamicEntityDao<Product> {
             criteria.createAlias("product.keywords", "keyword");
             criteria.add(Restrictions.in("keyword." + COLLECTION_ELEMENTS, asList(keywords)));
             return findByCriteria(session, criteria);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    public Product findByCode(Long code) {
+        final Session session = openSession();
+        try {
+            final Criteria criteria = session.createCriteria(clazz, "product");
+            criteria.add(Restrictions.eq("product.code", code));
+            final List<Product> entities = findByCriteria(session, criteria);
+            if (entities.isEmpty()) throw new NotFoundException();
+            return entities.get(0);
         } finally {
             closeSession(session);
         }
