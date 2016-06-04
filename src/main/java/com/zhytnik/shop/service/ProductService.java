@@ -2,7 +2,7 @@ package com.zhytnik.shop.service;
 
 import com.zhytnik.shop.backend.dao.ProductDao;
 import com.zhytnik.shop.backend.dao.search.Filter;
-import com.zhytnik.shop.backend.validator.DynamicEntityValidator;
+import com.zhytnik.shop.backend.validator.ProductValidator;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.market.product.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,8 @@ public class ProductService {
     @Autowired
     private ProductDao dao;
 
-    private DynamicEntityValidator validator = new DynamicEntityValidator();
+    @Autowired
+    private ProductValidator validator;
 
     public Product createByType(DynamicType type) {
         final Product product = new Product();
