@@ -1,4 +1,4 @@
-package com.zhytnik.shop.backend;
+package com.zhytnik.shop.backend.tool;
 
 import com.zhytnik.shop.backend.validator.DynamicTypeValidator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;

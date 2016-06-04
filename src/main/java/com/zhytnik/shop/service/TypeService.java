@@ -1,6 +1,6 @@
 package com.zhytnik.shop.service;
 
-import com.zhytnik.shop.backend.TypeCreator;
+import com.zhytnik.shop.backend.tool.TypeCreator;
 import com.zhytnik.shop.backend.repository.ProductRepository;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.exeception.NotUniqueException;

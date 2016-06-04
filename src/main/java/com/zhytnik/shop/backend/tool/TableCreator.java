@@ -1,9 +1,6 @@
-package com.zhytnik.shop.backend;
+package com.zhytnik.shop.backend.tool;
 
-import com.zhytnik.shop.backend.tool.DatabaseUtil;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.Oracle10gDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

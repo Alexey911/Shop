@@ -24,9 +24,13 @@ public class ProductDao extends DynamicEntityDao<Product> {
 
     public List<Product> findByKeywords(String... keywords) {
         final Session session = openSession();
-        final Criteria criteria = session.createCriteria(clazz, "product");
-        criteria.createAlias("product.keywords", "keyword");
-        criteria.add(Restrictions.in("keyword." + COLLECTION_ELEMENTS, asList(keywords)));
-        return findByCriteria(session, criteria);
+        try {
+            final Criteria criteria = session.createCriteria(clazz, "product");
+            criteria.createAlias("product.keywords", "keyword");
+            criteria.add(Restrictions.in("keyword." + COLLECTION_ELEMENTS, asList(keywords)));
+            return findByCriteria(session, criteria);
+        } finally {
+            closeSession(session);
+        }
     }
 }

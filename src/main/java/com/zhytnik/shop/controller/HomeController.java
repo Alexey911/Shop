@@ -62,7 +62,7 @@ public class HomeController {
 
         productService.save(product);
 
-        productService.findByFilter(type, new Filter().add(customField, MORE, 4));
+//        productService.findByFilter(type, new Filter().add(customField, MORE, 4));
 
         productService.load(product.getId());
 

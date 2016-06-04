@@ -32,47 +32,67 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
 
     public void persist(T entity) {
         final Session session = openSessionWithTransaction();
-        persistDynamic(session, entity);
-        session.persist(entity);
-        closeSessionWithTransaction(session);
+        try {
+            persistDynamic(session, entity);
+            session.persist(entity);
+        } finally {
+            closeSessionWithTransaction(session);
+        }
         entity.getDynamicAccessor().resetChanges();
     }
 
     public void update(T entity) {
         final Session session = openSessionWithTransaction();
-        updateDynamic(session, entity);
-        session.update(entity);
-        closeSessionWithTransaction(session);
+        try {
+            updateDynamic(session, entity);
+            session.update(entity);
+        } finally {
+            closeSessionWithTransaction(session);
+        }
         entity.getDynamicAccessor().resetChanges();
     }
 
     public void delete(Long id) {
         final Session session = openSessionWithTransaction();
-        final T entity = session.load(clazz, id);
-        deleteDynamic(session, entity);
-        session.delete(entity);
-        closeSessionWithTransaction(session);
+        try {
+            final T entity = session.load(clazz, id);
+            deleteDynamic(session, entity);
+            session.delete(entity);
+        } finally {
+            closeSessionWithTransaction(session);
+        }
     }
 
     public T findById(Long id) {
         final Session session = openSession();
-        final T entity = session.load(clazz, id);
-        loadDynamic(session, entity);
-        closeSession(session);
-        return entity;
+        try {
+            final T entity = session.load(clazz, id);
+            loadDynamic(session, entity);
+            return entity;
+        } finally {
+            closeSession(session);
+        }
     }
 
     public List<T> loadAll() {
         final Session session = openSession();
-        return findByCriteria(session, session.createCriteria(clazz));
+        try {
+            return findByCriteria(session, session.createCriteria(clazz));
+        } finally {
+            closeSession(session);
+        }
     }
 
     public List<T> load(int start, int finish) {
         final Session session = openSession();
-        final Criteria criteria = session.createCriteria(clazz);
-        criteria.setFirstResult(start);
-        criteria.setMaxResults(finish);
-        return findByCriteria(session, criteria);
+        try {
+            final Criteria criteria = session.createCriteria(clazz);
+            criteria.setFirstResult(start);
+            criteria.setMaxResults(finish);
+            return findByCriteria(session, criteria);
+        } finally {
+            closeSession(session);
+        }
     }
 
     public List<T> findByQuery(DynamicType type, Filter filter) {
@@ -80,9 +100,11 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
             return loadAll();
         }
         final Session session = openSession();
-        final List<T> entities = DynamicUtil.findByQuery(clazz, session, type, filter);
-        closeSession(session);
-        return entities;
+        try {
+            return DynamicUtil.findByQuery(clazz, session, type, filter);
+        } finally {
+            closeSession(session);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -91,7 +113,6 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
         for (T entity : entities) {
             loadDynamic(session, entity);
         }
-        closeSession(session);
         return entities;
     }
 
