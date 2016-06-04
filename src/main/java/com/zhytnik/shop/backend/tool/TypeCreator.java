@@ -22,8 +22,8 @@ public class TypeCreator {
     private TableCreator creator;
 
     public void create(DynamicType type) {
-        validator.validate(type);
         initialOrder(type.getFields());
+        validator.validate(type);
         creator.createTable(type);
     }
 

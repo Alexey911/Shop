@@ -53,6 +53,7 @@ public class DynamicAccessor {
     }
 
     private void checkTypeCast(Class clazz, Object value) {
+        if (value == null) return;
         boolean valid = clazz.equals(value.getClass());
         if (!valid) {
             throw new InfrastructureException(format("Can't cast value \"%s\" to \"%s\" class",

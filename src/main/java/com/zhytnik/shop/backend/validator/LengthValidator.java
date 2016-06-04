@@ -14,7 +14,7 @@ public class LengthValidator implements Validator<String> {
 
     @Override
     public void validate(String s) {
-        if (s != null && s.length() <= MAX_LENGTH) {
+        if (s != null && s.length() > MAX_LENGTH) {
             failOnExcessStringLength(s);
         }
     }

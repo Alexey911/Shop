@@ -53,6 +53,15 @@
 
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
 
+    <bean id="wordReader" class="com.zhytnik.shop.backend.validator.util.WordReader"
+          p:file="${file.keywords}"/>
+
     <bean id="nameValidator" class="com.zhytnik.shop.backend.validator.NameValidator"
-          p:keywordsFile="${file.keywords}"/>
+          p:reservedWords="#{wordReader.read()}"/>
+
+    <bean id="typeValidator" class="com.zhytnik.shop.backend.validator.DynamicTypeValidator"
+          p:nameValidator-ref="nameValidator"/>
+
+    <bean id="productValidator" class="com.zhytnik.shop.backend.validator.ProductValidator"
+          p:dynamicValidator-ref="typeValidator"/>
 </beans>

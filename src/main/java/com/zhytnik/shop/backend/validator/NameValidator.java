@@ -1,18 +1,12 @@
 package com.zhytnik.shop.backend.validator;
 
-import com.zhytnik.shop.exeception.InfrastructureException;
 import com.zhytnik.shop.exeception.ValidationException;
-import org.springframework.beans.factory.annotation.Required;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static com.google.common.io.Files.readLines;
 import static java.lang.String.format;
+import static java.util.Collections.emptySet;
 
 /**
  * @author Alexey Zhytnik
@@ -22,10 +16,13 @@ public class NameValidator implements Validator<String> {
 
     public static final int MAX_LENGTH = 20;
 
-    private Set<String> keywords;
+    private Set<String> reservedWords = emptySet();
 
     @Override
     public void validate(String name) {
+        if (name == null) {
+            throw new ValidationException("Null name");
+        }
         checkReservedWordOverlap(name);
 
         if (name.length() > MAX_LENGTH) {
@@ -37,14 +34,14 @@ public class NameValidator implements Validator<String> {
     }
 
     private void checkReservedWordOverlap(String name) {
-        if (keywords.contains(name.toLowerCase())) {
-            throw new InfrastructureException(format("Using reserved word \"%s\"", name));
+        if (reservedWords.contains(name.toLowerCase())) {
+            throw new ValidationException(format("Using reserved word \"%s\"", name));
         }
     }
 
-    // valid values: 'a'-'z', 'A'-'Z', '-', '_'
+    // valid values: 'a'-'z', 'A'-'Z', '1' - '9', '-', '_'
     private boolean isValid(char c) {
-        return (c >= 97 && c <= 122) || (c >= 65 && c <= 90) || c == 95 || c == 45;
+        return (c >= 97 && c <= 122) || (c >= 65 && c <= 90) || (c >= 48 && c <= 57) || c == 95 || c == 45;
     }
 
     private void failWithLengthExcess(String name) {
@@ -55,24 +52,15 @@ public class NameValidator implements Validator<String> {
         throw new ValidationException(format("Name contains forbidden symbol \"%s\"", c));
     }
 
-    @Required
-    public void setKeywordsFile(String keywordsFile) {
-        keywords = loadKeywords(keywordsFile);
+    public void setReservedWords(Set<String> reservedWords) {
+        this.reservedWords = convertToLowerCase(reservedWords);
     }
 
-    private Set<String> loadKeywords(String keywordsFile) {
-        final Set<String> keywords = newHashSet();
-        final List<String> data;
-        try {
-            data = readLines(new File(keywordsFile), Charset.forName("UTF-8"));
-        } catch (IOException e) {
-            throw new InfrastructureException(e);
+    private Set<String> convertToLowerCase(Set<String> strings) {
+        final Set<String> lowerCaseStrings = newHashSet();
+        for (String s : strings) {
+            lowerCaseStrings.add(s.toLowerCase());
         }
-        for (String rowKeywords : data) {
-            for (String keyword : rowKeywords.split(";")) {
-                keywords.add(keyword.toLowerCase());
-            }
-        }
-        return keywords;
+        return lowerCaseStrings;
     }
 }
