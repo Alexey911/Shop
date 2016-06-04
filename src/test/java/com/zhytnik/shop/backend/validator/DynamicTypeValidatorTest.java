@@ -6,8 +6,8 @@ import com.zhytnik.shop.exeception.ValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.zhytnik.shop.domain.dynamic.PrimitiveType.LONG;
-import static java.util.Collections.singletonList;
+import static com.google.common.collect.Iterables.getOnlyElement;
+import static com.zhytnik.shop.datahelper.DynamicTypeDH.createTypeWithSingleField;
 
 /**
  * @author Alexey Zhytnik
@@ -17,19 +17,14 @@ public class DynamicTypeValidatorTest {
 
     DynamicTypeValidator validator = new DynamicTypeValidator();
 
-    DynamicType type = new DynamicType();
-    DynamicField field = new DynamicField();
+    DynamicType type;
+    DynamicField field;
 
     @Before
     public void setUp() {
         validator.setNameValidator(new NameValidator());
-
-        type.setName("type_01");
-        type.setFields(singletonList(field));
-
-        field.setName("field");
-        field.setOrder(0);
-        field.setType(LONG);
+        type = createTypeWithSingleField();
+        field = getOnlyElement(type.getFields());
     }
 
     @Test

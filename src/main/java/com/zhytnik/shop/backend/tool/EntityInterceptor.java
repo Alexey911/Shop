@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author Alexey Zhytnik
  * @since 03.06.2016
  */
-public class EntityInterceptor extends EmptyInterceptor {
+class EntityInterceptor extends EmptyInterceptor {
 
     private DomainObjectUtil util;
 

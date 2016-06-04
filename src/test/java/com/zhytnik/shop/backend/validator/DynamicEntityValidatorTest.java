@@ -1,17 +1,18 @@
 package com.zhytnik.shop.backend.validator;
 
-import com.zhytnik.shop.backend.util.StringUtil;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
-import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.util.StringUtil;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.zhytnik.shop.backend.validator.LengthValidator.MAX_LENGTH;
+import static com.zhytnik.shop.datahelper.DynamicTypeDH.createTypeWithSingleField;
+import static com.zhytnik.shop.datahelper.ProductDH.createProductByType;
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.STRING;
-import static java.util.Collections.singletonList;
 
 /**
  * @author Alexey Zhytnik
@@ -24,25 +25,18 @@ public class DynamicEntityValidatorTest {
     DynamicEntityValidator validator = new DynamicEntityValidator();
 
     IDynamicEntity entity;
-
-    DynamicType type = new DynamicType();
+    DynamicType type;
 
     @Before
     @SuppressWarnings("deprecation")
     public void setUp() {
-        entity = new Product();
-        entity.setDynamicFieldsValues(new Object[1]);
-        entity.setDynamicType(type);
+        type = createTypeWithSingleField();
+        entity = createProductByType(type);
 
-        type.setName("type_1");
-
-        final DynamicField field = new DynamicField();
+        final DynamicField field = getOnlyElement(type.getFields());
         field.setName(ENTITY_FIELD);
-        field.setRequired(true);
-        field.setOrder(0);
         field.setType(STRING);
-
-        type.setFields(singletonList(field));
+        field.setRequired(true);
     }
 
     @Test

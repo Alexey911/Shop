@@ -1,6 +1,6 @@
 package com.zhytnik.shop.backend.validator;
 
-import com.zhytnik.shop.backend.util.StringUtil;
+import com.zhytnik.shop.util.StringUtil;
 import com.zhytnik.shop.exeception.ValidationException;
 import org.junit.Test;
 

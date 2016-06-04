@@ -1,4 +1,4 @@
-package com.zhytnik.shop.backend.util;
+package com.zhytnik.shop.util;
 
 import com.google.common.base.Strings;
 

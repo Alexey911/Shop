@@ -17,7 +17,7 @@ import static java.lang.String.format;
  * @author Alexey Zhytnik
  * @since 02.06.2016
  */
-class TypeUtil {
+public class TypeUtil {
 
     private static Map<PrimitiveType, Type> TYPE_CONVERTER;
     private static Map<PrimitiveType, Integer> TYPE_MAPPING;

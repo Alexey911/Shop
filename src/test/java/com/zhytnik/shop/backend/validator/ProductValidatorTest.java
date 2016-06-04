@@ -5,13 +5,13 @@ import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.text.MultilanguageString;
-import com.zhytnik.shop.domain.text.MultilanguageTranslation;
 import com.zhytnik.shop.exeception.ValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
 
+import static com.zhytnik.shop.datahelper.ProductDH.createProductByType;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -22,24 +22,16 @@ import static org.mockito.Mockito.verify;
 public class ProductValidatorTest {
 
     ProductValidator validator = new ProductValidator();
-
     Validator<IDynamicEntity> dynamicValidator = spy(new DynamicEntityValidator());
 
-    Product product = new Product();
-
+    Product product;
     DynamicType type = new DynamicType();
 
     @Before
     public void setUp() {
         validator.setDynamicValidator(dynamicValidator);
         type.setFields(Collections.<DynamicField>emptyList());
-
-        final MultilanguageString title = new MultilanguageString();
-        title.add(new MultilanguageTranslation());
-        product.setTitle(title);
-        product.setDynamicType(type);
-        product.setCode(88L);
-        product.setShortName("product_1");
+        product = createProductByType(type);
     }
 
     @Test
