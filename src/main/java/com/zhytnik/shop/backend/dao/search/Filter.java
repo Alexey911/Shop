@@ -12,9 +12,9 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 public class Filter {
 
-    protected List<DynamicField> fields = newArrayList();
-    protected List<Relation> relations = newArrayList();
-    protected List<Object[]> arguments = newArrayList();
+    private List<DynamicField> fields = newArrayList();
+    private List<Relation> relations = newArrayList();
+    private List<Object[]> arguments = newArrayList();
 
     public Filter add(DynamicField field, Relation relation) {
         fields.add(field);
@@ -30,7 +30,19 @@ public class Filter {
         return this;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return fields.isEmpty();
+    }
+
+    public List<DynamicField> getFields() {
+        return fields;
+    }
+
+    public List<Relation> getRelations() {
+        return relations;
+    }
+
+    public List<Object[]> getArguments() {
+        return arguments;
     }
 }

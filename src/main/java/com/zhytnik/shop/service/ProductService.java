@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.zhytnik.shop.backend.dao.DynamicUtil.setDynamicValues;
+import static com.zhytnik.shop.backend.access.DynamicAccessUtil.setDynamicValues;
 
 /**
  * @author Alexey Zhytnik

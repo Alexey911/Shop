@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.zhytnik.shop.backend.dao.DynamicUtil.getDynamicValues;
+import static com.zhytnik.shop.backend.access.DynamicAccessUtil.getDynamicValues;
 import static java.lang.String.format;
 
 /**

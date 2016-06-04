@@ -1,6 +1,5 @@
 package com.zhytnik.shop.backend.access;
 
-import com.zhytnik.shop.backend.dao.DynamicUtil;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
@@ -11,7 +10,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static com.google.common.collect.Sets.newHashSet;
-import static com.zhytnik.shop.backend.dao.DynamicUtil.getDynamicValue;
+import static com.zhytnik.shop.backend.access.DynamicAccessUtil.getDynamicValue;
 import static com.zhytnik.shop.backend.tool.TypeUtil.getNativeClass;
 import static java.lang.String.format;
 
@@ -47,7 +46,7 @@ public class DynamicAccessor {
         final Object oldValue = getDynamicValue(entity, pos);
         checkTypeCast(getFieldTypeByPosition(pos), newValue);
         if (hasChanges(newValue, oldValue)) changedFields.add(pos);
-        DynamicUtil.setDynamicValue(entity, pos, newValue);
+        DynamicAccessUtil.setDynamicValue(entity, pos, newValue);
     }
 
     private void checkTypeCast(Class clazz, Object value) {

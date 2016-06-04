@@ -1,5 +1,6 @@
 package com.zhytnik.shop.backend.dao;
 
+import com.zhytnik.shop.backend.dao.query.DynamicManager;
 import com.zhytnik.shop.backend.dao.search.Filter;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.zhytnik.shop.backend.dao.DynamicUtil.*;
+import static com.zhytnik.shop.backend.dao.query.DynamicManager.*;
 
 /**
  * @author Alexey Zhytnik
@@ -101,7 +102,7 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
         }
         final Session session = openSession();
         try {
-            return DynamicUtil.findByQuery(clazz, session, type, filter);
+            return DynamicManager.findByQuery(clazz, session, type, filter);
         } finally {
             closeSession(session);
         }

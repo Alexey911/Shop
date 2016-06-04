@@ -1,5 +1,7 @@
-package com.zhytnik.shop.backend.dao.search;
+package com.zhytnik.shop.backend.dao.query;
 
+import com.zhytnik.shop.backend.dao.search.Filter;
+import com.zhytnik.shop.backend.dao.search.Relation;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
@@ -15,8 +17,8 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static com.zhytnik.shop.backend.dao.DynamicUtil.getDefaultSelect;
-import static com.zhytnik.shop.backend.dao.DynamicUtil.setResultTransform;
+import static com.zhytnik.shop.backend.dao.query.QueryBuilder.getDefaultSelect;
+import static com.zhytnik.shop.backend.dao.query.QueryUtil.setResultTransformByType;
 import static com.zhytnik.shop.backend.dao.search.Relation.*;
 import static com.zhytnik.shop.backend.tool.TypeUtil.getTypeConverter;
 import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
@@ -27,7 +29,7 @@ import static java.lang.String.format;
  * @author Alexey Zhytnik
  * @since 03.06.2016
  */
-public class SearchBuilder {
+class SearchBuilder {
 
     private static final Map<PrimitiveType, Set<Relation>> SUPPORTED_OPERATIONS;
 
@@ -43,21 +45,17 @@ public class SearchBuilder {
     private SearchBuilder() {
     }
 
-    public static Query build(Session session, Filter filter, DynamicType type) {
+    static SQLQuery buildQuery(Session session, Filter filter, DynamicType type) {
         final Select select = prepareSelect(filter, type);
         final SQLQuery query = session.createSQLQuery(select.toStatementString());
         fillArguments(filter, query);
         setIdTransform(query);
-        setResultTransform(query, type);
+        setResultTransformByType(query, type);
         return query;
     }
 
-    private static void setIdTransform(SQLQuery query) {
-        query.addScalar(DYNAMIC_ID_FIELD, getTypeConverter(LONG));
-    }
-
     private static Select prepareSelect(Filter filter, DynamicType type) {
-        final int size = filter.fields.size();
+        final int size = filter.getFields().size();
         final StringBuilder where = new StringBuilder(size * 15 + 10);
         if (size > 1) {
             where.append("( ");
@@ -75,21 +73,10 @@ public class SearchBuilder {
         return select.setWhereClause(where.toString());
     }
 
-    private static void fillArguments(Filter filter, Query query) {
-        int pos = 0;
-        for (Object[] args : filter.arguments) {
-            if (args != null) {
-                for (Object arg : args) {
-                    query.setParameter(pos++, arg);
-                }
-            }
-        }
-    }
-
     private static String buildConditionAt(Filter filter, int pos) {
-        final DynamicField field = filter.fields.get(pos);
+        final DynamicField field = filter.getFields().get(pos);
         final PrimitiveType type = field.getType();
-        final Relation relation = filter.relations.get(pos);
+        final Relation relation = filter.getRelations().get(pos);
         checkTypeSupport(type);
         checkOperationSupport(type, relation);
         return createCondition(field.getName(), relation);
@@ -135,5 +122,20 @@ public class SearchBuilder {
 
     private static String createBetweenStatement(String property) {
         return property + " between ? ?";
+    }
+
+    private static void fillArguments(Filter filter, Query query) {
+        int pos = 0;
+        for (Object[] args : filter.getArguments()) {
+            if (args != null) {
+                for (Object arg : args) {
+                    query.setParameter(pos++, arg);
+                }
+            }
+        }
+    }
+
+    private static void setIdTransform(SQLQuery query) {
+        query.addScalar(DYNAMIC_ID_FIELD, getTypeConverter(LONG));
     }
 }
