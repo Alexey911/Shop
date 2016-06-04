@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
+
 /**
  * @author Alexey Zhytnik
  * @since 28.05.2016
@@ -23,6 +25,11 @@ public class MultilanguageString extends VersionableEntity {
 
     public Set<MultilanguageTranslation> getTranslations() {
         return translations;
+    }
+
+    public void add(MultilanguageTranslation translation) {
+        if (translations == null) translations = newHashSet();
+        translations.add(translation);
     }
 
     public void setTranslations(Set<MultilanguageTranslation> translations) {

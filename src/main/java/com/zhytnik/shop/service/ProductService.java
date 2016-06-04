@@ -2,6 +2,7 @@ package com.zhytnik.shop.service;
 
 import com.zhytnik.shop.backend.dao.ProductDao;
 import com.zhytnik.shop.backend.dao.search.Filter;
+import com.zhytnik.shop.backend.tool.HistoryUtil;
 import com.zhytnik.shop.backend.validator.ProductValidator;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.market.product.Product;
@@ -31,6 +32,7 @@ public class ProductService {
 
         final int dynamicFieldCount = type.getFields().size();
         setDynamicValues(product, new Object[dynamicFieldCount]);
+        HistoryUtil.setUp(product);
         return product;
     }
 
@@ -43,7 +45,7 @@ public class ProductService {
         return dao.findById(id);
     }
 
-    public Product loadByCode(Long code){
+    public Product loadByCode(Long code) {
         return dao.findByCode(code);
     }
 

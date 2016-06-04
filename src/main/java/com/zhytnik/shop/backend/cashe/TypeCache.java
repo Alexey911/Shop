@@ -26,26 +26,19 @@ public class TypeCache {
 
     public TypeCache() {
         initialize();
-        loadTypes();
     }
 
     public void initialize() {
         cache = CacheBuilder.newBuilder().
                 maximumSize(100).
                 expireAfterAccess(5, TimeUnit.MINUTES).
-                initialCapacity((int) repository.count()).
+                initialCapacity(20).
                 build(new CacheLoader<Long, DynamicType>() {
                     @Override
                     public DynamicType load(Long id) throws Exception {
                         return repository.findOne(id);
                     }
                 });
-    }
-
-    private void loadTypes() {
-        for (DynamicType type : repository.findAll()) {
-            put(type);
-        }
     }
 
     public DynamicType get(Long id) {
