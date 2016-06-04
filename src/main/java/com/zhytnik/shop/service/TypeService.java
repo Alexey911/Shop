@@ -1,7 +1,8 @@
 package com.zhytnik.shop.service;
 
+import com.zhytnik.shop.backend.cashe.TypeCache;
+import com.zhytnik.shop.backend.repository.TypeRepository;
 import com.zhytnik.shop.backend.tool.TypeCreator;
-import com.zhytnik.shop.backend.repository.ProductRepository;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.exeception.NotUniqueException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,10 @@ public class TypeService {
     private TypeCreator typeCreator;
 
     @Autowired
-    private ProductRepository repository;
+    private TypeRepository repository;
+
+    @Autowired
+    private TypeCache cache;
 
     public void create(DynamicType type) {
         checkUniqueName(type);
@@ -31,5 +35,9 @@ public class TypeService {
         if (!repository.findByName(name).isEmpty()) {
             throw new NotUniqueException();
         }
+    }
+
+    public DynamicType findById(Long id) {
+        return cache.get(id);
     }
 }

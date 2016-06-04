@@ -12,7 +12,7 @@ import java.util.List;
  * @since 02.06.2016
  */
 @Repository
-public interface ProductRepository extends CrudRepository<DynamicType, Long>, JpaSpecificationExecutor<DynamicType> {
+public interface TypeRepository extends CrudRepository<DynamicType, Long>, JpaSpecificationExecutor<DynamicType> {
 
     List<DynamicType> findByName(String name);
 }
