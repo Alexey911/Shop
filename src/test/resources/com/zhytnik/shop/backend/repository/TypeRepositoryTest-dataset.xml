@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <T_TYPE NAME="type"
+            ID="578"
+            CHANGE_DATE="2016-06-05 13:38:06.891"/>
+
+    <T_FIELD NAME="field"
+             ID="78"
+             REQUIRED="1"
+             POSITION="0"
+             TYPE_ID="578"
+             CHANGE_DATE="2016-06-05 13:38:06.891"/>
+</dataset>

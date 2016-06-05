@@ -10,6 +10,13 @@
     <artifactId>Shop</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <developers>
+        <developer>
+            <name>Alexey Zhytnik</name>
+            <url>https://github.com/Alexey911</url>
+        </developer>
+    </developers>
+
     <properties>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
