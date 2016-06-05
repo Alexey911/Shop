@@ -30,6 +30,7 @@ public class DynamicAccessor {
         initializeMapping();
     }
 
+    //TODO: using cached maps
     private void initializeMapping() {
         for (DynamicField column : entity.getDynamicType().getFields()) {
             mapping.put(column.getName(), column.getOrder());

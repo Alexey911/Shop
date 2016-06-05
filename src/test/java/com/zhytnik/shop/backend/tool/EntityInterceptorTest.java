@@ -2,8 +2,10 @@ package com.zhytnik.shop.backend.tool;
 
 import com.zhytnik.shop.domain.DomainObject;
 import com.zhytnik.shop.domain.DomainObjectUtil;
+import com.zhytnik.shop.testing.UnitTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
@@ -17,6 +19,7 @@ import static org.mockito.Mockito.inOrder;
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
+@Category(UnitTest.class)
 @RunWith(MockitoJUnitRunner.class)
 public class EntityInterceptorTest {
 

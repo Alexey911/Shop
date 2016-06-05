@@ -1,10 +1,12 @@
 package com.zhytnik.shop.backend.tool;
 
 import com.zhytnik.shop.domain.dynamic.DynamicField;
+import com.zhytnik.shop.testing.UnitTest;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.Oracle10gDialect;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
+@Category(UnitTest.class)
 public class TableScriptGeneratorTest {
 
     static final String TABLE_NAME = "table1";

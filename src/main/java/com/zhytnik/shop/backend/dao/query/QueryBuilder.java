@@ -25,7 +25,7 @@ class QueryBuilder {
     }
 
     static Update createUpdate(DynamicType type, Set<Integer> fields, Long id) {
-        final Update update = new Update(DatabaseUtil.getDialect());
+        final Update update = new Update(DatabaseUtil.getInstance().getDialect());
         update.setTableName(type.getName()).
                 addWhereColumn(DYNAMIC_ID_FIELD, "=" + Long.toString(id));
 
@@ -37,7 +37,7 @@ class QueryBuilder {
     }
 
     static Insert createInsert(DynamicType type, Long id) {
-        final Insert insert = new Insert(DatabaseUtil.getDialect());
+        final Insert insert = new Insert(DatabaseUtil.getInstance().getDialect());
         insert.setTableName(type.getName());
 
         final List<DynamicField> columns = type.getFields();
@@ -61,7 +61,7 @@ class QueryBuilder {
     }
 
     static Select getDefaultSelect(DynamicType type, boolean withId) {
-        final Select select = new Select(DatabaseUtil.getDialect());
+        final Select select = new Select(DatabaseUtil.getInstance().getDialect());
         select.setFromClause(type.getName());
         select.setSelectClause(initialSelect(type, withId));
         return select;

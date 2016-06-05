@@ -1,4 +1,4 @@
-package com.zhytnik.shop.backend.cashe;
+package com.zhytnik.shop.backend.cache;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;

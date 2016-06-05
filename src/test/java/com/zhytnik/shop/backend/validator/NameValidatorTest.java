@@ -1,8 +1,10 @@
 package com.zhytnik.shop.backend.validator;
 
+import com.zhytnik.shop.testing.UnitTest;
 import com.zhytnik.shop.util.StringUtil;
 import com.zhytnik.shop.exeception.ValidationException;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.Collections;
 
@@ -12,6 +14,7 @@ import static com.zhytnik.shop.backend.validator.NameValidator.MAX_LENGTH;
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
+@Category(UnitTest.class)
 public class NameValidatorTest {
 
     static final String RESERVED_WORD = "COUNT";

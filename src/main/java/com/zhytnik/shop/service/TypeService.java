@@ -1,6 +1,6 @@
 package com.zhytnik.shop.service;
 
-import com.zhytnik.shop.backend.cashe.TypeCache;
+import com.zhytnik.shop.backend.cache.TypeCache;
 import com.zhytnik.shop.backend.repository.TypeRepository;
 import com.zhytnik.shop.backend.tool.TypeCreator;
 import com.zhytnik.shop.domain.dynamic.DynamicType;

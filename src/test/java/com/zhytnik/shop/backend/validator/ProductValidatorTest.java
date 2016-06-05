@@ -6,8 +6,10 @@ import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.text.MultilanguageString;
 import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.testing.UnitTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.Collections;
 
@@ -19,6 +21,7 @@ import static org.mockito.Mockito.verify;
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
+@Category(UnitTest.class)
 public class ProductValidatorTest {
 
     ProductValidator validator = new ProductValidator();

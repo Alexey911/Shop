@@ -3,8 +3,10 @@ package com.zhytnik.shop.backend.validator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.testing.UnitTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.zhytnik.shop.datahelper.DynamicTypeDH.createTypeWithSingleField;
@@ -13,6 +15,7 @@ import static com.zhytnik.shop.datahelper.DynamicTypeDH.createTypeWithSingleFiel
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
+@Category(UnitTest.class)
 public class DynamicTypeValidatorTest {
 
     DynamicTypeValidator validator = new DynamicTypeValidator();

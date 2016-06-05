@@ -4,8 +4,10 @@ import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.exeception.InfrastructureException;
+import com.zhytnik.shop.testing.UnitTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static com.zhytnik.shop.datahelper.ProductDH.createProduct;
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.STRING;
@@ -15,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
+@Category(UnitTest.class)
 public class DynamicAccessorTest {
 
     static final String FIELD_NAME = "custom_field";

@@ -4,8 +4,11 @@ import com.zhytnik.shop.backend.validator.DynamicTypeValidator;
 import com.zhytnik.shop.backend.validator.NameValidator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
+import com.zhytnik.shop.testing.UnitTest;
+import org.hibernate.dialect.Oracle10gDialect;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
@@ -20,11 +23,13 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
+@Category(UnitTest.class)
 @RunWith(MockitoJUnitRunner.class)
 public class TypeCreatorTest {
 
@@ -43,11 +48,13 @@ public class TypeCreatorTest {
     @Mock
     JdbcTemplate jdbcTemplate;
 
-    @Mock
-    TableScriptGenerator tableGenerator;
+    @Spy
+    TableScriptGenerator tableGenerator = new TableScriptGenerator();
 
     @Before
     public void setUp() {
+        tableGenerator.setDialect(new Oracle10gDialect());
+
         dynamicValidator.setNameValidator(new NameValidator());
         typeCreator.setValidator(dynamicValidator);
 

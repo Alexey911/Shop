@@ -4,9 +4,11 @@ import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.testing.UnitTest;
 import com.zhytnik.shop.util.StringUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.zhytnik.shop.backend.validator.LengthValidator.MAX_LENGTH;
@@ -18,6 +20,7 @@ import static com.zhytnik.shop.domain.dynamic.PrimitiveType.STRING;
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
+@Category(UnitTest.class)
 public class DynamicEntityValidatorTest {
 
     static final String ENTITY_FIELD = "field";

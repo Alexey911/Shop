@@ -2,9 +2,11 @@ package com.zhytnik.shop.backend.validator;
 
 import com.google.common.base.Charsets;
 import com.zhytnik.shop.backend.validator.util.WordReader;
+import com.zhytnik.shop.testing.UnitTest;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
@@ -19,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
+@Category(UnitTest.class)
 public class WordReaderTest {
 
     @Rule

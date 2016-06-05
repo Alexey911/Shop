@@ -18,7 +18,7 @@ public class DynamicField extends DomainObject {
     @Column(name = "POSITION")
     private Integer order;
 
-    @Column(name = "TYPE")
+    @Column(name = "TYPE_ID")
     private PrimitiveType type;
 
     @Column(name = "REQUIRED")

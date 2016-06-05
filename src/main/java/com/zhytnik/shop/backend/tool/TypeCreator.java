@@ -32,7 +32,6 @@ public class TypeCreator {
     }
 
     private void createTable(DynamicType type) {
-        generator.setDialect(DatabaseUtil.getDialect());
         final String script = generator.generate(type.getName(), type.getFields());
         jdbcTemplate.execute(script);
     }
