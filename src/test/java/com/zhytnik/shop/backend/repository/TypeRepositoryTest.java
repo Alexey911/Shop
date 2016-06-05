@@ -1,11 +1,14 @@
 package com.zhytnik.shop.backend.repository;
 
+import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.testing.DataSet;
+import com.zhytnik.shop.testing.ExpectedDataSet;
 import com.zhytnik.shop.testing.IntegrationTest;
 import com.zhytnik.shop.util.TransactionalTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Commit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,8 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Alexey Zhytnik
  * @since 05.06.2016
  */
-@Category(IntegrationTest.class)
 @DataSet
+@Category(IntegrationTest.class)
 public class TypeRepositoryTest extends TransactionalTest {
 
     final long EXIST_TYPE = 578L;
@@ -30,6 +33,15 @@ public class TypeRepositoryTest extends TransactionalTest {
     @Test
     public void shouldDelete() {
         typeRepository.deleteAll();
-        assertThat(typeRepository.count()).isNotZero();
+        assertThat(typeRepository.count()).isZero();
+    }
+
+    @Test
+    @Commit
+    @ExpectedDataSet
+    public void updates() {
+        final DynamicType type = typeRepository.findOne(EXIST_TYPE);
+        type.setName("new name");
+        typeRepository.save(type);
     }
 }

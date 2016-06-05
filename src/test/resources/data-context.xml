@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/jdbc
+       http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+    <context:property-placeholder location="classpath*:test-app.properties"/>
+
+    <bean id="dialect" class="${db.dialect}"/>
+
+    <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource"
+          p:URL="${db.url}"
+          p:user="${db.username}"
+          p:password="${db.password}"/>
+
+    <bean id="databaseUtil" class="com.zhytnik.shop.backend.tool.DatabaseUtil"
+          p:dataSource-ref="dataSource" p:dialect-ref="dialect"/>
+
+    <bean name="domainObjectUtil" class="com.zhytnik.shop.domain.DomainObjectUtil"
+          p:dataSource-ref="dataSource"/>
+
+    <bean name="interceptor" class="com.zhytnik.shop.backend.tool.EntityInterceptor"
+          p:domainObjectUtil-ref="domainObjectUtil"/>
+
+    <bean name="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+          p:configLocation="classpath:test-hibernate.cfg.xml"
+          p:dataSource-ref="dataSource"
+          p:packagesToScan="com.zhytnik.shop"
+          p:entityInterceptor-ref="interceptor"/>
+
+    <jdbc:initialize-database>
+        <jdbc:script location="classpath:scripts/scripts.sql"/>
+    </jdbc:initialize-database>
+</beans>
