@@ -1,4 +1,4 @@
-package com.zhytnik.shop.testing;
+package com.zhytnik.shop.util.data;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,8 +11,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD, ElementType.TYPE})
-public @interface ExpectedDataSet {
+public @interface DataSet {
     String value() default "";
-
-    String[] ignoreColumns() default {".ID"};
 }

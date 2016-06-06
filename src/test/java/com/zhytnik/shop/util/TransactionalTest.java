@@ -13,7 +13,7 @@ import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.zhytnik.shop.App.SETTINGS;
-import static com.zhytnik.shop.util.DataSetUtil.verify;
+import static com.zhytnik.shop.util.data.DataSetUtil.verify;
 
 /**
  * @author Alexey Zhytnik

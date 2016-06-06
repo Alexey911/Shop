@@ -1,8 +1,8 @@
 package com.zhytnik.shop.backend.repository;
 
 import com.zhytnik.shop.domain.dynamic.DynamicType;
-import com.zhytnik.shop.testing.DataSet;
-import com.zhytnik.shop.testing.ExpectedDataSet;
+import com.zhytnik.shop.util.data.DataSet;
+import com.zhytnik.shop.util.data.ExpectedDataSet;
 import com.zhytnik.shop.testing.IntegrationTest;
 import com.zhytnik.shop.util.TransactionalTest;
 import org.junit.Test;

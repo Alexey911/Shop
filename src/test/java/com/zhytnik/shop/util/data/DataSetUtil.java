@@ -1,8 +1,6 @@
-package com.zhytnik.shop.util;
+package com.zhytnik.shop.util.data;
 
 import com.github.springtestdbunit.dataset.FlatXmlDataSetLoader;
-import com.zhytnik.shop.testing.DataSet;
-import com.zhytnik.shop.testing.ExpectedDataSet;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -22,7 +20,7 @@ import static org.dbunit.operation.DatabaseOperation.CLEAN_INSERT;
  * @author Alexey Zhytnik
  * @since 05.06.2016
  */
-class DataSetUtil {
+public class DataSetUtil {
 
     static final String END_DATASET = "-dataset.xml";
     static final String END_EXPECTED_DATASET = "-expected.xml";
@@ -30,22 +28,21 @@ class DataSetUtil {
     private DataSetUtil() {
     }
 
-    static void verify(TestContext context) throws Exception {
+    public static void verify(TestContext context) throws Exception {
         final Method method = context.getTestMethod();
         final ExpectedDataSet expected = method.getAnnotation(ExpectedDataSet.class);
         if (expected != null) {
             final IDataSet expectedDataSet = extractDataSetByMethod(context, method, expected);
             final IDataSet actualDataSet = getConnection(context).createDataSet();
-
             new DataSetComparator().compare(actualDataSet, expectedDataSet);
         }
     }
 
-    static void installDataSet(TestContext context, DataSet dataSet) throws Exception {
+    public static void installDataSet(TestContext context, DataSet dataSet) throws Exception {
         installDataSet(context, extractDataSetByClass(context, dataSet));
     }
 
-    static void installDataSet(TestContext context, Method method, DataSet dataSet) throws Exception {
+    public static void installDataSet(TestContext context, Method method, DataSet dataSet) throws Exception {
         installDataSet(context, extractDataSetByMethod(context, method, dataSet));
     }
 

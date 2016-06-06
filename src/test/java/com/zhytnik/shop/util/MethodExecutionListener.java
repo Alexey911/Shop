@@ -1,12 +1,12 @@
 package com.zhytnik.shop.util;
 
-import com.zhytnik.shop.testing.DataSet;
+import com.zhytnik.shop.util.data.DataSet;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 import java.lang.reflect.Method;
 
-import static com.zhytnik.shop.util.DataSetUtil.installDataSet;
+import static com.zhytnik.shop.util.data.DataSetUtil.installDataSet;
 import static com.zhytnik.shop.util.TransactionalTest.prepareUncheckedTestContext;
 
 /**
