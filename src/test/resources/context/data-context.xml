@@ -11,7 +11,7 @@
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-    <context:property-placeholder location="classpath*:app.properties"/>
+    <context:property-placeholder location="classpath*:test-app.properties"/>
 
     <bean id="dialect" class="${db.dialect}"/>
 

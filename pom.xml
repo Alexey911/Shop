@@ -198,7 +198,7 @@
                 </dependencies>
                 <configuration>
                     <groups>${testcase.groups}</groups>
-                    <parallel>methods</parallel>
+                    <parallel>classes</parallel>
                     <threadCount>2</threadCount>
                 </configuration>
             </plugin>
