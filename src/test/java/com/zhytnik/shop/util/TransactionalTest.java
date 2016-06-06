@@ -1,8 +1,6 @@
 package com.zhytnik.shop.util;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.zhytnik.shop.testing.ExpectedDataSet;
-import org.dbunit.dataset.IDataSet;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContext;
@@ -14,11 +12,8 @@ import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Method;
-
 import static com.zhytnik.shop.App.SETTINGS;
-import static com.zhytnik.shop.util.DataSetUtil.extractDataSetByMethod;
-import static com.zhytnik.shop.util.DataSetUtil.getConnection;
+import static com.zhytnik.shop.util.DataSetVerifier.verify;
 
 /**
  * @author Alexey Zhytnik
@@ -42,16 +37,6 @@ public abstract class TransactionalTest {
         final TestContext context = testContext.get();
         testContext.remove();
         verify(context);
-    }
-
-    private void verify(TestContext context) throws Exception {
-        final Method method = context.getTestMethod();
-        final ExpectedDataSet expected = method.getAnnotation(ExpectedDataSet.class);
-        if (expected != null) {
-            final IDataSet expectedDataSet = extractDataSetByMethod(context, method, expected);
-            final IDataSet actualDataSet = getConnection(context).createDataSet();
-            DataSetVerifier.verify(actualDataSet, expectedDataSet);
-        }
     }
 
     static void setTestContext(TestContext testContext) {

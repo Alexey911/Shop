@@ -1,15 +1,20 @@
 package com.zhytnik.shop.util;
 
 import com.google.common.collect.Lists;
+import com.zhytnik.shop.testing.ExpectedDataSet;
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.*;
 import org.dbunit.dataset.filter.IColumnFilter;
+import org.springframework.test.context.TestContext;
 
+import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.zhytnik.shop.util.DataSetUtil.extractDataSetByMethod;
+import static com.zhytnik.shop.util.DataSetUtil.getConnection;
 import static org.dbunit.dataset.Columns.getColumnDiff;
 
 /**
@@ -18,10 +23,20 @@ import static org.dbunit.dataset.Columns.getColumnDiff;
  */
 class DataSetVerifier {
 
-    private DataSetVerifier(){
+    private DataSetVerifier() {
     }
 
-    static void verify(IDataSet actualDataSet, IDataSet expectedDataSet) throws Exception {
+    static void verify(TestContext context) throws Exception {
+        final Method method = context.getTestMethod();
+        final ExpectedDataSet expected = method.getAnnotation(ExpectedDataSet.class);
+        if (expected != null) {
+            final IDataSet expectedDataSet = extractDataSetByMethod(context, method, expected);
+            final IDataSet actualDataSet = getConnection(context).createDataSet();
+            compare(actualDataSet, expectedDataSet);
+        }
+    }
+
+    private static void compare(IDataSet actualDataSet, IDataSet expectedDataSet) throws Exception {
         for (String tableName : expectedDataSet.getTableNames()) {
             ITable expectedTable = expectedDataSet.getTable(tableName);
             ITable actualTable = actualDataSet.getTable(tableName);
@@ -39,7 +54,7 @@ class DataSetVerifier {
     }
 
     private static Set<String> getColumnsToIgnore(ITableMetaData expectedMetaData, ITableMetaData actualMetaData,
-                                           List<IColumnFilter> columnFilters) throws DataSetException {
+                                                  List<IColumnFilter> columnFilters) throws DataSetException {
         if (columnFilters.size() == 0) {
             return getColumnsToIgnore(expectedMetaData, actualMetaData);
         }
@@ -53,7 +68,7 @@ class DataSetVerifier {
     }
 
     private static Set<String> getColumnsToIgnore(ITableMetaData expectedMetaData,
-                                           ITableMetaData actualMetaData) throws DataSetException {
+                                                  ITableMetaData actualMetaData) throws DataSetException {
         final Column[] notSpecifiedInExpected = getColumnDiff(expectedMetaData, actualMetaData).getActual();
         final Set<String> result = new LinkedHashSet<>();
         for (Column column : notSpecifiedInExpected) {
