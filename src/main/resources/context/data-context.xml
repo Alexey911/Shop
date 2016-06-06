@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath*:app.properties"/>
+
+    <context:component-scan base-package="com.zhytnik.shop"/>
+
+    <bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close"
+          p:driverClassName="oracle.jdbc.OracleDriver"
+          p:username="${db.username}"
+          p:password="${db.password}"
+          p:url="${db.url}"
+          p:poolPreparedStatements="true"
+          p:maxOpenPreparedStatements="1"
+          p:defaultAutoCommit="false"
+          p:initialSize="1"/>
+
+    <bean id="template" class="org.springframework.jdbc.core.JdbcTemplate"
+          p:dataSource-ref="dataSource"/>
+
+    <bean id="dialect" class="${db.dialect}"/>
+
+    <bean id="databaseUtil" class="com.zhytnik.shop.backend.tool.DatabaseUtil"
+          p:dataSource-ref="dataSource"
+          p:dialect-ref="dialect"/>
+
+    <bean name="domainObjectUtil"
+          class="com.zhytnik.shop.domain.DomainObjectUtil"
+          p:jdbcTemplate-ref="template" lazy-init="false"/>
+
+    <bean name="interceptor" class="com.zhytnik.shop.backend.tool.EntityInterceptor"
+          p:domainObjectUtil-ref="domainObjectUtil"/>
+
+    <bean name="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+          p:configLocation="classpath:hibernate.cfg.xml"
+          p:dataSource-ref="dataSource"
+          p:packagesToScan="com.zhytnik.shop"
+          p:entityInterceptor-ref="interceptor"/>
+
+    <bean id="productDao" class="com.zhytnik.shop.backend.dao.ProductDao"
+          p:sessionFactory-ref="sessionFactory"/>
+</beans>

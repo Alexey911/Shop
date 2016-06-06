@@ -5,6 +5,7 @@ import com.zhytnik.shop.domain.DomainObjectUtil;
 import com.zhytnik.shop.domain.IDomainObject;
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.EntityMode;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 
@@ -34,6 +35,7 @@ class EntityInterceptor extends EmptyInterceptor {
         return super.instantiate(entityName, entityMode, id);
     }
 
+    @Required
     public void setDomainObjectUtil(DomainObjectUtil util) {
         this.util = util;
     }

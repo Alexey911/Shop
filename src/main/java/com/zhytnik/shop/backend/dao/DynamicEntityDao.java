@@ -7,7 +7,7 @@ import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
@@ -19,7 +19,6 @@ import static com.zhytnik.shop.backend.dao.query.DynamicManager.*;
  */
 public class DynamicEntityDao<T extends IDynamicEntity> {
 
-    @Autowired
     protected SessionFactory sessionFactory;
 
     protected Class<T> clazz;
@@ -138,5 +137,10 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
 
     public void setClass(Class<T> clazz) {
         this.clazz = clazz;
+    }
+
+    @Required
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 }

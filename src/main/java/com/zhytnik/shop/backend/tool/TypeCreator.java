@@ -3,9 +3,7 @@ package com.zhytnik.shop.backend.tool;
 import com.zhytnik.shop.backend.validator.Validator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -13,16 +11,12 @@ import java.util.List;
  * @author Alexey Zhytnik
  * @since 01.06.2016
  */
-@Component
 public class TypeCreator {
 
-    @Autowired
     private Validator<DynamicType> validator;
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired
     private TableScriptGenerator generator;
 
     public void create(DynamicType type) {

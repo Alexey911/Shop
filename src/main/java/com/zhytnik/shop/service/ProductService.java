@@ -3,11 +3,9 @@ package com.zhytnik.shop.service;
 import com.zhytnik.shop.backend.dao.ProductDao;
 import com.zhytnik.shop.backend.dao.search.Filter;
 import com.zhytnik.shop.backend.tool.HistoryUtil;
-import com.zhytnik.shop.backend.validator.ProductValidator;
+import com.zhytnik.shop.backend.validator.Validator;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.market.product.Product;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -17,14 +15,11 @@ import static com.zhytnik.shop.backend.access.DynamicAccessUtil.setDynamicValues
  * @author Alexey Zhytnik
  * @since 01.06.2016
  */
-@Component
 public class ProductService {
 
-    @Autowired
     private ProductDao dao;
 
-    @Autowired
-    private ProductValidator validator;
+    private Validator<Product> validator;
 
     public Product createByType(DynamicType type) {
         final Product product = new Product();
@@ -72,5 +67,9 @@ public class ProductService {
 
     public void setDao(ProductDao dao) {
         this.dao = dao;
+    }
+
+    public void setValidator(Validator<Product> validator) {
+        this.validator = validator;
     }
 }

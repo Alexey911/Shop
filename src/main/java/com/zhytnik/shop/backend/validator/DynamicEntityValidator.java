@@ -4,7 +4,6 @@ import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.exeception.ValidationException;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -15,7 +14,6 @@ import static java.lang.String.format;
  * @author Alexey Zhytnik
  * @since 01.06.2016
  */
-@Component
 public class DynamicEntityValidator implements Validator<IDynamicEntity> {
 
     private LengthValidator lengthValidator = new LengthValidator();

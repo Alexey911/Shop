@@ -4,7 +4,6 @@ import com.zhytnik.shop.domain.market.product.Product;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ import static org.hibernate.persister.collection.CollectionPropertyNames.COLLECT
  * @author Alexey Zhytnik
  * @since 02.06.2016
  */
-@Component
 public class ProductDao extends DynamicEntityDao<Product> {
 
     public ProductDao() {

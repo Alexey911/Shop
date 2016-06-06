@@ -6,8 +6,7 @@ import com.google.common.cache.LoadingCache;
 import com.zhytnik.shop.backend.repository.TypeRepository;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.exeception.InfrastructureException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -16,10 +15,8 @@ import java.util.concurrent.TimeUnit;
  * @author Alexey Zhytnik
  * @since 04.06.2016
  */
-@Component
 public class TypeCache {
 
-    @Autowired
     private TypeRepository repository;
 
     private LoadingCache<Long, DynamicType> cache;
@@ -60,5 +57,10 @@ public class TypeCache {
 
     public void remove(DynamicType type) {
         cache.invalidate(type.getId());
+    }
+
+    @Required
+    public void setRepository(TypeRepository repository) {
+        this.repository = repository;
     }
 }

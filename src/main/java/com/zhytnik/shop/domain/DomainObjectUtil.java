@@ -3,8 +3,6 @@ package com.zhytnik.shop.domain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
-
 /**
  * @author Alexey Zhytnik
  * @since 01.06.2016
@@ -16,7 +14,7 @@ public class DomainObjectUtil {
     private ThreadLocal<Boolean> generate = new ThreadLocal<>();
 
     @Autowired
-    private DataSource dataSource;
+    private JdbcTemplate jdbcTemplate;
 
     private DomainObjectUtil() {
         instance = this;
@@ -24,8 +22,7 @@ public class DomainObjectUtil {
 
     public Long getNextId() {
         if (!isGenerateEnable()) return null;
-        final JdbcTemplate template = new JdbcTemplate(dataSource);
-        return template.queryForObject("SELECT ID_SEQUENCE.nextval FROM DUAL", Long.class);
+        return jdbcTemplate.queryForObject("SELECT ID_SEQUENCE.nextval FROM DUAL", Long.class);
     }
 
     private boolean isGenerateEnable() {
@@ -41,8 +38,8 @@ public class DomainObjectUtil {
         generate.remove();
     }
 
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public static DomainObjectUtil getInstance() {

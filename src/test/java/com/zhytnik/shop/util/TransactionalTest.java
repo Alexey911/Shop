@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 
+import static com.zhytnik.shop.App.APP_SETTINGS;
 import static com.zhytnik.shop.util.DataSetUtil.extractDataSetByMethod;
 import static com.zhytnik.shop.util.DataSetUtil.getConnection;
 
@@ -25,7 +26,7 @@ import static com.zhytnik.shop.util.DataSetUtil.getConnection;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@ContextConfiguration("/test-context.xml")
+@ContextConfiguration(APP_SETTINGS)
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextBeforeModesTestExecutionListener.class,

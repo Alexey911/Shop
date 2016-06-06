@@ -21,13 +21,9 @@
           p:password="${db.password}"/>
 
     <bean id="databaseUtil" class="com.zhytnik.shop.backend.tool.DatabaseUtil"
-          p:dataSource-ref="dataSource" p:dialect-ref="dialect"/>
-
-    <bean name="domainObjectUtil" class="com.zhytnik.shop.domain.DomainObjectUtil"
-          p:dataSource-ref="dataSource"/>
-
-    <bean name="interceptor" class="com.zhytnik.shop.backend.tool.EntityInterceptor"
-          p:domainObjectUtil-ref="domainObjectUtil"/>
+          p:dataSource-ref="dataSource"
+          p:dialect-ref="dialect"
+          p:sessionFactory-ref="sessionFactory"/>
 
     <bean name="sessionFactory"
           class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
@@ -35,6 +31,12 @@
           p:dataSource-ref="dataSource"
           p:packagesToScan="com.zhytnik.shop"
           p:entityInterceptor-ref="interceptor"/>
+
+    <bean name="domainObjectUtil" class="com.zhytnik.shop.domain.DomainObjectUtil"
+          p:dataSource-ref="dataSource"/>
+
+    <bean name="interceptor" class="com.zhytnik.shop.backend.tool.EntityInterceptor"
+          p:domainObjectUtil-ref="domainObjectUtil"/>
 
     <jdbc:initialize-database>
         <jdbc:script location="classpath:scripts/scripts.sql"/>

@@ -4,7 +4,6 @@ import com.zhytnik.shop.domain.dynamic.DynamicField;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ import static com.zhytnik.shop.domain.dynamic.PrimitiveType.LONG;
  * @author Alexey Zhytnik
  * @since 26.05.2016
  */
-@Component
 class TableScriptGenerator {
 
     private Dialect dialect;

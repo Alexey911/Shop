@@ -1,5 +1,6 @@
 package com.zhytnik.shop.backend.tool;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.dialect.Dialect;
 
 import javax.sql.DataSource;
@@ -14,6 +15,7 @@ public class DatabaseUtil {
 
     private Dialect dialect;
     private DataSource dataSource;
+    private SessionFactory sessionFactory;
 
     private DatabaseUtil() {
         instance = this;
@@ -27,12 +29,20 @@ public class DatabaseUtil {
         return dialect;
     }
 
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;
     }
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     public static DatabaseUtil getInstance() {
