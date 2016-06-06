@@ -7,6 +7,7 @@ import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.operation.DatabaseOperation;
 import org.springframework.test.context.TestContext;
 
 import javax.sql.DataSource;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static java.lang.String.format;
+import static org.dbunit.operation.DatabaseOperation.CLEAN_INSERT;
 
 /**
  * @author Alexey Zhytnik
@@ -28,31 +30,44 @@ class DataSetUtil {
     private DataSetUtil() {
     }
 
-    static IDatabaseConnection getConnection(TestContext context) throws SQLException, DatabaseUnitException {
-        final DataSource dataSource = context.getApplicationContext().getBean(DataSource.class);
-        final Connection connection = dataSource.getConnection();
-        return new DatabaseConnection(connection);
-    }
+    static void verify(TestContext context) throws Exception {
+        final Method method = context.getTestMethod();
+        final ExpectedDataSet expected = method.getAnnotation(ExpectedDataSet.class);
+        if (expected != null) {
+            final IDataSet expectedDataSet = extractDataSetByMethod(context, method, expected);
+            final IDataSet actualDataSet = getConnection(context).createDataSet();
 
-    static IDataSet extractDataSetByClass(TestContext context, DataSet dataSet) throws Exception {
-        final String defaultName = context.getTestClass().getSimpleName();
-        final String value;
-        if (dataSet.value().isEmpty()) {
-            value = defaultName + END_DATASET;
-        } else {
-            value = dataSet.value() + END_DATASET;
+            new DataSetComparator().compare(actualDataSet, expectedDataSet);
         }
-        return extract(context, value);
     }
 
-    static IDataSet extractDataSetByMethod(TestContext context, Method method,
-                                           DataSet dataSet) throws Exception {
+    static void installDataSet(TestContext context, DataSet dataSet) throws Exception {
+        installDataSet(context, extractDataSetByClass(context, dataSet));
+    }
+
+    static void installDataSet(TestContext context, Method method, DataSet dataSet) throws Exception {
+        installDataSet(context, extractDataSetByMethod(context, method, dataSet));
+    }
+
+    private static IDataSet extractDataSetByMethod(TestContext context, Method method,
+                                                   DataSet dataSet) throws Exception {
         return extractDataSetByMethod(context, method, END_DATASET, dataSet.value());
     }
 
-    static IDataSet extractDataSetByMethod(TestContext context, Method method,
-                                           ExpectedDataSet expected) throws Exception {
+    private static IDataSet extractDataSetByMethod(TestContext context, Method method,
+                                                   ExpectedDataSet expected) throws Exception {
         return extractDataSetByMethod(context, method, END_EXPECTED_DATASET, expected.value());
+    }
+
+    private static IDataSet extractDataSetByClass(TestContext context, DataSet dataSet) throws Exception {
+        final String defaultName = context.getTestClass().getSimpleName();
+        final String path;
+        if (dataSet.value().isEmpty()) {
+            path = defaultName + END_DATASET;
+        } else {
+            path = dataSet.value() + END_DATASET;
+        }
+        return loadDataSet(context.getTestClass(), path);
     }
 
     private static IDataSet extractDataSetByMethod(TestContext context, Method method,
@@ -65,10 +80,6 @@ class DataSetUtil {
         } else {
             path = clazz.getSimpleName() + "." + value + end;
         }
-        return extract(context, path);
-    }
-
-    private static IDataSet extract(TestContext context, String path) throws Exception {
         return loadDataSet(context.getTestClass(), path);
     }
 
@@ -81,5 +92,18 @@ class DataSetUtil {
 
     private static void failOnNotFound(String dataSetName) {
         throw new RuntimeException(format("There is no dataset with \"%s\" name", dataSetName));
+    }
+
+    private static void installDataSet(TestContext context, IDataSet dataSet) throws Exception {
+        final IDatabaseConnection connection = getConnection(context);
+        final DatabaseOperation operation = CLEAN_INSERT;
+        operation.execute(connection, dataSet);
+        connection.close();
+    }
+
+    private static IDatabaseConnection getConnection(TestContext context) throws SQLException, DatabaseUnitException {
+        final DataSource dataSource = context.getApplicationContext().getBean(DataSource.class);
+        final Connection connection = dataSource.getConnection();
+        return new DatabaseConnection(connection);
     }
 }

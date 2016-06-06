@@ -1,17 +1,13 @@
 package com.zhytnik.shop.util;
 
 import com.zhytnik.shop.testing.DataSet;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.operation.DatabaseOperation;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 import java.lang.reflect.Method;
 
-import static com.zhytnik.shop.util.DataSetUtil.*;
-import static com.zhytnik.shop.util.TransactionalTest.setTestContext;
-import static org.dbunit.operation.DatabaseOperation.CLEAN_INSERT;
+import static com.zhytnik.shop.util.DataSetUtil.installDataSet;
+import static com.zhytnik.shop.util.TransactionalTest.prepareUncheckedTestContext;
 
 /**
  * @author Alexey Zhytnik
@@ -21,7 +17,7 @@ class MethodExecutionListener extends AbstractTestExecutionListener {
 
     @Override
     public void afterTestMethod(TestContext context) throws Exception {
-        setTestContext(context);
+        prepareUncheckedTestContext(context);
     }
 
     @Override
@@ -29,7 +25,7 @@ class MethodExecutionListener extends AbstractTestExecutionListener {
         final Class<?> testClass = context.getTestClass();
         final DataSet dataSet = testClass.getAnnotation(DataSet.class);
         if (dataSet != null) {
-            installDataSet(context, extractDataSetByClass(context, dataSet));
+            installDataSet(context, dataSet);
         }
     }
 
@@ -38,14 +34,7 @@ class MethodExecutionListener extends AbstractTestExecutionListener {
         final Method method = context.getTestMethod();
         final DataSet dataSet = method.getAnnotation(DataSet.class);
         if (dataSet != null) {
-            installDataSet(context, extractDataSetByMethod(context, method, dataSet));
+            installDataSet(context, method, dataSet);
         }
-    }
-
-    private void installDataSet(TestContext context, IDataSet dataSet) throws Exception {
-        final IDatabaseConnection connection = getConnection(context);
-        final DatabaseOperation operation = CLEAN_INSERT;
-        operation.execute(connection, dataSet);
-        connection.close();
     }
 }
