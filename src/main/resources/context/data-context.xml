@@ -4,9 +4,9 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:property-placeholder location="classpath*:app.properties"/>
 
@@ -14,7 +14,7 @@
 
     <bean name="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close"
-          p:driverClassName="oracle.jdbc.OracleDriver"
+          p:driverClassName="${db.driver}"
           p:username="${db.username}"
           p:password="${db.password}"
           p:url="${db.url}"
@@ -32,15 +32,13 @@
           p:dataSource-ref="dataSource"
           p:dialect-ref="dialect"/>
 
-    <bean name="domainObjectUtil"
-          class="com.zhytnik.shop.domain.DomainObjectUtil"
+    <bean name="domainObjectUtil" class="com.zhytnik.shop.domain.DomainObjectUtil"
           p:jdbcTemplate-ref="template" lazy-init="false"/>
 
     <bean name="interceptor" class="com.zhytnik.shop.backend.tool.EntityInterceptor"
           p:domainObjectUtil-ref="domainObjectUtil"/>
 
-    <bean name="sessionFactory"
-          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+    <bean name="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
           p:configLocation="classpath:hibernate.cfg.xml"
           p:dataSource-ref="dataSource"
           p:packagesToScan="com.zhytnik.shop"

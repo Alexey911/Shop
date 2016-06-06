@@ -9,26 +9,24 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/data/jpa
-       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
+       default-lazy-init="true">
 
-    <bean id="transactionManager"
-          class="org.springframework.orm.hibernate5.HibernateTransactionManager"
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"
           p:sessionFactory-ref="sessionFactory"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <jpa:repositories base-package="com.zhytnik.shop.backend.repository"/>
 
-    <bean id="entityManagerFactory"
-          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
           p:jpaDialect-ref="jpaDialect"
           p:jpaVendorAdapter-ref="jpaVendorAdapter"
           p:packagesToScan="com.zhytnik.shop"/>
 
-    <bean id="jpaVendorAdapter"
-          class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-          p:database="ORACLE" p:databasePlatform="org.hibernate.dialect.Oracle10gDialect"/>
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
+          p:database="ORACLE" p:databasePlatform="${db.dialect}"/>
 
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
 
