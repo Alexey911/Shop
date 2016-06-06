@@ -1,5 +1,6 @@
 package com.zhytnik.shop.util;
 
+import com.zhytnik.shop.backend.tool.SessionUtil;
 import com.zhytnik.shop.util.data.DataSet;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
@@ -13,7 +14,7 @@ import static com.zhytnik.shop.util.TransactionalTest.prepareUncheckedTestContex
  * @author Alexey Zhytnik
  * @since 05.06.2016
  */
-class MethodExecutionListener extends AbstractTestExecutionListener {
+class CleanMethodExecutionListener extends AbstractTestExecutionListener {
 
     @Override
     public void afterTestMethod(TestContext context) throws Exception {
@@ -36,5 +37,6 @@ class MethodExecutionListener extends AbstractTestExecutionListener {
         if (dataSet != null) {
             installDataSet(context, method, dataSet);
         }
+        SessionUtil.resetCache();
     }
 }

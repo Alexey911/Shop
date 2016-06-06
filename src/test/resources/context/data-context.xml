@@ -31,6 +31,9 @@
           p:packagesToScan="com.zhytnik.shop"
           p:entityInterceptor-ref="interceptor"/>
 
+    <bean id="sessionUtil" class="com.zhytnik.shop.backend.tool.SessionUtil"
+          p:sessionFactory-ref="sessionFactory" lazy-init="false"/>
+
     <bean name="domainObjectUtil" class="com.zhytnik.shop.domain.DomainObjectUtil"
           p:jdbcTemplate-ref="template"/>
 

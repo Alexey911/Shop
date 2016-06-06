@@ -25,7 +25,7 @@ import static com.zhytnik.shop.util.data.DataSetUtil.verify;
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextBeforeModesTestExecutionListener.class,
-        MethodExecutionListener.class,
+        CleanMethodExecutionListener.class,
         DbUnitTestExecutionListener.class})
 public abstract class TransactionalTest extends AbstractTransactionalJUnit4SpringContextTests {
 
