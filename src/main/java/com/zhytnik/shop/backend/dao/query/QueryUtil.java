@@ -11,8 +11,6 @@ import java.util.Set;
 
 import static com.zhytnik.shop.backend.access.DynamicAccessUtil.getDynamicValues;
 import static com.zhytnik.shop.backend.tool.TypeUtil.getTypeConverter;
-import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
-import static com.zhytnik.shop.domain.dynamic.PrimitiveType.LONG;
 
 /**
  * @author Alexey Zhytnik
@@ -40,7 +38,7 @@ class QueryUtil {
 
     static void setResultTransformByType(SQLQuery query, DynamicType type) {
         for (DynamicField column : type.getFields()) {
-            query.addScalar(column.getName(), getTypeConverter(column.getType()));
+            query.addScalar(column.getName(), getTypeConverter(column.getPrimitiveType()));
         }
         query.setResultTransformer(Transformers.TO_LIST);
     }

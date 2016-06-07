@@ -26,7 +26,7 @@ public class DynamicTypeDH {
         final DynamicField field = new DynamicField();
         field.setName("field");
         field.setOrder(0);
-        field.setType(LONG);
+        field.setPrimitiveType(LONG);
         return field;
     }
 }

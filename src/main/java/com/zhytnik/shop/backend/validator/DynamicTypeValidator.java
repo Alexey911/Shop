@@ -26,7 +26,7 @@ public class DynamicTypeValidator implements Validator<DynamicType> {
             final DynamicField field = fields.get(i);
 
             if (field.getOrder() != i) failOnWrongFieldsOrder();
-            if (field.getType() == null) failOnNotSeatedType(field);
+            if (field.getPrimitiveType() == null) failOnNotSeatedType(field);
             nameValidator.validate(field.getName());
         }
     }

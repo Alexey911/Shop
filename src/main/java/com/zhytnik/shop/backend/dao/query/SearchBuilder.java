@@ -75,7 +75,7 @@ class SearchBuilder {
 
     private static String buildConditionAt(Filter filter, int pos) {
         final DynamicField field = filter.getFields().get(pos);
-        final PrimitiveType type = field.getType();
+        final PrimitiveType type = field.getPrimitiveType();
         final Relation relation = filter.getRelations().get(pos);
         checkTypeSupport(type);
         checkOperationSupport(type, relation);

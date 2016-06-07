@@ -43,7 +43,7 @@ public class DynamicTypeValidatorTest {
 
     @Test(expected = ValidationException.class)
     public void validateFieldsTypes() {
-        field.setType(null);
+        field.setPrimitiveType(null);
         validator.validate(type);
     }
 

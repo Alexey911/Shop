@@ -51,7 +51,7 @@ public class HomeController {
         final DynamicField customField = new DynamicField();
         customField.setName("my_field");
         customField.setRequired(true);
-        customField.setType(LONG);
+        customField.setPrimitiveType(LONG);
         customField.setOrder(0);
         return customField;
     }

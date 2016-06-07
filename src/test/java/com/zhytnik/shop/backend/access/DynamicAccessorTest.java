@@ -30,7 +30,7 @@ public class DynamicAccessorTest {
         final Product product = createProduct();
         final DynamicField field = product.getDynamicType().getFields().get(0);
         field.setName(FIELD_NAME);
-        field.setType(FIELD_TYPE);
+        field.setPrimitiveType(FIELD_TYPE);
 
         accessor = product.getDynamicAccessor();
     }

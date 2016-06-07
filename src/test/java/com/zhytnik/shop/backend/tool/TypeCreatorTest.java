@@ -23,7 +23,6 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Alexey Zhytnik
@@ -59,7 +58,7 @@ public class TypeCreatorTest {
         typeCreator.setValidator(dynamicValidator);
 
         field.setName("field");
-        field.setType(LONG);
+        field.setPrimitiveType(LONG);
 
         type.setFields(singletonList(field));
         type.setName("type");

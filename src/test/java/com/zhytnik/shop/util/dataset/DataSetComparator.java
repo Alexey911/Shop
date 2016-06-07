@@ -1,4 +1,4 @@
-package com.zhytnik.shop.util.data;
+package com.zhytnik.shop.util.dataset;
 
 import org.dbunit.Assertion;
 import org.dbunit.DatabaseUnitException;

@@ -2,8 +2,7 @@ package com.zhytnik.shop.domain.dynamic;
 
 import com.zhytnik.shop.domain.DomainObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 /**
  * @author Alexey Zhytnik
@@ -15,14 +14,19 @@ public class DynamicField extends DomainObject {
     @Column(name = "NAME")
     private String name;
 
-    @Column(name = "POSITION")
+    @Column(name = "F_ORDER")
     private Integer order;
 
-    @Column(name = "TYPE_ID")
-    private PrimitiveType type;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "F_TYPE")
+    private PrimitiveType primitiveType;
 
     @Column(name = "REQUIRED")
     private boolean required;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "TYPE_ID")
+    private DynamicType type;
 
     public String getName() {
         return name;
@@ -40,12 +44,12 @@ public class DynamicField extends DomainObject {
         this.order = order;
     }
 
-    public PrimitiveType getType() {
-        return type;
+    public PrimitiveType getPrimitiveType() {
+        return primitiveType;
     }
 
-    public void setType(PrimitiveType type) {
-        this.type = type;
+    public void setPrimitiveType(PrimitiveType type) {
+        this.primitiveType = type;
     }
 
     public boolean isRequired() {
@@ -54,5 +58,13 @@ public class DynamicField extends DomainObject {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public void setType(DynamicType type) {
+        this.type = type;
+    }
+
+    public DynamicType getType() {
+        return type;
     }
 }

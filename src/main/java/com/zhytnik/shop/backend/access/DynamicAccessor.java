@@ -60,7 +60,7 @@ public class DynamicAccessor {
     }
 
     private Class getFieldTypeByPosition(Integer pos) {
-        final PrimitiveType type = entity.getDynamicType().getFields().get(pos).getType();
+        final PrimitiveType type = entity.getDynamicType().getFields().get(pos).getPrimitiveType();
         return getNativeClass(type);
     }
 

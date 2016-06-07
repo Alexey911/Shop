@@ -42,7 +42,7 @@ class TableScriptGenerator {
 
     private Column createColumn(DynamicField field) {
         final Column column = new Column(field.getName());
-        column.setSqlType(getSqlType(dialect, field.getType()));
+        column.setSqlType(getSqlType(dialect, field.getPrimitiveType()));
         column.setNullable(!field.isRequired());
         return column;
     }

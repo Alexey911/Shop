@@ -38,7 +38,7 @@ public class DynamicEntityValidatorTest {
 
         final DynamicField field = getOnlyElement(type.getFields());
         field.setName(ENTITY_FIELD);
-        field.setType(STRING);
+        field.setPrimitiveType(STRING);
         field.setRequired(true);
     }
 

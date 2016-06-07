@@ -30,7 +30,7 @@ public class DynamicEntityValidator implements Validator<IDynamicEntity> {
             if (type.isRequired() && value == null) {
                 failOnEmptyRequiredField(type);
             }
-            if (type.getType() == PrimitiveType.STRING) {
+            if (type.getPrimitiveType() == PrimitiveType.STRING) {
                 lengthValidator.validate((String) value);
             }
         }

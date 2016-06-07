@@ -20,13 +20,9 @@ public class DomainObject implements IDomainObject {
     private Date changeDate = new Date();
 
     public DomainObject() {
-        if(DomainObjectUtil.getInstance() != null) {
+        if (DomainObjectUtil.getInstance() != null) {
             id = DomainObjectUtil.getInstance().getNextId();
         }
-    }
-
-    public DomainObject(Long id) {
-        this.id = id;
     }
 
     @Override
@@ -47,5 +43,12 @@ public class DomainObject implements IDomainObject {
     @Override
     public void setChangeDate(Date changeDate) {
         this.changeDate = changeDate;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder().
+                append("DomainObject[class=").append(this.getClass()).
+                append(", ID=").append(id).append("]").toString();
     }
 }

@@ -13,20 +13,21 @@ import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.zhytnik.shop.App.SETTINGS;
-import static com.zhytnik.shop.util.data.DataSetUtil.verify;
+import static com.zhytnik.shop.util.dataset.DataSetUtil.verify;
 
 /**
  * @author Alexey Zhytnik
  * @since 05.06.2016
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
 @ContextConfiguration(SETTINGS)
+@Transactional
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextBeforeModesTestExecutionListener.class,
-        CleanMethodExecutionListener.class,
-        DbUnitTestExecutionListener.class})
+        DbUnitTestExecutionListener.class,
+        DataSetExecutionListener.class,
+        ExpectedDataSetListener.class})
 public abstract class TransactionalTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     private static ThreadLocal<TestContext> uncheckedContext = new ThreadLocal<>();
@@ -38,7 +39,7 @@ public abstract class TransactionalTest extends AbstractTransactionalJUnit4Sprin
         verify(context);
     }
 
-    static void prepareUncheckedTestContext(TestContext testContext) {
+    static void checkExpectedDataSet(TestContext testContext) {
         TransactionalTest.uncheckedContext.set(testContext);
     }
 }

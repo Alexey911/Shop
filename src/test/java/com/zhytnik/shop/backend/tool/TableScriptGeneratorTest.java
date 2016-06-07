@@ -41,7 +41,7 @@ public class TableScriptGeneratorTest {
         generator.setDialect(dialect);
 
         field.setOrder(0);
-        field.setType(STRING);
+        field.setPrimitiveType(STRING);
         field.setName(CUSTOM_FIELD);
     }
 
