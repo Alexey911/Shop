@@ -12,7 +12,7 @@ import org.springframework.test.context.support.DirtiesContextBeforeModesTestExe
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.zhytnik.shop.App.SETTINGS;
+import static com.zhytnik.shop.App.CONTEXT_SETTINGS;
 import static com.zhytnik.shop.util.dataset.DataSetUtil.verify;
 
 /**
@@ -20,7 +20,7 @@ import static com.zhytnik.shop.util.dataset.DataSetUtil.verify;
  * @since 05.06.2016
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(SETTINGS)
+@ContextConfiguration(CONTEXT_SETTINGS)
 @Transactional
 @TestExecutionListeners({
         DependencyInjectionTestExecutionListener.class,

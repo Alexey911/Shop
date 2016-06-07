@@ -8,7 +8,9 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-placeholder location="classpath*:app.properties"/>
+    <bean id="propertyPlaceholder" class="com.zhytnik.shop.util.PropertyPlaceholder"
+          p:location="#{T(com.zhytnik.shop.App).DEFAULT_SETTINGS}"
+          p:supportCustomProperties="true" lazy-init="false"/>
 
     <context:component-scan base-package="com.zhytnik.shop"/>
 

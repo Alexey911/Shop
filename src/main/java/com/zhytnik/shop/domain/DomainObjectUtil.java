@@ -20,7 +20,7 @@ public class DomainObjectUtil {
         instance = this;
     }
 
-    public Long getNextId() {
+    Long getNextId() {
         if (!isGenerateEnable()) return null;
         return jdbcTemplate.queryForObject("SELECT ID_SEQUENCE.nextval FROM DUAL", Long.class);
     }

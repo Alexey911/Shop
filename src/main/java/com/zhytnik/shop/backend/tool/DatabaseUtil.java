@@ -16,6 +16,7 @@ public class DatabaseUtil {
     private Dialect dialect;
     private DataSource dataSource;
     private SessionFactory sessionFactory;
+    private String schema;
 
     private DatabaseUtil() {
         instance = this;
@@ -43,6 +44,10 @@ public class DatabaseUtil {
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 
     public static DatabaseUtil getInstance() {

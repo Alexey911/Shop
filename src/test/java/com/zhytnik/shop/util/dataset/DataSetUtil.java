@@ -20,7 +20,10 @@ import static org.dbunit.operation.DatabaseOperation.CLEAN_INSERT;
  */
 public class DataSetUtil {
 
-    private DataSetUtil() {
+    private static String schema;
+
+    private DataSetUtil(String schema) {
+        DataSetUtil.schema = schema;
     }
 
     public static void verify(TestContext context) throws Exception {
@@ -70,6 +73,6 @@ public class DataSetUtil {
     static IDatabaseConnection getConnection(TestContext context) throws SQLException, DatabaseUnitException {
         final DataSource dataSource = context.getApplicationContext().getBean(DataSource.class);
         final Connection connection = dataSource.getConnection();
-        return new DatabaseConnection(connection);
+        return new DatabaseConnection(connection, schema);
     }
 }
