@@ -19,7 +19,7 @@ public class MultilanguageTranslation extends DomainObject {
     @Column(name = "TRANSLATION", nullable = false, length = 200)
     private String translation;
 
-    @Column(name = "IS_DEFAULT", nullable = false)
+    @Column(name = "IS_DEFAULT")
     private boolean defaultValue;
 
     public Locale getLanguage() {

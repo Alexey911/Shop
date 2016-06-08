@@ -2,10 +2,7 @@ package com.zhytnik.shop.domain.text;
 
 import com.zhytnik.shop.domain.VersionableEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
@@ -17,7 +14,7 @@ import static com.google.common.collect.Sets.newHashSet;
 @Entity(name = "T_MULTI_STR")
 public class MultilanguageString extends VersionableEntity {
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<MultilanguageTranslation> translations;
 
     @Column(name = "CODE")

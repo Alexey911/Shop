@@ -20,6 +20,7 @@ import static com.zhytnik.shop.backend.dao.query.DynamicManager.*;
 public class DynamicEntityDao<T extends IDynamicEntity> {
 
     protected SessionFactory sessionFactory;
+    protected DynamicManager dynamicManager;
 
     protected Class<T> clazz;
 
@@ -33,7 +34,7 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
     public void persist(T entity) {
         final Session session = openSessionWithTransaction();
         try {
-            persistDynamic(session, entity);
+            dynamicManager.persistDynamic(session, entity);
             session.persist(entity);
         } finally {
             closeSessionWithTransaction(session);
@@ -44,7 +45,7 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
     public void update(T entity) {
         final Session session = openSessionWithTransaction();
         try {
-            updateDynamic(session, entity);
+            dynamicManager.updateDynamic(session, entity);
             session.update(entity);
         } finally {
             closeSessionWithTransaction(session);
@@ -56,7 +57,7 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
         final Session session = openSessionWithTransaction();
         try {
             final T entity = session.load(clazz, id);
-            deleteDynamic(session, entity);
+            dynamicManager.deleteDynamic(session, entity);
             session.delete(entity);
         } finally {
             closeSessionWithTransaction(session);
@@ -67,7 +68,7 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
         final Session session = openSession();
         try {
             final T entity = session.load(clazz, id);
-            loadDynamic(session, entity);
+            dynamicManager.loadDynamic(session, entity);
             return entity;
         } finally {
             closeSession(session);
@@ -101,7 +102,7 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
         }
         final Session session = openSession();
         try {
-            return DynamicManager.findByQuery(clazz, session, type, filter);
+            return dynamicManager.findByQuery(clazz, session, type, filter);
         } finally {
             closeSession(session);
         }
@@ -111,7 +112,7 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
     protected List<T> findByCriteria(Session session, Criteria criteria) {
         final List<T> entities = criteria.list();
         for (T entity : entities) {
-            loadDynamic(session, entity);
+            dynamicManager.loadDynamic(session, entity);
         }
         return entities;
     }
@@ -142,5 +143,10 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
     @Required
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    @Required
+    public void setDynamicManager(DynamicManager dynamicManager) {
+        this.dynamicManager = dynamicManager;
     }
 }

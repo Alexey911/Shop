@@ -1,0 +1,1 @@
+create table my_type (my_field bigint not null, ID bigint not null)

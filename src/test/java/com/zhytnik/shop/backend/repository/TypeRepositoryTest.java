@@ -51,7 +51,7 @@ public class TypeRepositoryTest extends TransactionalTest {
 
     @Test
     @ExpectedDataSet("update")
-    public void updates() {
+    public void shouldUpdate() {
         final DynamicType type = typeRepository.findOne(EXIST_TYPE);
         type.setName("new name");
         typeRepository.save(type);

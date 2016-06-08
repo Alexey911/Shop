@@ -41,10 +41,10 @@ public class Product extends VersionableEntity implements IDynamicEntity, IHisto
     @Column(name = "VALUE")
     private Set<String> keywords;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Comment> comments;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private DynamicType type;
 
     @Transient

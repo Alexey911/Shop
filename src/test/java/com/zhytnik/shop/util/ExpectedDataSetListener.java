@@ -13,6 +13,12 @@ class ExpectedDataSetListener extends AbstractTestExecutionListener {
 
     @Override
     public void afterTestMethod(TestContext context) {
+        throwIfContainsExceptions(context);
         checkExpectedDataSet(context);
+    }
+
+    private void throwIfContainsExceptions(TestContext context) {
+        final Throwable t = context.getTestException();
+        if (t != null) throw new RuntimeException(t);
     }
 }

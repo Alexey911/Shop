@@ -56,6 +56,6 @@ class TableScriptGenerator {
     }
 
     public void setSchema(String schema) {
-        this.schema = schema;
+        if(!schema.isEmpty()) this.schema = schema;
     }
 }

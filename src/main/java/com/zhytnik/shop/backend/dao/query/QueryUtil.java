@@ -1,5 +1,6 @@
 package com.zhytnik.shop.backend.dao.query;
 
+import com.zhytnik.shop.domain.IDomainObject;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
@@ -24,8 +25,15 @@ class QueryUtil {
     static void fillQuery(SQLQuery query, IDynamicEntity entity) {
         final Object[] values = getDynamicValues(entity);
         for (int i = 0; i < values.length; i++) {
-            query.setParameter(i, values[i]);
+            query.setParameter(i, getInsertParameter(values[i]));
         }
+    }
+
+    private static Object getInsertParameter(Object value){
+        if(value instanceof IDomainObject) {
+            return ((IDomainObject) value).getId();
+        }
+        return value;
     }
 
     static void fillQueryByFields(SQLQuery query, IDynamicEntity entity, Set<Integer> fields) {
@@ -46,8 +54,8 @@ class QueryUtil {
     static Object[] transformQueryData(List<?> data, int start) {
         final int count = data.size();
         final Object[] values = new Object[count - start];
-        for (int i = start; i < count; i++) {
-            values[i] = data.get(i);
+        for (int i = start, pos = 0; i < count; i++, pos++) {
+            values[pos] = data.get(i);
         }
         return values;
     }
