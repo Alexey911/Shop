@@ -22,10 +22,6 @@ public class DataSetUtil {
 
     private static String schema;
 
-    private DataSetUtil(String schema) {
-        DataSetUtil.schema = schema;
-    }
-
     public static void verify(TestContext context) throws Exception {
         if (context != null && hasExpectedDataSet(context)) {
             new DataSetComparator().compare(loadActualDataSet(context), loadExpectedDataSet(context));
@@ -74,5 +70,9 @@ public class DataSetUtil {
         final DataSource dataSource = context.getApplicationContext().getBean(DataSource.class);
         final Connection connection = dataSource.getConnection();
         return new DatabaseConnection(connection, schema);
+    }
+
+    public static void setSchema(String schema) {
+        DataSetUtil.schema = schema;
     }
 }

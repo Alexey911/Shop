@@ -8,6 +8,17 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <bean id="scriptManager" class="com.zhytnik.shop.backend.tool.ScriptManager"
+          p:dropCreate="${db.dropCreate}"
+          p:continueOnError="${db.continueOnError}"
+          p:ignoreFailedDrops="${db.ignoreFailedDrops}"
+          p:provider="${db.provider}"
+          p:dataSource-ref="dataSource" lazy-init="false"/>
+
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+          p:targetObject-ref="scriptManager"
+          p:targetMethod="update" lazy-init="false"/>
+
     <bean id="propertyPlaceholder" class="com.zhytnik.shop.util.PropertyPlaceholder"
           p:location="#{T(com.zhytnik.shop.App).DEFAULT_SETTINGS}"
           p:supportCustomProperties="true" lazy-init="false"/>

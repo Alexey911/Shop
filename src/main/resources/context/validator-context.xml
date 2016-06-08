@@ -6,11 +6,11 @@
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
        default-lazy-init="true">
 
-    <bean id="wordReader" class="com.zhytnik.shop.backend.validator.util.WordReader"
-          p:file="${file.keywords}"/>
-
     <bean id="nameValidator" class="com.zhytnik.shop.backend.validator.NameValidator"
           p:reservedWords="#{wordReader.read()}"/>
+
+    <bean id="wordReader" class="com.zhytnik.shop.backend.validator.util.WordReader"
+          p:file="${file.keywords}"/>
 
     <bean id="typeValidator" class="com.zhytnik.shop.backend.validator.DynamicTypeValidator"
           p:nameValidator-ref="nameValidator"/>
