@@ -1,1 +1,1 @@
-create table if not exists MY_TYPE (MY_FIELD bigint not null, SIM VARCHAR(55) DEFAULT 'haha', ID bigint not null);
+create table if not exists MY_TYPE (MY_FIELD bigint not null, ID bigint not null);

@@ -63,9 +63,13 @@ public class DataSetUtil {
     public static void installDataSet(TestContext context) throws Exception {
         final IDatabaseConnection connection = getConnection(context);
         final IDataSet dataSet = loadDataSet(context);
-        clear(connection);
+        clearSchema(context);
         INSERT.execute(connection, dataSet);
         connection.close();
+    }
+
+    public static void clearSchema(TestContext context) throws Exception {
+        clear(getConnection(context));
     }
 
     static IDatabaseConnection getConnection(TestContext context) throws SQLException, DatabaseUnitException {

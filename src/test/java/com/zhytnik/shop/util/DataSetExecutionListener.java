@@ -4,8 +4,7 @@ import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 import static com.zhytnik.shop.backend.tool.SessionUtil.resetCache;
-import static com.zhytnik.shop.util.dataset.DataSetUtil.hasDataSet;
-import static com.zhytnik.shop.util.dataset.DataSetUtil.installDataSet;
+import static com.zhytnik.shop.util.dataset.DataSetUtil.*;
 
 /**
  * @author Alexey Zhytnik
@@ -18,6 +17,8 @@ class DataSetExecutionListener extends AbstractTestExecutionListener {
         if (hasDataSet(context)) {
             installDataSet(context);
             resetCache();
+        } else {
+            clearSchema(context);
         }
     }
 }

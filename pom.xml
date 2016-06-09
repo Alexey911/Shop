@@ -198,8 +198,6 @@
                 </dependencies>
                 <configuration>
                     <groups>${testcase.groups}</groups>
-                    <parallel>classes</parallel>
-                    <threadCount>2</threadCount>
                 </configuration>
             </plugin>
             <plugin>
