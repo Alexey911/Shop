@@ -25,11 +25,11 @@ class QueryUtil {
     static void fillQuery(Query query, IDynamicEntity entity) {
         final Object[] values = getDynamicValues(entity);
         for (int i = 0; i < values.length; i++) {
-            query.setParameter(i + 1, getInsertParameter(values[i]));
+            query.setParameter(i + 1, getInsertValue(values[i]));
         }
     }
 
-    private static Object getInsertParameter(Object value) {
+    private static Object getInsertValue(Object value) {
         if (value instanceof IDomainObject) {
             return ((IDomainObject) value).getId();
         }
@@ -62,14 +62,5 @@ class QueryUtil {
 
     private static boolean isArray(Object obj) {
         return obj instanceof Object[];
-    }
-
-    static Object[] transformQueryData(List<?> data, int start) {
-        final int count = data.size();
-        final Object[] values = new Object[count - start];
-        for (int i = start, pos = 0; i < count; i++, pos++) {
-            values[pos] = data.get(i);
-        }
-        return values;
     }
 }

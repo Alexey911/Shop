@@ -14,7 +14,7 @@ public class InfrastructureException extends RuntimeException {
         super();
     }
 
-    public InfrastructureException(Exception e) {
-        super(e);
+    public InfrastructureException(Throwable cause) {
+        super(cause);
     }
 }

@@ -3,9 +3,9 @@ package com.zhytnik.shop.backend.tool;
 import com.zhytnik.shop.backend.validator.Validator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
+import com.zhytnik.shop.exeception.InfrastructureException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.util.List;
 
 /**
  * @author Alexey Zhytnik
@@ -20,20 +20,26 @@ public class TypeCreator {
     private TableScriptGenerator generator;
 
     public void create(DynamicType type) {
-        initialOrder(type.getFields());
+        initialFields(type);
         validator.validate(type);
         createTable(type);
     }
 
     private void createTable(DynamicType type) {
         final String script = generator.generate(type.getName(), type.getFields());
-        jdbcTemplate.execute(script);
+        try {
+            jdbcTemplate.execute(script);
+        } catch (DataAccessException e) {
+            //TODO: check name already exist
+            throw new InfrastructureException(e);
+        }
     }
 
-    private void initialOrder(List<DynamicField> columns) {
+    private void initialFields(DynamicType type) {
         int order = 0;
-        for (DynamicField column : columns) {
-            column.setOrder(order++);
+        for (DynamicField field : type.getFields()) {
+            field.setOrder(order++);
+            field.setType(type);
         }
     }
 

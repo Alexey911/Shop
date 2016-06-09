@@ -1,22 +1,28 @@
 package com.zhytnik.shop.domain.dynamic;
 
 import com.zhytnik.shop.domain.DomainObject;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-@Entity(name = "T_FIELD")
+@Table(name = "T_FIELD")
+@Entity
 public class DynamicField extends DomainObject {
 
+    @Length(min = 3, max = 30)
     @Column(name = "NAME")
     private String name;
 
     @Column(name = "F_ORDER")
     private Integer order;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "F_TYPE")
     private PrimitiveType primitiveType;

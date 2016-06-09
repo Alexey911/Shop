@@ -34,7 +34,7 @@
           p:arguments="${db.schema}" lazy-init="false"/>
 
     <bean name="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
-          p:configLocation="classpath:hibernate.cfg.xml"
+          p:configLocation="classpath:test-hibernate.cfg.xml"
           p:dataSource-ref="dataSource"
           p:packagesToScan="com.zhytnik.shop"
           p:entityInterceptor-ref="interceptor"/>
