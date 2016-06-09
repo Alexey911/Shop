@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.zhytnik.shop.App.*;
-import static com.zhytnik.shop.util.FileLoader.loadDirectoryFiles;
+import static com.zhytnik.shop.util.FileLoader.loadInnerDirectoryFiles;
 import static java.util.Collections.sort;
 
 /**
@@ -60,7 +60,7 @@ class ScriptManager {
 
     private List<Resource> getScripts(String path) {
         final List<Resource> scripts = new ArrayList<>();
-        for (File file : loadDirectoryFiles(path)) {
+        for (File file : loadInnerDirectoryFiles(path)) {
             if (!file.isDirectory()) {
                 scripts.add(new FileSystemResource(file.getPath()));
             }

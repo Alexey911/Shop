@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <MY_TYPE ID="85" MY_FIELD="46"/>
+
+    <T_STRING ID="1" CODE="title" LAST_CHANGE="2016-06-05 13:38:06.891" DELETE_FLAG="0" VERSION="1"/>
+    <T_STRING ID="2" CODE="description" LAST_CHANGE="2016-06-05 13:38:06.891" DELETE_FLAG="0" VERSION="1"/>
+
+    <T_TRANSLATION ID="1" TRANSLATION="title" LAST_CHANGE="2016-06-05 13:38:06.891" LANGUAGE="en" DEFAULT_VALUE="1"/>
+    <T_TRANSLATION ID="2" TRANSLATION="description" LAST_CHANGE="2016-06-05 13:38:06.891" LANGUAGE="en" DEFAULT_VALUE="1"/>
+
+    <TRANSLATIONS STRING_ID="1" TRANSLATION_ID="1"/>
+    <TRANSLATIONS STRING_ID="2" TRANSLATION_ID="2"/>
+
+    <T_TYPE NAME="my_type" ID="578" LAST_CHANGE="2016-06-05 13:38:06.891"/>
+
+    <T_FIELD NAME="my_field" ID="78" F_ORDER="0" REQUIRED="1" F_TYPE="LONG"
+             LAST_CHANGE="2016-06-05 13:38:06.891" TYPE_ID="578"/>
+
+    <T_CATEGORY ID="37" LAST_CHANGE="2016-06-05 13:38:06.891" DELETE_FLAG="0"/>
+
+    <T_PRODUCT ID="85"
+               CODE="88"
+               VERSION="0"
+               TYPE_ID="578"
+               TITLE_ID="1"
+               CATEGORY_ID="37"
+               DESCRIPTION_ID="2"
+               SHORT_NAME="product1"
+               DELETE_FLAG="0"
+               LAST_CHANGE="2016-06-05 13:38:06.891"/>
+
+    <T_COMMENT ID="55" MESSAGE="comment" LAST_CHANGE="2016-06-05 13:38:06.891"/>
+
+    <COMMENTS PRODUCT_ID="85" COMMENT_ID="55"/>
+
+    <KEYWORDS PRODUCT_ID="85" KEYWORD="hot"/>
+    <KEYWORDS PRODUCT_ID="85" KEYWORD="best"/>
+</dataset>

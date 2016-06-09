@@ -3,7 +3,7 @@ package com.zhytnik.shop.util.dataset;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.operation.DatabaseOperation;
+import org.dbunit.dataset.IDataSet;
 import org.springframework.test.context.TestContext;
 
 import javax.sql.DataSource;
@@ -11,8 +11,9 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static com.zhytnik.shop.util.dataset.DataBaseCleaner.clear;
 import static com.zhytnik.shop.util.dataset.DataSetLoader.*;
-import static org.dbunit.operation.DatabaseOperation.CLEAN_INSERT;
+import static org.dbunit.operation.DatabaseOperation.INSERT;
 
 /**
  * @author Alexey Zhytnik
@@ -61,8 +62,9 @@ public class DataSetUtil {
 
     public static void installDataSet(TestContext context) throws Exception {
         final IDatabaseConnection connection = getConnection(context);
-        final DatabaseOperation operation = CLEAN_INSERT;
-        operation.execute(connection, loadDataSet(context));
+        final IDataSet dataSet = loadDataSet(context);
+        clear(connection);
+        INSERT.execute(connection, dataSet);
         connection.close();
     }
 

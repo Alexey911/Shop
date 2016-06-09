@@ -12,7 +12,7 @@ import javax.persistence.Version;
 public class VersionableEntity extends BasicEntity implements IVersionableEntity {
 
     @Version
-    @Column(name = "VERSION", precision = 10)
+    @Column(name = "VERSION", precision = 10, nullable = false)
     private Long version;
 
     @Override

@@ -1,15 +1,10 @@
 package com.zhytnik.shop.backend.dao;
 
 import com.zhytnik.shop.domain.market.product.Product;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.internal.util.StringHelper;
 
+import javax.persistence.Query;
 import java.util.List;
-
-import static com.zhytnik.shop.backend.tool.Asserts.failOnEmpty;
-import static java.util.Arrays.asList;
-import static org.hibernate.persister.collection.CollectionPropertyNames.COLLECTION_ELEMENTS;
 
 /**
  * @author Alexey Zhytnik
@@ -22,28 +17,22 @@ public class ProductDao extends DynamicEntityDao<Product> {
     }
 
     public List<Product> findByKeywords(String... keywords) {
-        final Session session = openSession();
-        try {
-            final Criteria c = session.createCriteria(clazz, "product");
-            c.createAlias("product.keywords", "keyword");
-            c.add(Restrictions.in("keyword." + COLLECTION_ELEMENTS, asList(keywords)));
-            return findByCriteria(session, c);
-        } finally {
-            closeSession(session);
-        }
+        String where = createWhereStatement(keywords);
+        final Query query = entityManager.createNativeQuery("SELECT * FROM T_PRODUCT " +
+                "WHERE ID IN " +
+                "(SELECT PRODUCT_ID FROM KEYWORDS " +
+                "WHERE KEYWORDS.KEYWORD IN (" + where + "))", Product.class);
+        setKeywords(query, keywords);
+        return findByQuery(query);
     }
 
-    public Product findByCode(Long code) {
-        final Session session = openSession();
-        try {
-            final Criteria c = session.createCriteria(clazz, "product");
-            c.add(Restrictions.eq("product.code", code));
+    private String createWhereStatement(String[] keywords) {
+        return StringHelper.repeat("?, ", keywords.length - 1) + "?";
+    }
 
-            final List<Product> entities = findByCriteria(session, c);
-            failOnEmpty(entities);
-            return entities.get(0);
-        } finally {
-            closeSession(session);
+    private void setKeywords(Query query, String[] keywords) {
+        for (int i = 0; i < keywords.length; i++) {
+            query.setParameter(i + 1, keywords[i]);
         }
     }
 }

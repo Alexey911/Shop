@@ -40,9 +40,9 @@ public class ProductService {
         return dao.findById(id);
     }
 
-    public Product loadByCode(Long code) {
-        return dao.findByCode(code);
-    }
+//    public Product loadByCode(Long code) {
+//        return dao.findByCode(code);
+//    }
 
     public void update(Product p) {
         validator.validate(p);
@@ -57,9 +57,9 @@ public class ProductService {
         return dao.findByKeywords(keywords);
     }
 
-    public List<Product> findByFilter(DynamicType type, Filter filter) {
-        return dao.findByQuery(type, filter);
-    }
+//    public List<Product> findByFilter(DynamicType type, Filter filter) {
+//        return dao.findByQuery(type, filter);
+//    }
 
     public void delete(Long id) {
         dao.delete(id);

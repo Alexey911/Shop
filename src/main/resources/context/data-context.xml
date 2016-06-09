@@ -58,11 +58,9 @@
           p:entityInterceptor-ref="interceptor"/>
 
     <bean id="productDao" class="com.zhytnik.shop.backend.dao.ProductDao"
-          p:sessionFactory-ref="sessionFactory"
           p:dynamicManager-ref="dynamicManager"/>
 
-    <bean id="dynamicManager" class="com.zhytnik.shop.backend.dao.query.DynamicManager"
-          p:template-ref="hibernateTemplate"/>
+    <bean id="dynamicManager" class="com.zhytnik.shop.backend.dao.query.DynamicManager"/>
 
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate"
           p:sessionFactory-ref="sessionFactory"/>

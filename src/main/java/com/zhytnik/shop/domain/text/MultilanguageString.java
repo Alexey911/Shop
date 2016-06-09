@@ -11,10 +11,14 @@ import static com.google.common.collect.Sets.newHashSet;
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-@Entity(name = "T_MULTI_STR")
+@Table(name = "T_STRING")
+@Entity
 public class MultilanguageString extends VersionableEntity {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "TRANSLATIONS",
+            joinColumns = @JoinColumn(name = "STRING_ID"),
+            inverseJoinColumns = @JoinColumn(name = "TRANSLATION_ID"))
     private Set<MultilanguageTranslation> translations;
 
     @Column(name = "CODE")

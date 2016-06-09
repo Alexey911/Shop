@@ -11,7 +11,7 @@ import java.io.Serializable;
 @MappedSuperclass
 public class BasicEntity extends DomainObject implements IBasicEntity, Serializable {
 
-    @Column(name = "DELETED")
+    @Column(name = "DELETE_FLAG")
     private boolean deleteFlag;
 
     @Override

@@ -4,6 +4,7 @@
     <T_TYPE NAME="my_type" ID="578"/>
     <T_FIELD ID="78" TYPE_ID="578"/>
     <T_COMMENT ID="55" MESSAGE="comment"/>
+    <COMMENTS PRODUCT_ID="85" COMMENT_ID="55"/>
 
     <T_PRODUCT ID="85"
                CODE="88"
@@ -14,15 +15,15 @@
                DESCRIPTION_ID="2"
                SHORT_NAME="product_1"/>
 
-    <T_KEYWORDS T_PRODUCT_ID="85" VALUE="hot"/>
-    <T_KEYWORDS T_PRODUCT_ID="85" VALUE="best"/>
+    <KEYWORDS PRODUCT_ID="85" KEYWORD="hot"/>
+    <KEYWORDS PRODUCT_ID="85" KEYWORD="best"/>
 
-    <T_MULTI_STR ID="1" CODE="title"/>
-    <T_MULTI_STR ID="2" CODE="description"/>
+    <T_STRING ID="1" CODE="title"/>
+    <T_STRING ID="2" CODE="description"/>
 
-    <T_MULTI_TR ID="1" TRANSLATION="title"/>
-    <T_MULTI_TR ID="2" TRANSLATION="description"/>
+    <T_TRANSLATION ID="1" TRANSLATION="title"/>
+    <T_TRANSLATION ID="2" TRANSLATION="description"/>
 
-    <T_MULTI_STR_T_MULTI_TR T_MULTI_STR_ID="1" translations_ID="1"/>
-    <T_MULTI_STR_T_MULTI_TR T_MULTI_STR_ID="2" translations_ID="2"/>
+    <TRANSLATIONS STRING_ID="1" TRANSLATION_ID="1"/>
+    <TRANSLATIONS STRING_ID="2" TRANSLATION_ID="2"/>
 </dataset>

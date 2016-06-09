@@ -57,10 +57,10 @@ public class TypeUtil {
                 dialect.getTypeName(code);
     }
 
-    public static Type getTypeConverter(PrimitiveType type) {
-        final Type converter = TYPE_CONVERTER.get(type);
-        if (converter == null) failOnUnknownType(type);
-        return converter;
+    public static StringRepresentableType getTypeConverter(PrimitiveType type) {
+        final Type nativeType = TYPE_CONVERTER.get(type);
+        if (nativeType == null) failOnUnknownType(type);
+        return (StringRepresentableType) nativeType;
     }
 
     public static Class getNativeClass(PrimitiveType type) {

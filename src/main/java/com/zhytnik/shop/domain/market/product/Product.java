@@ -18,7 +18,8 @@ import java.util.Set;
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-@Entity(name = "T_PRODUCT")
+@Table(name = "T_PRODUCT")
+@Entity
 public class Product extends VersionableEntity implements IDynamicEntity, IHistorizable<ProductPointer> {
 
     @Column(name = "SHORT_NAME", length = 30)
@@ -34,14 +35,22 @@ public class Product extends VersionableEntity implements IDynamicEntity, IHisto
     private Category category;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinTable(name = "SUPPLIES",
+            joinColumns = @JoinColumn(name = "PRODUCT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "SUPPLY_ID")
+    )
     private Set<Supply> supplies;
 
     @ElementCollection
-    @CollectionTable(name = "T_KEYWORDS", joinColumns = @JoinColumn(name = "T_PRODUCT_ID"))
-    @Column(name = "VALUE")
+    @CollectionTable(name = "KEYWORDS", joinColumns = @JoinColumn(name = "PRODUCT_ID"))
+    @Column(name = "KEYWORD")
     private Set<String> keywords;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "COMMENTS",
+            joinColumns = @JoinColumn(name = "PRODUCT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "COMMENT_ID")
+    )
     private Set<Comment> comments;
 
     @ManyToOne

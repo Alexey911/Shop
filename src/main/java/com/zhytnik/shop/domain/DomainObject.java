@@ -16,7 +16,7 @@ public class DomainObject implements IDomainObject {
     @Column(name = "ID", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "CHANGE_DATE", nullable = false)
+    @Column(name = "LAST_CHANGE", nullable = false)
     private Date changeDate = new Date();
 
     public DomainObject() {
@@ -48,7 +48,7 @@ public class DomainObject implements IDomainObject {
     @Override
     public String toString() {
         return new StringBuilder().
-                append("DomainObject[class=").append(this.getClass()).
+                append("DomainObject[class=").append(this.getClass().getSimpleName()).
                 append(", ID=").append(id).append("]").toString();
     }
 }

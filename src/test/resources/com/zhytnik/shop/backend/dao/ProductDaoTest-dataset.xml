@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataset>
-    <T_TYPE NAME="my_type" ID="578" CHANGE_DATE="2016-06-05 13:38:06.891"/>
-
-    <T_FIELD NAME="my_field" ID="78" F_ORDER="0" REQUIRED="1" F_TYPE="LONG"
-             CHANGE_DATE="2016-06-05 13:38:06.891" TYPE_ID="578"/>
-
-    <T_CATEGORY ID="37" CHANGE_DATE="2016-06-05 13:38:06.891" DELETED="0"/>
-</dataset>

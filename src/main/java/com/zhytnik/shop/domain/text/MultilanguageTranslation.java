@@ -4,13 +4,15 @@ import com.zhytnik.shop.domain.DomainObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Locale;
 
 /**
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-@Entity(name = "T_MULTI_TR")
+@Table(name = "T_TRANSLATION")
+@Entity
 public class MultilanguageTranslation extends DomainObject {
 
     @Column(name = "LANGUAGE", nullable = false)
@@ -19,7 +21,7 @@ public class MultilanguageTranslation extends DomainObject {
     @Column(name = "TRANSLATION", nullable = false, length = 200)
     private String translation;
 
-    @Column(name = "IS_DEFAULT")
+    @Column(name = "DEFAULT_VALUE", nullable = false)
     private boolean defaultValue;
 
     public Locale getLanguage() {

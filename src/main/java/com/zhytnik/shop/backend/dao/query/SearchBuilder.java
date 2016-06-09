@@ -18,7 +18,7 @@ import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.zhytnik.shop.backend.dao.query.QueryBuilder.getDefaultSelect;
-import static com.zhytnik.shop.backend.dao.query.QueryUtil.setResultTransformByType;
+import static com.zhytnik.shop.backend.dao.query.QueryUtil.fillDynamic;
 import static com.zhytnik.shop.backend.dao.search.Relation.*;
 import static com.zhytnik.shop.backend.tool.TypeUtil.getTypeConverter;
 import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
@@ -50,7 +50,7 @@ class SearchBuilder {
         final SQLQuery query = session.createSQLQuery(select.toStatementString());
         fillArguments(filter, query);
         setIdTransform(query);
-        setResultTransformByType(query, type);
+//        fillDynamic(query, type);
         return query;
     }
 
@@ -136,6 +136,6 @@ class SearchBuilder {
     }
 
     private static void setIdTransform(SQLQuery query) {
-        query.addScalar(DYNAMIC_ID_FIELD, getTypeConverter(LONG));
+      //  query.addScalar(DYNAMIC_ID_FIELD, getTypeConverter(LONG));
     }
 }
