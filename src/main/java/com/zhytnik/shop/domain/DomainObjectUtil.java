@@ -30,6 +30,10 @@ public class DomainObjectUtil {
         return enable == null || enable;
     }
 
+    public static boolean isUnknown(IDomainObject object) {
+        return object.getId() == null;
+    }
+
     public void setGenerate(boolean value) {
         generate.set(value);
     }

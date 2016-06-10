@@ -2,6 +2,8 @@ package com.zhytnik.shop.backend.tool;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.dialect.Dialect;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
@@ -20,6 +22,10 @@ public class DatabaseUtil {
 
     private DatabaseUtil() {
         instance = this;
+    }
+
+    public void dropTable(String name) throws DataAccessException {
+        new JdbcTemplate(dataSource).execute("DROP TABLE " + name);
     }
 
     public DataSource getDataSource() {

@@ -1,8 +1,8 @@
 package com.zhytnik.shop.domain.dynamic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zhytnik.shop.domain.DomainObject;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,6 +19,7 @@ public class DynamicField extends DomainObject {
     @Column(name = "NAME")
     private String name;
 
+    @NotNull
     @Column(name = "F_ORDER")
     private Integer order;
 
@@ -30,6 +31,7 @@ public class DynamicField extends DomainObject {
     @Column(name = "REQUIRED")
     private boolean required;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "TYPE_ID")
     private DynamicType type;

@@ -1,8 +1,9 @@
 package com.zhytnik.shop.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -17,8 +18,12 @@ class ResponseUtil {
     @SuppressWarnings("unchecked")
     public static <T> ResponseEntity<T> send(T value) {
         if (value == null) {
-            return (ResponseEntity<T>) badRequest();
+            return new ResponseEntity<>(NOT_FOUND);
         }
         return ok(value);
+    }
+
+    public static <T> ResponseEntity<T> badRequest() {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

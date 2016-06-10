@@ -7,6 +7,11 @@ import com.zhytnik.shop.exeception.InfrastructureException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.Comparator;
+import java.util.List;
+
+import static java.util.Collections.sort;
+
 /**
  * @author Alexey Zhytnik
  * @since 01.06.2016
@@ -20,7 +25,7 @@ public class TypeCreator {
     private TableScriptGenerator generator;
 
     public void create(DynamicType type) {
-        initialFields(type);
+        sortFields(type.getFields());
         validator.validate(type);
         createTable(type);
     }
@@ -35,12 +40,13 @@ public class TypeCreator {
         }
     }
 
-    private void initialFields(DynamicType type) {
-        int order = 0;
-        for (DynamicField field : type.getFields()) {
-            field.setOrder(order++);
-            field.setType(type);
-        }
+    private void sortFields(List<DynamicField> fields) {
+        sort(fields, new Comparator<DynamicField>() {
+            @Override
+            public int compare(DynamicField a, DynamicField b) {
+                return a.getOrder().compareTo(b.getOrder());
+            }
+        });
     }
 
     public void setValidator(Validator<DynamicType> validator) {

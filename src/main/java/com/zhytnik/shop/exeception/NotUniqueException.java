@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Alexey Zhytnik
  * @since 02.06.2016
  */
-@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Not unique")
+@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Not unique")
 public class NotUniqueException extends RuntimeException {
 }
