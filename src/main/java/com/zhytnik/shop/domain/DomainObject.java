@@ -1,8 +1,6 @@
 package com.zhytnik.shop.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -17,12 +15,18 @@ public class DomainObject implements IDomainObject {
     private Long id;
 
     @Column(name = "LAST_CHANGE", nullable = false)
-    private Date changeDate = new Date();
+    private Date changeDate;
 
     public DomainObject() {
         if (DomainObjectUtil.getInstance() != null) {
             id = DomainObjectUtil.getInstance().getNextId();
         }
+    }
+
+    @PrePersist
+    @PreUpdate
+    void updateChangeDate() {
+        changeDate = new Date();
     }
 
     @Override

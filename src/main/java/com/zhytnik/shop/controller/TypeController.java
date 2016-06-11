@@ -1,6 +1,8 @@
 package com.zhytnik.shop.controller;
 
+import com.zhytnik.shop.controller.converter.Converter;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
+import com.zhytnik.shop.dto.TypeDto;
 import com.zhytnik.shop.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,9 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.zhytnik.shop.controller.ResponseUtil.badRequest;
-import static com.zhytnik.shop.controller.ResponseUtil.send;
-import static com.zhytnik.shop.domain.DomainObjectUtil.isUnknown;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -27,27 +28,34 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class TypeController {
 
     @Autowired
+    private Converter<DynamicType, TypeDto> converter;
+
+    @Autowired
     private TypeService service;
 
     @ResponseBody
     @RequestMapping(value = "{id}", method = GET)
-    public ResponseEntity<DynamicType> findById(@PathVariable Long id) {
-        return send(service.findById(id));
+    public ResponseEntity<TypeDto> findById(@PathVariable Long id) {
+        final DynamicType type = service.findById(id);
+        return ok(converter.convert(type));
     }
 
     @ResponseBody
     @RequestMapping(method = POST)
-    public ResponseEntity<Long> create(@Valid @RequestBody DynamicType type,
+    public ResponseEntity<Long> create(@Valid @RequestBody TypeDto typeDto,
                                        BindingResult result) {
         if (result.hasErrors()) return badRequest();
+        final DynamicType type = converter.convert(typeDto);
         service.create(type);
         return ok(type.getId());
     }
 
     @ResponseBody
     @RequestMapping(method = GET)
-    public List<DynamicType> loadAll() {
-        return service.loadAll();
+    public List<TypeDto> loadAll() {
+        final List<TypeDto> types = newArrayList();
+        for (DynamicType type : service.loadAll()) types.add(converter.convert(type));
+        return types;
     }
 
     @ResponseBody
@@ -65,11 +73,11 @@ public class TypeController {
 
     @ResponseBody
     @RequestMapping(method = PUT)
-    public HttpStatus update(@Valid @RequestBody DynamicType type,
+    public HttpStatus update(@Valid @RequestBody TypeDto typeDto,
                              BindingResult result) {
-        if (result.hasErrors() || isUnknown(type)) return HttpStatus.BAD_REQUEST;
+        if (result.hasErrors() || typeDto.getId() == null) return HttpStatus.BAD_REQUEST;
+        final DynamicType type = converter.convert(typeDto);
         final DynamicType persisted = service.findById(type.getId());
-        if (persisted == null) return HttpStatus.NOT_FOUND;
         fill(persisted, type);
         service.update(type);
         return HttpStatus.OK;
