@@ -1,4 +1,4 @@
-package com.zhytnik.shop.dto;
+package com.zhytnik.shop.dto.core;
 
 /**
  * @author Alexey Zhytnik

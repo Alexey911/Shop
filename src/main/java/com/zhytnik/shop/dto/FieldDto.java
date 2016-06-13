@@ -1,6 +1,7 @@
 package com.zhytnik.shop.dto;
 
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
+import com.zhytnik.shop.dto.core.Dto;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -9,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * @author Alexey Zhytnik
  * @since 11.06.2016
  */
-public class FieldDto implements Dto{
+public class FieldDto implements Dto {
 
     private Long id;
 

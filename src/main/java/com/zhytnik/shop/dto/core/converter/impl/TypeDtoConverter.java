@@ -1,9 +1,10 @@
-package com.zhytnik.shop.controller.converter;
+package com.zhytnik.shop.dto.core.converter.impl;
 
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.dto.FieldDto;
 import com.zhytnik.shop.dto.TypeDto;
+import com.zhytnik.shop.dto.core.converter.IDtoConverter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,22 +12,12 @@ import java.util.List;
 
 /**
  * @author Alexey Zhytnik
- * @since 11.06.2016
+ * @since 13.06.2016
  */
 @Component
-public class TypeConverter implements Converter<DynamicType, TypeDto> {
+class TypeDtoConverter implements IDtoConverter<DynamicType, TypeDto> {
 
-    private Converter<DynamicField, FieldDto> fieldConverter = new FieldConverter();
-
-    @Override
-    public TypeDto convert(DynamicType type) {
-        final TypeDto dto = new TypeDto();
-        dto.setId(type.getId());
-        dto.setName(type.getName());
-        dto.setLastChange(type.getChangeDate());
-        dto.setFields(convertFields(type.getFields()));
-        return dto;
-    }
+    private IDtoConverter<DynamicField, FieldDto> fieldConverter = new FieldDtoConverter();
 
     @Override
     public DynamicType convert(TypeDto dto) {
@@ -36,12 +27,6 @@ public class TypeConverter implements Converter<DynamicType, TypeDto> {
         type.setChangeDate(dto.getLastChange());
         type.setFields(convertFields(type, dto));
         return type;
-    }
-
-    private List<FieldDto> convertFields(List<DynamicField> fields) {
-        final List<FieldDto> dtos = new ArrayList<>(fields.size());
-        for (DynamicField field : fields) dtos.add(fieldConverter.convert(field));
-        return dtos;
     }
 
     private List<DynamicField> convertFields(DynamicType type, TypeDto dto) {

@@ -1,5 +1,6 @@
 package com.zhytnik.shop.dto;
 
+import com.zhytnik.shop.dto.core.Dto;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Date;
