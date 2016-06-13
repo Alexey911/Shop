@@ -9,6 +9,7 @@ import org.junit.experimental.categories.Category;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static com.zhytnik.shop.util.web.WebUtil.*;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
@@ -38,7 +39,6 @@ public class TypeControllerTest extends ControllerTest {
     @Override
     public void setUp() {
         super.setUp();
-        type = new TypeDto();
         type.setId(EXIST_TYPE);
         when(service.findById(EXIST_TYPE)).thenReturn(type);
         when(service.loadAll()).thenReturn(singletonList(type));

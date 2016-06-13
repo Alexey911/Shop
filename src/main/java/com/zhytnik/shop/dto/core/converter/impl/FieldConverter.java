@@ -18,6 +18,6 @@ class FieldConverter implements IEntityConverter<DynamicField, FieldDto> {
         dto.setOrder(field.getOrder());
         dto.setRequired(field.isRequired());
         dto.setPrimitiveType(field.getPrimitiveType());
-        return null;
+        return dto;
     }
 }
