@@ -10,6 +10,11 @@
           p:typeCreator-ref="typeCreator"
           p:repository-ref="typeRepository"/>
 
+    <bean id="typeDtoService" class="com.zhytnik.shop.service.TypDtoService"
+          p:service-ref="typeService"
+          p:typeConverter-ref="typeConverter"
+          p:dtoConverter-ref="typeDtoConverter"/>
+
     <bean id="productService" class="com.zhytnik.shop.service.ProductService"
           p:dao-ref="productDao"
           p:validator-ref="productValidator"/>

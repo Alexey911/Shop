@@ -5,7 +5,7 @@ import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.dto.FieldDto;
 import com.zhytnik.shop.dto.TypeDto;
 import com.zhytnik.shop.dto.core.converter.IDtoConverter;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,9 @@ import java.util.List;
  * @author Alexey Zhytnik
  * @since 13.06.2016
  */
-@Component
 class TypeDtoConverter implements IDtoConverter<DynamicType, TypeDto> {
 
-    private IDtoConverter<DynamicField, FieldDto> fieldConverter = new FieldDtoConverter();
+    private IDtoConverter<DynamicField, FieldDto> fieldConverter;
 
     @Override
     public DynamicType convert(TypeDto dto) {
@@ -38,5 +37,10 @@ class TypeDtoConverter implements IDtoConverter<DynamicType, TypeDto> {
             fields.add(field);
         }
         return fields;
+    }
+
+    @Required
+    public void setFieldConverter(IDtoConverter<DynamicField, FieldDto> fieldConverter) {
+        this.fieldConverter = fieldConverter;
     }
 }

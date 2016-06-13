@@ -7,8 +7,7 @@
         <property name="connection.autocommit">true</property>
         <property name="format_sql">true</property>
         <property name="hbm2ddl.auto">create</property>
-        <property name="connection.pool_size">2</property>
-        <property name="hibernate.bytecode.use_reflection_optimizer">true</property>
+        <property name="connection.pool_size">1</property>
         <property name="hibernate.ejb.naming_strategy">org.hibernate.cfg.EJB3NamingStrategy</property>
     </session-factory>
 </hibernate-configuration>

@@ -34,7 +34,7 @@ public class TypeCreatorTest {
 
     @Spy
     @InjectMocks
-    TypeCreator typeCreator = new TypeCreator();
+    TypeCreator typeCreator;
 
     DynamicType type = new DynamicType();
 

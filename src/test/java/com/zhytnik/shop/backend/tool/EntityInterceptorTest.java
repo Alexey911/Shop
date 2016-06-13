@@ -26,7 +26,7 @@ public class EntityInterceptorTest {
     static final String ENTITY_NAME = DomainObject.class.getCanonicalName();
 
     @InjectMocks
-    EntityInterceptor interceptor = new EntityInterceptor();
+    EntityInterceptor interceptor;
 
     @Mock
     DomainObjectUtil util;
