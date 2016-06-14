@@ -3,7 +3,7 @@ package com.zhytnik.shop.backend.tool;
 import com.zhytnik.shop.backend.validator.Validator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
-import com.zhytnik.shop.exeception.InfrastructureException;
+import com.zhytnik.shop.exception.InfrastructureException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 

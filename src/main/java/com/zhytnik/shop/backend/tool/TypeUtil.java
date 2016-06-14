@@ -2,7 +2,7 @@ package com.zhytnik.shop.backend.tool;
 
 import com.google.common.collect.ImmutableMap;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
-import com.zhytnik.shop.exeception.InfrastructureException;
+import com.zhytnik.shop.exception.InfrastructureException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.type.*;
 
@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.Map;
 
 import static com.zhytnik.shop.backend.validator.LengthValidator.MAX_LENGTH;
-import static java.lang.String.format;
 
 /**
  * @author Alexey Zhytnik
@@ -70,6 +69,6 @@ public class TypeUtil {
     }
 
     private static String failOnUnknownType(PrimitiveType type) {
-        throw new InfrastructureException(format("Unmapped type \"%s\"", type));
+        throw new InfrastructureException("unsupported.type", type);
     }
 }

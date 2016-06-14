@@ -3,7 +3,7 @@ package com.zhytnik.shop.backend.validator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
-import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.exception.ValidationException;
 
 import java.util.List;
 

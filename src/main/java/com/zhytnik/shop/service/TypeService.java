@@ -5,10 +5,10 @@ import com.zhytnik.shop.backend.tool.DatabaseUtil;
 import com.zhytnik.shop.backend.tool.TypeCreator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
-import com.zhytnik.shop.exeception.InfrastructureException;
-import com.zhytnik.shop.exeception.NotFoundException;
-import com.zhytnik.shop.exeception.NotUniqueException;
-import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.exception.InfrastructureException;
+import com.zhytnik.shop.exception.NotFoundException;
+import com.zhytnik.shop.exception.NotUniqueException;
+import com.zhytnik.shop.exception.ValidationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +31,7 @@ public class TypeService {
     @Transactional(readOnly = true)
     public DynamicType findById(Long id) {
         final DynamicType type = repository.findOne(id);
-        if (type == null) throw new NotFoundException();
+        if (type == null) throw new NotFoundException("not.found.by.id", id);
         return type;
     }
 
@@ -87,7 +87,7 @@ public class TypeService {
             positions.add(field.getOrder());
         }
         if (positions.size() != fields.size()) {
-            throw new ValidationException();
+            throw new ValidationException("wrong.field.order");
         }
     }
 

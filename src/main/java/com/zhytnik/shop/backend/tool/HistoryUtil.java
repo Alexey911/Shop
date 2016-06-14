@@ -5,7 +5,6 @@ import com.zhytnik.shop.domain.historizable.IHistorizableDescription;
 import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.market.product.ProductDescription;
 import com.zhytnik.shop.domain.market.product.ProductPointer;
-import com.zhytnik.shop.exeception.InfrastructureException;
 
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -22,7 +21,7 @@ public class HistoryUtil {
         if (historizable instanceof Product) {
             setUpProduct((Product) historizable);
         } else {
-            throw new InfrastructureException();
+            throw new RuntimeException();
         }
     }
 

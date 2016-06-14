@@ -3,7 +3,7 @@ package com.zhytnik.shop.backend.access;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.domain.market.product.Product;
-import com.zhytnik.shop.exeception.InfrastructureException;
+import com.zhytnik.shop.exception.InfrastructureException;
 import com.zhytnik.shop.testing.UnitTest;
 import org.junit.Before;
 import org.junit.Test;

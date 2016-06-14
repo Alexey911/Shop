@@ -1,6 +1,6 @@
-package com.zhytnik.shop.controller;
+package com.zhytnik.shop.web;
 
-import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.exception.ValidationException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,7 +18,7 @@ class EntityValidationAspect {
     @Around("execution(public * *(..)) && @target(org.springframework.stereotype.Controller) && @annotation(org.springframework.web.bind.annotation.RequestMapping) && @annotation(org.springframework.web.bind.annotation.ResponseBody)")
     public Object checkValidationErrors(ProceedingJoinPoint pjp) throws Throwable {
         final BindingResult result = getBindingResult(pjp.getArgs());
-        if (result != null && result.hasErrors()) throw new ValidationException();
+        if (result != null && result.hasErrors()) throw new ValidationException(result.getAllErrors());
         return pjp.proceed();
     }
 

@@ -1,4 +1,4 @@
-package com.zhytnik.shop.controller;
+package com.zhytnik.shop.web.controller;
 
 import com.zhytnik.shop.dto.TypeDto;
 import com.zhytnik.shop.service.TypDtoService;

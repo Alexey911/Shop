@@ -2,7 +2,7 @@ package com.zhytnik.shop.backend.validator;
 
 import com.zhytnik.shop.testing.UnitTest;
 import com.zhytnik.shop.util.StringUtil;
-import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.exception.ValidationException;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 

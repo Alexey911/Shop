@@ -5,7 +5,7 @@ import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.text.MultilanguageString;
-import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.exception.ValidationException;
 import com.zhytnik.shop.testing.UnitTest;
 import org.junit.Before;
 import org.junit.Test;

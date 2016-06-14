@@ -5,8 +5,7 @@ import com.zhytnik.shop.backend.dao.search.Relation;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
-import com.zhytnik.shop.exeception.InfrastructureException;
-import com.zhytnik.shop.exeception.NotSupportedOperationException;
+import com.zhytnik.shop.exception.NotSupportedOperationException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -18,12 +17,8 @@ import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static com.zhytnik.shop.backend.dao.query.QueryBuilder.getDefaultSelect;
-import static com.zhytnik.shop.backend.dao.query.QueryUtil.fillDynamic;
 import static com.zhytnik.shop.backend.dao.search.Relation.*;
-import static com.zhytnik.shop.backend.tool.TypeUtil.getTypeConverter;
-import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.*;
-import static java.lang.String.format;
 
 /**
  * @author Alexey Zhytnik
@@ -84,13 +79,13 @@ class SearchBuilder {
 
     private static void checkTypeSupport(PrimitiveType type) {
         if (!SUPPORTED_OPERATIONS.containsKey(type)) {
-            throw new NotSupportedOperationException(format("Not supported type \"%s\"", type));
+            throw new NotSupportedOperationException("unsupported.type", type);
         }
     }
 
     private static void checkOperationSupport(PrimitiveType type, Relation relation) {
         if (!SUPPORTED_OPERATIONS.get(type).contains(relation)) {
-            throw new NotSupportedOperationException(format("Type \"%s\" not supports \"%s\"", type, relation));
+            throw new NotSupportedOperationException("type.unsupported.operation", type, relation);
         }
     }
 
@@ -105,7 +100,7 @@ class SearchBuilder {
             case BETWEEN:
                 return createBetweenStatement(property);
         }
-        throw new InfrastructureException();
+        throw new RuntimeException();
     }
 
     private static String createLessStatement(String property) {
@@ -136,6 +131,6 @@ class SearchBuilder {
     }
 
     private static void setIdTransform(SQLQuery query) {
-      //  query.addScalar(DYNAMIC_ID_FIELD, getTypeConverter(LONG));
+        //  query.addScalar(DYNAMIC_ID_FIELD, getTypeConverter(LONG));
     }
 }

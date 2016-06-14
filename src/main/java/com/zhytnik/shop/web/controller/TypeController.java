@@ -1,4 +1,4 @@
-package com.zhytnik.shop.controller;
+package com.zhytnik.shop.web.controller;
 
 import com.zhytnik.shop.dto.TypeDto;
 import com.zhytnik.shop.service.TypDtoService;
@@ -20,7 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @Controller
 @RequestMapping("/types")
 @SuppressWarnings("UnusedParameters")
-public class TypeController {
+class TypeController {
 
     @Autowired
     private TypDtoService service;
@@ -60,7 +60,6 @@ public class TypeController {
     @ResponseBody
     @RequestMapping(method = PUT)
     public HttpStatus update(@Valid @RequestBody TypeDto type, BindingResult result) {
-        if (type.getId() == null) return HttpStatus.BAD_REQUEST;
         service.update(type);
         return HttpStatus.OK;
     }

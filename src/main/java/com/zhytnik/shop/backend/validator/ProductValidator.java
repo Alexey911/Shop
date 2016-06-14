@@ -3,7 +3,7 @@ package com.zhytnik.shop.backend.validator;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.text.MultilanguageTranslation;
-import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
@@ -39,7 +39,7 @@ public class ProductValidator implements Validator<Product> {
     }
 
     private void failOnEmptyField(String field) {
-        throw new ValidationException(String.format("Field \"%s\" is empty", field));
+        throw new ValidationException("field.empty", field);
     }
 
     private boolean isNull(Object value) {

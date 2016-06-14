@@ -5,7 +5,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.zhytnik.shop.backend.repository.TypeRepository;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
-import com.zhytnik.shop.exeception.InfrastructureException;
+import com.zhytnik.shop.exception.InfrastructureException;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.concurrent.ExecutionException;

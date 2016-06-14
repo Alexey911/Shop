@@ -3,7 +3,7 @@ package com.zhytnik.shop.backend.access;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.IDynamicEntity;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
-import com.zhytnik.shop.exeception.InfrastructureException;
+import com.zhytnik.shop.exception.InfrastructureException;
 
 import java.util.Map;
 import java.util.Set;

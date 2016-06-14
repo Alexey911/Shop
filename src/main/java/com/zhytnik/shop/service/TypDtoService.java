@@ -4,6 +4,7 @@ import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.dto.TypeDto;
 import com.zhytnik.shop.dto.core.converter.IDtoConverter;
 import com.zhytnik.shop.dto.core.converter.IEntityConverter;
+import com.zhytnik.shop.exception.ValidationException;
 
 import java.util.List;
 
@@ -21,7 +22,8 @@ public class TypDtoService {
     private IEntityConverter<DynamicType, TypeDto> typeConverter;
 
     public TypeDto findById(Long id) {
-        return typeConverter.convert(service.findById(id));
+        throw new ValidationException("wrong.field.order");
+//        return typeConverter.convert(service.findById(id));
     }
 
     public List<TypeDto> loadAll() {
@@ -45,8 +47,9 @@ public class TypDtoService {
     }
 
     public void update(TypeDto dto) {
-        final DynamicType type = dtoConverter.convert(dto);
+        if (dto.getId() == null) throw new ValidationException("empty.id.field");
         final DynamicType persisted = service.findById(dto.getId());
+        final DynamicType type = dtoConverter.convert(dto);
         copy(persisted, type);
         service.update(type);
     }

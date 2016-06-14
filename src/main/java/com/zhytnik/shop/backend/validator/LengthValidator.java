@@ -1,6 +1,6 @@
 package com.zhytnik.shop.backend.validator;
 
-import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.exception.ValidationException;
 
 import static java.lang.String.format;
 

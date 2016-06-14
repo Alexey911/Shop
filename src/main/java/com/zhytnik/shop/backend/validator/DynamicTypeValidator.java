@@ -2,7 +2,7 @@ package com.zhytnik.shop.backend.validator;
 
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
-import com.zhytnik.shop.exeception.ValidationException;
+import com.zhytnik.shop.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
