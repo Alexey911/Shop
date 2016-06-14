@@ -13,6 +13,8 @@
 
     <context:property-placeholder location="classpath*:test-app.properties"/>
 
+    <import resource="jpa-context.xml"/>
+
     <bean id="dialect" class="${db.dialect}"/>
 
     <bean id="dataSource" class="org.h2.jdbcx.JdbcDataSource"

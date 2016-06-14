@@ -6,6 +6,8 @@
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
        default-lazy-init="true">
 
+    <import resource="converter-context.xml"/>
+
     <bean id="typeService" class="com.zhytnik.shop.service.TypeService"
           p:typeCreator-ref="typeCreator"
           p:repository-ref="typeRepository"/>

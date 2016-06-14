@@ -46,21 +46,21 @@ public class TypeControllerTest extends ControllerTest {
 
     @Test
     public void loadsById() throws Exception {
-        mockMvc.perform(get("/types/{id}", EXIST_TYPE).accept(APPLICATION_JSON)).
+        mockMvc.perform(get("/types/{id}", EXIST_TYPE)).
                 andExpect(jsonPath("id", is((int) EXIST_TYPE))).
                 andDo(print());
     }
 
     @Test
     public void removes() throws Exception {
-        mockMvc.perform(delete("/types/{id}", EXIST_TYPE).accept(APPLICATION_JSON)).
+        mockMvc.perform(delete("/types/{id}", EXIST_TYPE)).
                 andExpect(status().isOk()).
                 andDo(print());
     }
 
     @Test
     public void checksFreeNames() throws Exception {
-        mockMvc.perform(get("/types?isFree={name}", "some name").accept(APPLICATION_JSON)).
+        mockMvc.perform(get("/types?isFree={name}", "some name")).
                 andExpect(content("false")).
                 andDo(print());
     }
@@ -75,7 +75,7 @@ public class TypeControllerTest extends ControllerTest {
     @Test
     public void creates() throws Exception {
         mockMvc.perform(post("/types").contentType(APPLICATION_JSON_UTF8).
-                content(convertToJson(type)).accept(APPLICATION_JSON)).
+                content(convertToJson(type))).
                 andExpect(content(EXIST_TYPE)).
                 andDo(print());
     }
@@ -83,7 +83,7 @@ public class TypeControllerTest extends ControllerTest {
     @Test
     public void updates() throws Exception {
         mockMvc.perform(put("/types").contentType(APPLICATION_JSON_UTF8).
-                content(convertToJson(type)).accept(APPLICATION_JSON)).
+                content(convertToJson(type))).
                 andExpect(status().isOk()).
                 andDo(print());
     }

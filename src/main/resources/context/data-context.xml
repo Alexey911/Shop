@@ -11,6 +11,8 @@
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <import resource="jpa-context.xml"/>
+
     <bean id="scriptManager" class="com.zhytnik.shop.backend.tool.ScriptManager"
           p:dropCreate="${db.dropCreate}"
           p:continueOnError="${db.continueOnError}"

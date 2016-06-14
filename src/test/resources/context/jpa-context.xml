@@ -9,8 +9,6 @@
        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd"
        default-lazy-init="true">
 
-    <import resource="data-context.xml"/>
-
     <jpa:repositories base-package="com.zhytnik.shop.backend.repository"/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
