@@ -28,7 +28,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     @Test
     public void findsById() throws Exception {
         mockMvc.perform(get("/types/{id}", EXIST_TYPE)).
-//                andExpect(jsonPath("id", is((int) EXIST_TYPE))).
+                andExpect(jsonPath("id", is((int) EXIST_TYPE))).
                 andDo(print());
     }
 }

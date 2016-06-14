@@ -22,8 +22,7 @@ public class TypDtoService {
     private IEntityConverter<DynamicType, TypeDto> typeConverter;
 
     public TypeDto findById(Long id) {
-        throw new ValidationException("wrong.field.order");
-//        return typeConverter.convert(service.findById(id));
+        return typeConverter.convert(service.findById(id));
     }
 
     public List<TypeDto> loadAll() {

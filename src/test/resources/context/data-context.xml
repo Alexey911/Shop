@@ -50,7 +50,7 @@
     <bean name="interceptor" class="com.zhytnik.shop.backend.tool.EntityInterceptor"
           p:domainObjectUtil-ref="domainObjectUtil"/>
 
-    <jdbc:initialize-database>
+    <jdbc:initialize-database ignore-failures="ALL">
         <jdbc:script location="classpath:scripts/scripts.sql"/>
     </jdbc:initialize-database>
 
