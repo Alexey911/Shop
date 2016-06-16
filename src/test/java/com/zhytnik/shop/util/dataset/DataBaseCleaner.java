@@ -1,5 +1,6 @@
 package com.zhytnik.shop.util.dataset;
 
+import org.apache.log4j.Logger;
 import org.dbunit.database.IDatabaseConnection;
 
 import java.sql.Connection;
@@ -15,6 +16,8 @@ import java.util.Set;
  */
 class DataBaseCleaner {
 
+    private static final Logger logger = Logger.getLogger(DataBaseCleaner.class);
+
     private static final String SELECT_TABLES = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES " +
             "where TABLE_SCHEMA='PUBLIC'";
 
@@ -28,6 +31,7 @@ class DataBaseCleaner {
     }
 
     public static void clear(IDatabaseConnection connection) throws SQLException {
+        logger.info("Clearing database");
         final Connection c = connection.getConnection();
         Statement s = c.createStatement();
         s.execute(DISABLE_FOREIGN_KEY);
@@ -35,6 +39,21 @@ class DataBaseCleaner {
         s.execute(ENABLE_FOREIGN_KEY);
         resetSequences(s);
         s.close();
+    }
+
+    public static void drop(IDatabaseConnection connection, String table) throws SQLException {
+        logger.info("Drop table " + table);
+        final Connection c = connection.getConnection();
+        try {
+            Statement s = c.createStatement();
+            s.execute("DROP TABLE IF EXISTS " + table);
+            s.close();
+        } catch (SQLException e) {
+            logger.error("Can't drop table " + table);
+            throw new RuntimeException(e);
+        } finally {
+            c.close();
+        }
     }
 
     private static void resetSequences(Statement s) throws SQLException {

@@ -82,7 +82,7 @@ public class TypeControllerTest extends ControllerTest {
 
     @Test
     public void updates() throws Exception {
-        mockMvc.perform(put("/types").contentType(APPLICATION_JSON_UTF8).
+        mockMvc.perform(put("/types/{id}", EXIST_TYPE).contentType(APPLICATION_JSON_UTF8).
                 content(convertToJson(type))).
                 andExpect(status().isOk()).
                 andDo(print());

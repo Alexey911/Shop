@@ -1,5 +1,6 @@
 package com.zhytnik.shop.service;
 
+import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.dto.TypeDto;
 import com.zhytnik.shop.dto.core.converter.IDtoConverter;
@@ -56,6 +57,7 @@ public class TypDtoService {
     private void copy(DynamicType from, DynamicType to) {
         to.setName(from.getName());
         to.setFields(from.getFields());
+        for(DynamicField field : to.getFields()) field.setType(to);
     }
 
     public void setService(TypeService service) {

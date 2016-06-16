@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <T_TYPE NAME="type_1" ID="5"/>
+
+    <T_FIELD NAME="field" ID="78" F_ORDER="0" REQUIRED="1" F_TYPE="LONG" TYPE_ID="5"/>
+</dataset>

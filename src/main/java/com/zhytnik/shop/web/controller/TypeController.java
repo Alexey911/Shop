@@ -50,17 +50,15 @@ class TypeController {
         return service.isUniqueName(name);
     }
 
-    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "{id}", method = DELETE)
-    public HttpStatus remove(@PathVariable Long id) {
+    public void remove(@PathVariable Long id) {
         service.remove(id);
-        return HttpStatus.OK;
     }
 
-    @ResponseBody
-    @RequestMapping(method = PUT)
-    public HttpStatus update(@Valid @RequestBody TypeDto type, BindingResult result) {
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "{id}", method = PUT)
+    public void update(@PathVariable Long id, @Valid @RequestBody TypeDto type, BindingResult result) {
         service.update(type);
-        return HttpStatus.OK;
     }
 }

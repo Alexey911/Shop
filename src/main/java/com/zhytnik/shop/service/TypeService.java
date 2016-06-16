@@ -57,7 +57,11 @@ public class TypeService {
     public void update(DynamicType type) {
         prepareChangeName(type);
         prepareFields(type);
-        repository.save(type);
+        try {
+            repository.save(type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Transactional

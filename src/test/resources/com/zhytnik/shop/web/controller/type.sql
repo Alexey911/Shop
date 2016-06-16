@@ -1,0 +1,1 @@
+create table type_1 (field1 VARCHAR(255) not null, ID bigint not null);

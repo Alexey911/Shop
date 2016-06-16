@@ -1,5 +1,6 @@
 package com.zhytnik.shop.backend.tool;
 
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.dialect.Dialect;
 import org.springframework.dao.DataAccessException;
@@ -13,6 +14,8 @@ import javax.sql.DataSource;
  */
 public class DatabaseUtil {
 
+    private static Logger logger = Logger.getLogger(DatabaseUtil.class);
+
     private static DatabaseUtil instance;
 
     private Dialect dialect;
@@ -25,6 +28,7 @@ public class DatabaseUtil {
     }
 
     public void dropTable(String name) throws DataAccessException {
+        logger.info("Drop table " + name);
         new JdbcTemplate(dataSource).execute("DROP TABLE " + name);
     }
 

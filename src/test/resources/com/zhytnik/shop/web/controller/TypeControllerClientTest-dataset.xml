@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <T_TYPE NAME="type" ID="5" LAST_CHANGE="2016-06-05 13:38:06.891"/>
+    <T_TYPE NAME="type_1" ID="5" LAST_CHANGE="2016-06-05 13:38:06.891"/>
 
     <T_FIELD NAME="field" ID="78" F_ORDER="0" REQUIRED="1" F_TYPE="LONG"
              LAST_CHANGE="2016-06-05 13:38:06.891" TYPE_ID="5"/>

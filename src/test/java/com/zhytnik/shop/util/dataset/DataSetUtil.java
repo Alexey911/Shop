@@ -1,5 +1,6 @@
 package com.zhytnik.shop.util.dataset;
 
+import com.zhytnik.shop.util.dataset.DropTable.Phase;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -13,6 +14,8 @@ import java.sql.SQLException;
 
 import static com.zhytnik.shop.util.dataset.DataBaseCleaner.clear;
 import static com.zhytnik.shop.util.dataset.DataSetLoader.*;
+import static com.zhytnik.shop.util.dataset.DropTable.Phase.AFTER;
+import static com.zhytnik.shop.util.dataset.DropTable.Phase.BEFORE;
 import static org.dbunit.operation.DatabaseOperation.INSERT;
 
 /**
@@ -24,7 +27,7 @@ public class DataSetUtil {
     private static String schema;
 
     public static void verify(TestContext context) throws Exception {
-        if (context != null && hasExpectedDataSet(context)) {
+        if (getExpectedDataSet(context) != null) {
             new DataSetComparator().compare(loadActualDataSet(context), loadExpectedDataSet(context));
         }
     }
@@ -37,10 +40,6 @@ public class DataSetUtil {
         return context.getTestMethod().getAnnotation(ClearSchema.class) != null;
     }
 
-    public static boolean hasExpectedDataSet(TestContext context) {
-        return getExpectedDataSet(context) != null;
-    }
-
     static ExpectedDataSet getExpectedDataSet(TestContext context) {
         final Method method = context.getTestMethod();
         return method.getAnnotation(ExpectedDataSet.class);
@@ -51,13 +50,13 @@ public class DataSetUtil {
         return testClass.getAnnotation(DataSet.class);
     }
 
+    static boolean hasCustomDataSet(TestContext context) {
+        return getCustomDataSet(context) != null;
+    }
+
     static DataSet getCustomDataSet(TestContext context) {
         final Method method = context.getTestMethod();
         return method.getAnnotation(DataSet.class);
-    }
-
-    static boolean hasCustomDataSet(TestContext context) {
-        return getCustomDataSet(context) != null;
     }
 
     public static void installDataSet(TestContext context) throws Exception {
@@ -70,6 +69,42 @@ public class DataSetUtil {
 
     public static void clearSchema(TestContext context) throws Exception {
         clear(getConnection(context));
+    }
+
+    public static void dropTablesBeforeTest(TestContext context) {
+        final DropTable drop = getDropTable(context);
+        if (hasPhase(drop, BEFORE)) dropTables(context, drop.value());
+    }
+
+    public static void dropTablesAfterTest(TestContext context) {
+        final DropTable drop = getDropTable(context);
+        if (hasPhase(drop, AFTER)) dropTables(context, drop.value());
+    }
+
+    private static boolean hasPhase(DropTable drop, Phase phase) {
+        for (Phase aPhase : drop.phases()) {
+            if (aPhase.equals(phase)) return true;
+        }
+        return false;
+    }
+
+    public static boolean hasDrops(TestContext context) {
+        return context.getTestMethod().getAnnotation(DropTable.class) != null;
+    }
+
+    private static DropTable getDropTable(TestContext context) {
+        return context.getTestMethod().getAnnotation(DropTable.class);
+    }
+
+    private static void dropTables(TestContext context, String[] tables) {
+        try {
+            final IDatabaseConnection connection = getConnection(context);
+            for (String table : tables) {
+                DataBaseCleaner.drop(connection, table);
+            }
+        } catch (SQLException | DatabaseUnitException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     static IDatabaseConnection getConnection(TestContext context) throws SQLException, DatabaseUnitException {

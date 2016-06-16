@@ -19,7 +19,7 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
  * @since 14.06.2016
  */
 @ControllerAdvice
-public class ExceptionAdvice {
+class ExceptionAdvice {
 
     @Autowired
     private MessageSource messages;

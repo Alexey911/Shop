@@ -4,6 +4,8 @@ import com.zhytnik.shop.backend.validator.Validator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.exception.InfrastructureException;
+import com.zhytnik.shop.exception.ValidationException;
+import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -17,6 +19,8 @@ import static java.util.Collections.sort;
  * @since 01.06.2016
  */
 public class TypeCreator {
+
+    private static Logger logger = Logger.getLogger(TypeCreator.class);
 
     private Validator<DynamicType> validator;
 
@@ -32,10 +36,14 @@ public class TypeCreator {
 
     private void createTable(DynamicType type) {
         final String script = generator.generate(type.getName(), type.getFields());
+        logger.info("Execute " + script);
         try {
             jdbcTemplate.execute(script);
         } catch (DataAccessException e) {
-            //TODO: check name already exist
+            logger.error("Fail execute " + script);
+            if (e.getCause().getMessage().contains("already exists")) {
+                throw new ValidationException("Not unique type name!");
+            }
             throw new InfrastructureException(e);
         }
     }

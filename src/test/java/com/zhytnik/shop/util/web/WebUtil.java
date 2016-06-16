@@ -45,4 +45,8 @@ public class WebUtil {
     public static ResultMatcher content(Long value) {
         return content(Long.toString(value));
     }
+
+    public static ResultMatcher content(Boolean value) {
+        return content(Boolean.toString(value).toLowerCase());
+    }
 }

@@ -1,6 +1,7 @@
 package com.zhytnik.shop.util;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.zhytnik.shop.util.dataset.DataSetUtil;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContext;
@@ -13,7 +14,7 @@ import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.zhytnik.shop.App.CONTEXT_SETTINGS;
-import static com.zhytnik.shop.util.dataset.DataSetUtil.verify;
+import static com.zhytnik.shop.util.dataset.DataSetUtil.dropTablesAfterTest;
 
 /**
  * @author Alexey Zhytnik
@@ -27,19 +28,41 @@ import static com.zhytnik.shop.util.dataset.DataSetUtil.verify;
         DirtiesContextBeforeModesTestExecutionListener.class,
         DbUnitTestExecutionListener.class,
         DataSetExecutionListener.class,
-        ExpectedDataSetListener.class})
+        ExpectedDataSetListener.class,
+        DropTableListener.class})
 public abstract class TransactionalTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     private static ThreadLocal<TestContext> uncheckedContext = new ThreadLocal<>();
+    private static ThreadLocal<TestContext> waitingDrops = new ThreadLocal<>();
 
     @AfterTransaction
     public void afterTransaction() throws Exception {
+        try {
+            verify();
+        } finally {
+            drop();
+        }
+    }
+
+    private void verify() throws Exception {
         final TestContext context = uncheckedContext.get();
+        if (context == null) return;
         uncheckedContext.remove();
-        verify(context);
+        DataSetUtil.verify(context);
+    }
+
+    private void drop() {
+        final TestContext context = waitingDrops.get();
+        if (context == null) return;
+        waitingDrops.remove();
+        dropTablesAfterTest(context);
     }
 
     static void checkExpectedDataSet(TestContext testContext) {
         TransactionalTest.uncheckedContext.set(testContext);
+    }
+
+    static void dropTables(TestContext testContext) {
+        TransactionalTest.waitingDrops.set(testContext);
     }
 }

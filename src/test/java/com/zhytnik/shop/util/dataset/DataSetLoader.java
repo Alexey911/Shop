@@ -35,14 +35,14 @@ public class DataSetLoader {
         return loadDataSetByClass(context, getDefaultDataSet(context));
     }
 
-    private static IDataSet loadDataSetByMethod(TestContext context, DataSet dataSet) throws Exception {
-        return loadDataSetByMethodName(context, context.getTestMethod(),
-                END_DATASET, dataSet.value());
-    }
-
     static IDataSet loadExpectedDataSet(TestContext context) throws Exception {
         return loadDataSetByMethodName(context, context.getTestMethod(),
                 END_EXPECTED_DATASET, getExpectedDataSet(context).value());
+    }
+
+    private static IDataSet loadDataSetByMethod(TestContext context, DataSet dataSet) throws Exception {
+        return loadDataSetByMethodName(context, context.getTestMethod(),
+                END_DATASET, dataSet.value());
     }
 
     private static IDataSet loadDataSetByClass(TestContext context, DataSet dataSet) throws Exception {
