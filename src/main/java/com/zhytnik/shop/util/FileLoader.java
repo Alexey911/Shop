@@ -12,7 +12,7 @@ public class FileLoader {
     private FileLoader() {
     }
 
-    public static File[] loadDirectoryFiles(String directory) {
+    public static File[] loadInnerDirectoryFiles(String directory) {
         final URL root = FileLoader.class.getResource(directory);
         if (root == null) return new File[0];
         final File rootDirectory = new File(root.getFile());
