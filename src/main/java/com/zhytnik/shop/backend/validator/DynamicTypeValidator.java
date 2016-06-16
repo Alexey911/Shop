@@ -25,6 +25,7 @@ public class DynamicTypeValidator implements Validator<DynamicType> {
         for (int i = 0; i < fields.size(); i++) {
             final DynamicField field = fields.get(i);
 
+            if(field.getOrder() == null) throw new ValidationException("Wrong order");
             if (field.getOrder() != i) failOnWrongFieldsOrder();
             if (field.getPrimitiveType() == null) failOnNotSeatedType(field);
             nameValidator.validate(field.getName());

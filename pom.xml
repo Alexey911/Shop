@@ -159,6 +159,14 @@
             <version>${hibernate.version}</version>
         </dependency>
 
+        <!-- Code analyzing-->
+
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>5.1</version>
+        </dependency>
+
         <!--Tests-->
         <dependency>
             <groupId>org.assertj</groupId>
@@ -220,12 +228,6 @@
             <version>1.4.192</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>5.1</version>
-        </dependency>
-
     </dependencies>
 
     <profiles>
@@ -284,20 +286,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.5.201505241946</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

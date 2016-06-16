@@ -4,6 +4,7 @@ import com.zhytnik.shop.backend.validator.DynamicTypeValidator;
 import com.zhytnik.shop.backend.validator.NameValidator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
+import com.zhytnik.shop.exception.ValidationException;
 import com.zhytnik.shop.testing.UnitTest;
 import org.hibernate.dialect.Oracle10gDialect;
 import org.junit.Before;
@@ -19,10 +20,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.LONG;
 import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.verify;
 
 /**
  * @author Alexey Zhytnik
@@ -59,6 +60,7 @@ public class TypeCreatorTest {
 
         field.setName("field");
         field.setPrimitiveType(LONG);
+        field.setOrder(0);
 
         type.setFields(singletonList(field));
         type.setName("type");
@@ -70,9 +72,16 @@ public class TypeCreatorTest {
     }
 
     @Test
-    public void setsOwnFieldsOrder() {
+    public void usingCustomFieldOrder() {
+        final int orderBefore = field.getOrder();
         typeCreator.create(type);
-        verify(field).setOrder(anyInt());
+        assertThat(orderBefore).isEqualTo(field.getOrder());
+    }
+
+    @Test(expected = ValidationException.class)
+    public void fieldsMustHaveRightOrder() {
+        field.setOrder(null);
+        typeCreator.create(type);
     }
 
     @Test
