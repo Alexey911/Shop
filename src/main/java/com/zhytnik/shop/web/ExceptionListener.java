@@ -30,7 +30,7 @@ class ExceptionListener {
     @ExceptionHandler(Exception.class)
     public void handleExceptions(Exception e, HttpServletResponse response) throws IOException {
         logger.error(e.getMessage(), e);
-        response.sendError(SC_INTERNAL_SERVER_ERROR);
+        response.setStatus(SC_INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(TranslatableException.class)
@@ -38,10 +38,8 @@ class ExceptionListener {
                                  HttpServletResponse response) throws IOException {
         logger.error(e.getMessage(), e);
         final HttpStatus status = getHttpStatus(e);
-        if (e.getMessage() == null) {
-            response.sendError(status.value());
-            return;
-        }
+        response.setStatus(status.value());
+        if (e.getMessage() == null) return;
         final String message = getMessage(e, locale);
         response.sendError(status.value(), message);
     }

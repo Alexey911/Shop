@@ -55,6 +55,7 @@ public class TypeService {
 
     @Transactional
     public void update(DynamicType type) {
+        if (type.getId() == null) throw new ValidationException("empty.id.field");
         prepareChangeName(type);
         prepareFields(type);
         repository.save(type);

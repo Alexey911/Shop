@@ -14,11 +14,6 @@ app.service('TypeService', function ($http) {
     ];
 
     this.create = function (type) {
-        var order = 0;
-        for (var index in type.fields) {
-            var field = type.fields[index];
-            field.order = order++;
-        }
         var config = {
             headers: {
                 'Accept': 'application/json',
@@ -26,10 +21,10 @@ app.service('TypeService', function ($http) {
             }
         };
         $http.post(this.URL, type, config)
-            .success(function (data, status, headers, config) {
-                console.log(status);
+            .success(function (data, status) {
+                console.log(status, data);
             })
-            .error(function (data, status, header, config) {
+            .error(function (data, status) {
                 console.log(status);
             });
     };
@@ -51,9 +46,9 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
         id: null,
         name: "",
         lastChange: null,
-        fields: [],
-        isValid: false
+        fields: []
     };
+    $scope.isValid = false;
     $scope.field = {
         name: "",
         required: false,
@@ -63,15 +58,11 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
     $scope.$watch('type.name', function (name) {
         TypeService.isUnique(name, function (data) {
             console.log(data);
-            $scope.type.isValid = data;
+            $scope.isValid = data;
         });
     });
     $scope.addField = function () {
-        $scope.type.fields.push({
-            name: $scope.field.name,
-            required: $scope.field.required,
-            type: $scope.field.type
-        });
+        $scope.type.fields.push(angular.copy($scope.field));
         $scope.resetField();
     };
     $scope.resetField = function () {
@@ -80,27 +71,17 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
         $scope.field.type = TypeService.PRIMITIVE_TYPES[2];
     };
     $scope.create = function () {
-        TypeService.create(typeConverter())
+        var type = angular.copy($scope.type);
+        var order = 0;
+        angular.forEach(type.fields, function (field) {
+            field.order = order++;
+            field.type = field.type.native;
+        });
+        TypeService.create(type);
     };
     $scope.reset = function () {
         $scope.type.fields = [];
         $scope.type.name = "";
         $scope.resetField();
-    };
-
-    var typeConverter = function () {
-        var fields = [];
-        for (var index in $scope.type.fields) {
-            var field = $scope.type.fields[index];
-            fields.push({
-                name: field.name,
-                required: field.required,
-                type: field.type.native
-            });
-        }
-        return {
-            name: $scope.type.name,
-            fields: fields
-        };
     };
 });

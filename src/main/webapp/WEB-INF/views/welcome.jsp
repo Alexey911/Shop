@@ -51,7 +51,7 @@
     <button ng-click="create()">Create</button>
     <button ng-click="reset()">Reset</button>
     <br>
-    Is valid type: {{type.isValid}}
+    Is valid type: {{isValid}}
 </div>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script src="${contextPath}/resources/api.js"></script>
