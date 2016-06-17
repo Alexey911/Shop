@@ -13,9 +13,12 @@ import org.springframework.validation.BindingResult;
  */
 @Aspect
 @Component
-class EntityValidationAspect {
+class FieldValidator {
 
-    @Around("execution(public * *(..)) && @target(org.springframework.stereotype.Controller) && @annotation(org.springframework.web.bind.annotation.RequestMapping) && @annotation(org.springframework.web.bind.annotation.ResponseBody)")
+    @Around("execution(public * *(..)) && " +
+            "@target(org.springframework.stereotype.Controller) && " +
+            "@annotation(org.springframework.web.bind.annotation.RequestMapping) && " +
+            "args(..,org.springframework.validation.BindingResult)")
     public Object checkValidationErrors(ProceedingJoinPoint pjp) throws Throwable {
         final BindingResult result = getBindingResult(pjp.getArgs());
         if (result != null && result.hasErrors()) throw new ValidationException(result.getAllErrors());

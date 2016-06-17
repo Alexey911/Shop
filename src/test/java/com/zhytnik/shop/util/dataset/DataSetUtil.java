@@ -73,12 +73,12 @@ public class DataSetUtil {
 
     public static void dropTablesBeforeTest(TestContext context) {
         final DropTable drop = getDropTable(context);
-        if (hasPhase(drop, BEFORE)) dropTables(context, drop.value());
+        if (hasPhase(drop, BEFORE)) dropTables(context, drop.tables());
     }
 
     public static void dropTablesAfterTest(TestContext context) {
         final DropTable drop = getDropTable(context);
-        if (hasPhase(drop, AFTER)) dropTables(context, drop.value());
+        if (hasPhase(drop, AFTER)) dropTables(context, drop.tables());
     }
 
     private static boolean hasPhase(DropTable drop, Phase phase) {

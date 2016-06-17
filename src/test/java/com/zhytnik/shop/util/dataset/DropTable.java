@@ -15,7 +15,7 @@ import static com.zhytnik.shop.util.dataset.DropTable.Phase.BEFORE;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface DropTable {
-    String[] value() default {};
+    String[] tables() default {};
 
     Phase[] phases() default {BEFORE, AFTER};
 

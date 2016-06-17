@@ -76,7 +76,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
 
     @Test
     @ClearSchema
-    @DropTable(TYPE_NAME)
+    @DropTable(tables = TYPE_NAME)
     @ExpectedDataSet("create")
     public void creates() throws Exception {
         mockMvc.perform(post("/types").contentType(APPLICATION_JSON_UTF8).
@@ -140,7 +140,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     @Test
     @SqlGroup(@Sql("type.sql"))
     @ExpectedDataSet("update")
-    @DropTable(value = TYPE_NAME, phases = AFTER)
+    @DropTable(tables = TYPE_NAME, phases = AFTER)
     public void updates() throws Exception {
         final TypeDto type = typeController.findById(EXIST_TYPE);
         type.getFields().get(0).setPrimitiveType(LONG);
