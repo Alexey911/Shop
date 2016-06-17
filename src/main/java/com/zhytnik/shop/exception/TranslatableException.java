@@ -8,7 +8,9 @@ public class TranslatableException extends RuntimeException {
 
     private static final Object[] EMPTY_ARRAY = {};
 
-    private Object[] arguments;
+    protected Object[] arguments;
+
+    protected boolean hasTranslations = true;
 
     public TranslatableException() {
         arguments = EMPTY_ARRAY;
@@ -41,5 +43,9 @@ public class TranslatableException extends RuntimeException {
 
     public Object[] getArguments() {
         return arguments;
+    }
+
+    public boolean isTranslatable(){
+        return hasTranslations;
     }
 }

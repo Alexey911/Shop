@@ -12,6 +12,13 @@
 
 <div ng-app="app" ng-controller="TypeController">
 
+    <p>Types</p>
+    <ul>
+        <li ng-repeat="type in types">
+            <span>{{type.name}}</span>
+        </li>
+    </ul>
+
     <p>Fields</p>
     <ul>
         <li ng-repeat="field in type.fields">
@@ -24,7 +31,7 @@
 
     <label>
         Enter field name
-        <input type="text" ng-model="field.name"/>
+        <input type="text" ng-model="field.name" name="field.name" required/>
     </label>
     <br>
 
@@ -36,20 +43,24 @@
 
     <label>
         Choose field type
-        <select ng-model="field.type" ng-options="type.name for type in primitiveTypes"></select>
+        <select ng-model="field.type" ng-options="type.name for type in primitiveTypes" required></select>
     </label>
     <br>
 
-    <button ng-click="addField()">Add field</button>
+    <button ng-click="addField()">
+        Add field
+    </button>
     <br>
     <br>
 
-    <label>Enter type name
+    <label>
+        Enter type name
         <input type="text" ng-model="type.name">
     </label>
     <br>
     <button ng-click="create()">Create</button>
     <button ng-click="reset()">Reset</button>
+    <button ng-click="loadAll()">Load All</button>
     <br>
     Is valid type: {{isValid}}
 </div>

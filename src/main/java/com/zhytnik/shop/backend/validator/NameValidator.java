@@ -23,6 +23,7 @@ public class NameValidator implements Validator<String> {
         if (name == null) {
             throw new ValidationException("Null name");
         }
+        checkSpace(name);
         checkReservedWordOverlap(name);
 
         if (name.length() > MAX_LENGTH) {
@@ -33,9 +34,15 @@ public class NameValidator implements Validator<String> {
         }
     }
 
+    private void checkSpace(String s) {
+        if (s.trim().length() < s.length()) {
+            throw new ValidationException("string.contains.spaces");
+        }
+    }
+
     private void checkReservedWordOverlap(String name) {
         if (reservedWords.contains(name.toLowerCase())) {
-            throw new ValidationException(format("Using reserved word \"%s\"", name));
+            throw new ValidationException("using.reserved.word", name);
         }
     }
 

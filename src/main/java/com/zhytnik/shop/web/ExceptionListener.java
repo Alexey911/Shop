@@ -36,7 +36,7 @@ class ExceptionListener {
     @ExceptionHandler(TranslatableException.class)
     public void handleExceptions(TranslatableException e, Locale locale,
                                  HttpServletResponse response) throws IOException {
-        logger.error(e.getMessage(), e);
+        logger.info(e.getMessage(), e);
         final HttpStatus status = getHttpStatus(e);
         response.setStatus(status.value());
         if (e.getMessage() == null) return;
@@ -49,6 +49,7 @@ class ExceptionListener {
     }
 
     private String getMessage(TranslatableException e, Locale locale) {
+        if (!e.isTranslatable()) return e.getMessage();
         return messages.getMessage(e.getMessage(), e.getArguments(), locale);
     }
 

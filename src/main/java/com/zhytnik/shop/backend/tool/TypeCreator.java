@@ -4,7 +4,7 @@ import com.zhytnik.shop.backend.validator.Validator;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.exception.InfrastructureException;
-import com.zhytnik.shop.exception.ValidationException;
+import com.zhytnik.shop.exception.NotUniqueException;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,7 +42,7 @@ public class TypeCreator {
         } catch (DataAccessException e) {
             logger.error("Fail execute " + script);
             if (e.getCause().getMessage().contains("already exists")) {
-                throw new ValidationException("Not unique type name!");
+                throw new NotUniqueException();
             }
             throw new InfrastructureException(e);
         }

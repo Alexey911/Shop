@@ -30,6 +30,7 @@ public class TypeService {
 
     @Transactional(readOnly = true)
     public DynamicType findById(Long id) {
+        failOnEmptyId(id);
         final DynamicType type = repository.findOne(id);
         if (type == null) throw new NotFoundException("not.found.by.id", id);
         return type;
@@ -42,7 +43,7 @@ public class TypeService {
 
     @Transactional(readOnly = true)
     public boolean isUniqueName(String name) {
-        return repository.findByName(name).isEmpty();
+        return repository.findByName(name.trim()).isEmpty();
     }
 
     @Transactional
@@ -55,7 +56,7 @@ public class TypeService {
 
     @Transactional
     public void update(DynamicType type) {
-        if (type.getId() == null) throw new ValidationException("empty.id.field");
+        failOnEmptyId(type.getId());
         prepareChangeName(type);
         prepareFields(type);
         repository.save(type);
@@ -71,6 +72,10 @@ public class TypeService {
             throw new NotFoundException(e);
         }
         dropTypeTable(typeName);
+    }
+
+    private void failOnEmptyId(Long id) {
+        if (id == null) throw new ValidationException("empty.id.field");
     }
 
     private void checkUniqueName(DynamicType type) {

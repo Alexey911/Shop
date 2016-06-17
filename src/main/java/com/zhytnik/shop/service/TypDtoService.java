@@ -1,11 +1,9 @@
 package com.zhytnik.shop.service;
 
-import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.dto.TypeDto;
 import com.zhytnik.shop.dto.core.converter.IDtoConverter;
 import com.zhytnik.shop.dto.core.converter.IEntityConverter;
-import com.zhytnik.shop.exception.ValidationException;
 
 import java.util.List;
 
@@ -47,17 +45,7 @@ public class TypDtoService {
     }
 
     public void update(TypeDto dto) {
-        if (dto.getId() == null) throw new ValidationException("empty.id.field");
-        final DynamicType persisted = service.findById(dto.getId());
-        final DynamicType type = dtoConverter.convert(dto);
-        copy(persisted, type);
-        service.update(type);
-    }
-
-    private void copy(DynamicType from, DynamicType to) {
-        to.setName(from.getName());
-        to.setFields(from.getFields());
-        for(DynamicField field : to.getFields()) field.setType(to);
+        service.update(dtoConverter.convert(dto));
     }
 
     public void setService(TypeService service) {

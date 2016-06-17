@@ -32,8 +32,8 @@ import static com.zhytnik.shop.util.dataset.DataSetUtil.dropTablesAfterTest;
         DropTableListener.class})
 public abstract class TransactionalTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-    private static ThreadLocal<TestContext> uncheckedContext = new ThreadLocal<>();
-    private static ThreadLocal<TestContext> waitingDrops = new ThreadLocal<>();
+    private static TestContext uncheckedContext;
+    private static TestContext waitingDrop;
 
     @AfterTransaction
     public void afterTransaction() throws Exception {
@@ -45,24 +45,24 @@ public abstract class TransactionalTest extends AbstractTransactionalJUnit4Sprin
     }
 
     private void verify() throws Exception {
-        final TestContext context = uncheckedContext.get();
+        final TestContext context = uncheckedContext;
         if (context == null) return;
-        uncheckedContext.remove();
+        uncheckedContext = null;
         DataSetUtil.verify(context);
     }
 
     private void drop() {
-        final TestContext context = waitingDrops.get();
+        final TestContext context = waitingDrop;
         if (context == null) return;
-        waitingDrops.remove();
+        waitingDrop = null;
         dropTablesAfterTest(context);
     }
 
     static void checkExpectedDataSet(TestContext testContext) {
-        TransactionalTest.uncheckedContext.set(testContext);
+        TransactionalTest.uncheckedContext = testContext;
     }
 
     static void dropTables(TestContext testContext) {
-        TransactionalTest.waitingDrops.set(testContext);
+        TransactionalTest.waitingDrop = testContext;
     }
 }

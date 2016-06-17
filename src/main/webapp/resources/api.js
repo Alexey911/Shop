@@ -1,3 +1,4 @@
+'use strict';
 var app = angular.module("app", []);
 
 app.service('TypeService', function ($http) {
@@ -28,6 +29,16 @@ app.service('TypeService', function ($http) {
                 console.log(status);
             });
     };
+    this.loadAll = function (success) {
+        $http.get(this.URL)
+            .success(function (data, status) {
+                console.log(status, data);
+                success(data);
+            })
+            .error(function (data, status) {
+                console.log(status, data);
+            });
+    };
     this.isUnique = function (name, success) {
         $http({
             method: "GET",
@@ -48,6 +59,7 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
         lastChange: null,
         fields: []
     };
+    $scope.types = [];
     $scope.isValid = false;
     $scope.field = {
         name: "",
@@ -78,6 +90,11 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
             field.type = field.type.native;
         });
         TypeService.create(type);
+    };
+    $scope.loadAll = function () {
+        TypeService.loadAll(function (data) {
+            $scope.types = data;
+        });
     };
     $scope.reset = function () {
         $scope.type.fields = [];
