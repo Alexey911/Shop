@@ -88,7 +88,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     @Test
     @ClearSchema
     public void validatesType() throws Exception {
-        type.setName(null);
+        type.setName(" ");
         mockMvc.perform(post("/types").contentType(APPLICATION_JSON_UTF8).
                 content(convertToJson(type))).
                 andExpect(status().isBadRequest()).

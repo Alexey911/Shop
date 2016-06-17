@@ -251,6 +251,9 @@
     <build>
         <resources>
             <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
                 <directory>src/test/java</directory>
                 <includes>
                     <include>**/*.xml</include>

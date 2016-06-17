@@ -43,7 +43,7 @@ public class TypeService {
 
     @Transactional(readOnly = true)
     public boolean isUniqueName(String name) {
-        return repository.findByName(name.trim()).isEmpty();
+        return name != null && repository.findByName(name.trim()).isEmpty();
     }
 
     @Transactional
