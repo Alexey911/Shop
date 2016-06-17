@@ -1,6 +1,7 @@
 package com.zhytnik.shop.web;
 
 import com.zhytnik.shop.exception.TranslatableException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -19,19 +20,23 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
  * @since 14.06.2016
  */
 @ControllerAdvice
-class ExceptionAdvice {
+class ExceptionListener {
+
+    private static final Logger logger = Logger.getLogger(ExceptionListener.class);
 
     @Autowired
     private MessageSource messages;
 
     @ExceptionHandler(Exception.class)
-    public void handleExceptions(HttpServletResponse response) throws IOException {
+    public void handleExceptions(Exception e, HttpServletResponse response) throws IOException {
+        logger.error(e.getMessage(), e);
         response.sendError(SC_INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(TranslatableException.class)
     public void handleExceptions(TranslatableException e, Locale locale,
                                  HttpServletResponse response) throws IOException {
+        logger.error(e.getMessage(), e);
         final HttpStatus status = getHttpStatus(e);
         if (e.getMessage() == null) {
             response.sendError(status.value());

@@ -4,6 +4,8 @@ import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.dto.FieldDto;
 import com.zhytnik.shop.dto.core.converter.IEntityConverter;
 
+import static com.zhytnik.shop.dto.core.converter.impl.DtoUtil.mergeIdentity;
+
 /**
  * @author Alexey Zhytnik
  * @since 11.06.2016
@@ -13,11 +15,11 @@ class FieldConverter implements IEntityConverter<DynamicField, FieldDto> {
     @Override
     public FieldDto convert(DynamicField field) {
         final FieldDto dto = new FieldDto();
-        dto.setId(field.getId());
+        mergeIdentity(field, dto);
         dto.setName(field.getName());
         dto.setOrder(field.getOrder());
         dto.setRequired(field.isRequired());
-        dto.setPrimitiveType(field.getPrimitiveType());
+        dto.setType(field.getPrimitiveType());
         return dto;
     }
 }

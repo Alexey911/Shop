@@ -2,6 +2,7 @@ package com.zhytnik.shop.dto;
 
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.dto.core.Dto;
+import com.zhytnik.shop.dto.core.Identity;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * @author Alexey Zhytnik
  * @since 11.06.2016
  */
-public class FieldDto implements Dto {
+public class FieldDto implements Dto, Identity {
 
     private Long id;
 
@@ -19,17 +20,19 @@ public class FieldDto implements Dto {
     @NotNull
     private Integer order;
     @NotNull
-    private PrimitiveType primitiveType;
+    private PrimitiveType type;
 
     private boolean required;
 
     public FieldDto(){
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -50,12 +53,12 @@ public class FieldDto implements Dto {
         this.order = order;
     }
 
-    public PrimitiveType getPrimitiveType() {
-        return primitiveType;
+    public PrimitiveType getType() {
+        return type;
     }
 
-    public void setPrimitiveType(PrimitiveType primitiveType) {
-        this.primitiveType = primitiveType;
+    public void setType(PrimitiveType type) {
+        this.type = type;
     }
 
     public boolean isRequired() {

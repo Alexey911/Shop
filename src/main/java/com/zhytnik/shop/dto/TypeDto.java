@@ -1,6 +1,7 @@
 package com.zhytnik.shop.dto;
 
 import com.zhytnik.shop.dto.core.Dto;
+import com.zhytnik.shop.dto.core.Identity;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Alexey Zhytnik
  * @since 11.06.2016
  */
-public class TypeDto implements Dto {
+public class TypeDto implements Dto, Identity {
 
     private Long id;
 
@@ -24,10 +25,12 @@ public class TypeDto implements Dto {
     public TypeDto() {
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

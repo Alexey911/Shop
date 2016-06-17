@@ -1,97 +1,106 @@
-'use strict';
-var App = {};
-App.host = window.location.host;
-App.api = {};
-App.api.types = {};
-App.api.types.path = 'http://' + App.host + '/types';
+var app = angular.module("app", []);
 
-App.api.types.createType = function () {
-    return {
-        name: null,
-        fields: []
+app.service('TypeService', function ($http) {
+    this.URL = 'http://' + window.location.host + '/types';
+    this.PRIMITIVE_TYPES = [
+        {name: 'Boolean', native: 'BOOLEAN'},
+        {name: 'Float', native: 'DOUBLE'},
+        {name: 'Integer', native: 'LONG'},
+        {name: 'Date', native: 'DATE'},
+        {name: 'Text', native: 'STRING'},
+        {name: 'Photos', native: 'GALLERY'},
+        {name: 'Location', native: 'MAP'},
+        {name: 'Currency', native: 'CURRENCY'}
+    ];
+
+    this.create = function (type) {
+        var order = 0;
+        for (var index in type.fields) {
+            var field = type.fields[index];
+            field.order = order++;
+        }
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        };
+        $http.post(this.URL, type, config)
+            .success(function (data, status, headers, config) {
+                console.log(status);
+            })
+            .error(function (data, status, header, config) {
+                console.log(status);
+            });
     };
-};
+    this.isUnique = function (name, success) {
+        $http({
+            method: "GET",
+            url: this.URL + "?isFree=" + name
+        }).then(function onSuccess(response) {
+            success(response.data);
+        }, function onError(response) {
+            console.log("error", response);
+        });
+    }
+});
 
-App.api.types.createField = function () {
-    return {
-        name: null,
-        order: null,
-        primitiveType: null,
-        required: false
+app.controller('TypeController', function ($scope, $http, TypeService) {
+    $scope.primitiveTypes = TypeService.PRIMITIVE_TYPES;
+    $scope.type = {
+        id: null,
+        name: "",
+        lastChange: null,
+        fields: [],
+        isValid: false
     };
-};
+    $scope.field = {
+        name: "",
+        required: false,
+        type: TypeService.PRIMITIVE_TYPES[2]
+    };
 
-App.api.types.load = function (id, success, fail, async = false) {
-    let result = undefined;
-
-    function withDateTransform(type) {
-        type.changeDate = new Date(type.changeDate);
-        return type;
-    }
-
-    const url = this.path + '/' + id;
-    let onSuccess;
-    if (success) {
-        onSuccess = (data) => success(withDateTransform(data));
-    } else {
-        onSuccess = (data) => result = withDateTransform(data);
-    }
-    const onFail = fail || (() => console.log("fail load Type with id=" + id));
-    App.utils.get(url, onSuccess, onFail, async);
-    return result;
-};
-
-App.api.types.create = function (type, success, fail, async = true) {
-    let result = undefined;
-    const onFail = fail || (() => console.log("fail create Type " + type));
-    const onSuccess = success || ((data) => result = data);
-    App.utils.post(this.path, JSON.stringify(type), onSuccess, onFail, async);
-    return result;
-};
-
-App.api.types.remove = function (id, success, fail, async = true) {
-    const url = this.path + '/' + id;
-    const onFail = fail || (() => console.log("fail remove Type " + type));
-    App.utils.delete(url, id, success, onFail, async);
-    if (!async) return true;
-};
-
-
-App.utils = {};
-App.utils.get = function (url, success, fail, async) {
-    $.ajax({
-        async: async,
-        type: 'GET',
-        url: url,
-        success: success,
-        fail: fail
+    $scope.$watch('type.name', function (name) {
+        TypeService.isUnique(name, function (data) {
+            console.log(data);
+            $scope.type.isValid = data;
+        });
     });
-};
+    $scope.addField = function () {
+        $scope.type.fields.push({
+            name: $scope.field.name,
+            required: $scope.field.required,
+            type: $scope.field.type
+        });
+        $scope.resetField();
+    };
+    $scope.resetField = function () {
+        $scope.field.name = "";
+        $scope.field.required = false;
+        $scope.field.type = TypeService.PRIMITIVE_TYPES[2];
+    };
+    $scope.create = function () {
+        TypeService.create(typeConverter())
+    };
+    $scope.reset = function () {
+        $scope.type.fields = [];
+        $scope.type.name = "";
+        $scope.resetField();
+    };
 
-App.utils.post = function (url, data, success, fail, async) {
-    $.ajax({
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        async: async,
-        type: 'POST',
-        url: url,
-        data: data,
-        dataType: 'json',
-        success: success,
-        fail: fail
-    });
-};
-
-App.utils.delete = function (url, data, success, fail, async) {
-    $.ajax({
-        async: async,
-        type: 'DELETE',
-        url: url,
-        data: data,
-        dataType: 'json',
-        success: success,
-        fail: fail
-    });
-};
+    var typeConverter = function () {
+        var fields = [];
+        for (var index in $scope.type.fields) {
+            var field = $scope.type.fields[index];
+            fields.push({
+                name: field.name,
+                required: field.required,
+                type: field.type.native
+            });
+        }
+        return {
+            name: $scope.type.name,
+            fields: fields
+        };
+    };
+});

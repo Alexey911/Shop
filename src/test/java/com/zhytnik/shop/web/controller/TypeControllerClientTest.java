@@ -50,7 +50,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
         super.setUp();
 
         field.setName("field1");
-        field.setPrimitiveType(STRING);
+        field.setType(STRING);
         field.setOrder(0);
 
         type.setId(EXIST_TYPE);
@@ -143,7 +143,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     @DropTable(tables = TYPE_NAME, phases = AFTER)
     public void updates() throws Exception {
         final TypeDto type = typeController.findById(EXIST_TYPE);
-        type.getFields().get(0).setPrimitiveType(LONG);
+        type.getFields().get(0).setType(LONG);
 
         mockMvc.perform(put("/types/{id}", EXIST_TYPE).contentType(APPLICATION_JSON_UTF8).
                 content(convertToJson(type))).

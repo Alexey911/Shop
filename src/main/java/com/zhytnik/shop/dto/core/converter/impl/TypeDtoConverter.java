@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zhytnik.shop.dto.core.converter.impl.DtoUtil.mergeIdentity;
+
 /**
  * @author Alexey Zhytnik
  * @since 13.06.2016
@@ -21,7 +23,7 @@ class TypeDtoConverter implements IDtoConverter<DynamicType, TypeDto> {
     @Override
     public DynamicType convert(TypeDto dto) {
         final DynamicType type = new DynamicType();
-        type.setId(dto.getId());
+        mergeIdentity(type, dto);
         type.setName(dto.getName());
         type.setChangeDate(dto.getLastChange());
         type.setFields(convertFields(type, dto));

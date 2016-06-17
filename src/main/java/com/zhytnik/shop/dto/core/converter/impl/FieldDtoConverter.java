@@ -17,7 +17,7 @@ class FieldDtoConverter implements IDtoConverter<DynamicField, FieldDto> {
         field.setName(dto.getName());
         field.setOrder(dto.getOrder());
         field.setRequired(dto.isRequired());
-        field.setPrimitiveType(dto.getPrimitiveType());
+        field.setPrimitiveType(dto.getType());
         return field;
     }
 }

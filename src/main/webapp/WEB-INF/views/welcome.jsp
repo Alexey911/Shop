@@ -5,11 +5,55 @@
 <head>
     <title>Welcome page</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="${contextPath}/resources/api.js"></script>
 </head>
 <body>
 <%--@elvariable id="message" type="java.lang.String"--%>
 <p>Today is ${message}</p>
+
+<div ng-app="app" ng-controller="TypeController">
+
+    <p>Fields</p>
+    <ul>
+        <li ng-repeat="field in type.fields">
+            <span>{{field.name}}</span>
+            <span>({{field.type.name}}, </span>
+            <span>{{field.required && 'required' || 'not required'}})</span>
+        </li>
+    </ul>
+    <br>
+
+    <label>
+        Enter field name
+        <input type="text" ng-model="field.name"/>
+    </label>
+    <br>
+
+    <label>
+        Is field required
+        <input type="checkbox" ng-model="field.required"/>
+    </label>
+    <br>
+
+    <label>
+        Choose field type
+        <select ng-model="field.type" ng-options="type.name for type in primitiveTypes"></select>
+    </label>
+    <br>
+
+    <button ng-click="addField()">Add field</button>
+    <br>
+    <br>
+
+    <label>Enter type name
+        <input type="text" ng-model="type.name">
+    </label>
+    <br>
+    <button ng-click="create()">Create</button>
+    <button ng-click="reset()">Reset</button>
+    <br>
+    Is valid type: {{type.isValid}}
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="${contextPath}/resources/api.js"></script>
 </body>
 </html>
