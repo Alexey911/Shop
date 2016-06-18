@@ -6,7 +6,9 @@ import com.zhytnik.shop.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Set;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static java.lang.String.format;
 
 /**
@@ -19,25 +21,39 @@ public class DynamicTypeValidator implements Validator<DynamicType> {
 
     @Override
     public void validate(DynamicType type) throws ValidationException {
+        failOnUpperCase(type.getName());
+        checkFieldOrder(type.getFields());
         nameValidator.validate(type.getName());
 
-        final List<DynamicField> fields = type.getFields();
-        for (int i = 0; i < fields.size(); i++) {
-            final DynamicField field = fields.get(i);
-
-            if (field.getOrder() == null) throw new ValidationException("Wrong order");
-            if (field.getOrder() != i) failOnWrongFieldsOrder();
-            if (field.getPrimitiveType() == null) failOnNotSeatedType(field);
+        for (final DynamicField field : type.getFields()) {
+            failOnNotSeatedType(field);
             nameValidator.validate(field.getName());
         }
     }
 
-    private void failOnWrongFieldsOrder() {
-        throw new ValidationException("Wrong fields order");
+    private void failOnUpperCase(String name) {
+        if (!name.toLowerCase().equals(name)) {
+            throw new ValidationException("type.name.should.be.lower");
+        }
     }
 
-    private void failOnNotSeatedType(DynamicField column) {
-        throw new ValidationException(format("Type not seated on \"%s\" column", column.getName()));
+    private void checkFieldOrder(List<DynamicField> fields) {
+        final Set<Integer> positions = newHashSet();
+        for (DynamicField field : fields) {
+            if (field.getOrder() == null)
+                throw new ValidationException("Empty field order");
+            positions.add(field.getOrder());
+        }
+        for (int i = 0; i < fields.size(); i++) {
+            if (!positions.contains(i))
+                throw new ValidationException("wrong.field.order");
+        }
+    }
+
+    private void failOnNotSeatedType(DynamicField field) {
+        if (field.getPrimitiveType() == null) {
+            throw new ValidationException(format("Type not seated on \"%s\" field", field.getName()));
+        }
     }
 
     @Required

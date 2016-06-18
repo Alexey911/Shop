@@ -20,18 +20,25 @@ import static java.util.Collections.sort;
  */
 public class TypeCreator {
 
-    private static Logger logger = Logger.getLogger(TypeCreator.class);
-
-    private Validator<DynamicType> validator;
+    private static final Logger logger = Logger.getLogger(TypeCreator.class);
 
     private JdbcTemplate jdbcTemplate;
-
     private TableScriptGenerator generator;
+    private Validator<DynamicType> validator;
 
     public void create(DynamicType type) {
-        sortFields(type.getFields());
         validator.validate(type);
+        sortFields(type.getFields());
         createTable(type);
+    }
+
+    private void sortFields(List<DynamicField> fields) {
+        sort(fields, new Comparator<DynamicField>() {
+            @Override
+            public int compare(DynamicField a, DynamicField b) {
+                return a.getOrder().compareTo(b.getOrder());
+            }
+        });
     }
 
     private void createTable(DynamicType type) {
@@ -46,15 +53,6 @@ public class TypeCreator {
             }
             throw new InfrastructureException(e);
         }
-    }
-
-    private void sortFields(List<DynamicField> fields) {
-        sort(fields, new Comparator<DynamicField>() {
-            @Override
-            public int compare(DynamicField a, DynamicField b) {
-                return a.getOrder().compareTo(b.getOrder());
-            }
-        });
     }
 
     public void setValidator(Validator<DynamicType> validator) {

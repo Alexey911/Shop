@@ -59,6 +59,7 @@ class TypeController {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "{id}", method = PUT)
     public void update(@PathVariable Long id, @Valid @RequestBody TypeDto type, BindingResult result) {
+        type.setId(id);
         service.update(type);
     }
 }
