@@ -10,8 +10,6 @@ public class TranslatableException extends RuntimeException {
 
     protected Object[] arguments;
 
-    protected boolean hasTranslations = true;
-
     public TranslatableException() {
         arguments = EMPTY_ARRAY;
     }
@@ -43,9 +41,5 @@ public class TranslatableException extends RuntimeException {
 
     public Object[] getArguments() {
         return arguments;
-    }
-
-    public boolean isTranslatable(){
-        return hasTranslations;
     }
 }

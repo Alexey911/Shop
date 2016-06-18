@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,8 +60,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     @Test
     public void searchesById() throws Exception {
         mockMvc.perform(get("/types/{id}", EXIST_TYPE)).
-                andExpect(jsonPath("id", is((int) EXIST_TYPE))).
-                andDo(print());
+                andExpect(jsonPath("id", is((int) EXIST_TYPE)));
     }
 
     @Test
@@ -70,8 +68,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     public void failsSearchIfNotExist() throws Exception {
         mockMvc.perform(get("/types/{id}", 456L)).
                 andExpect(status().isNotFound()).
-                andExpect(status().reason(notNullValue())).
-                andDo(print());
+                andExpect(status().reason(notNullValue()));
     }
 
     @Test
@@ -79,44 +76,43 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     @DropTable(tables = TYPE_NAME)
     @ExpectedDataSet("create")
     public void creates() throws Exception {
-        mockMvc.perform(post("/types").contentType(APPLICATION_JSON_UTF8).
-                content(convertToJson(type))).
-                andExpect(content(EXIST_TYPE)).
-                andDo(print());
+        mockMvc.perform(post("/types").
+                contentType(APPLICATION_JSON_UTF8).
+                content(convertToJson(type))
+        ).
+                andExpect(content(EXIST_TYPE));
     }
 
     @Test
     @ClearSchema
     public void validatesType() throws Exception {
         type.setName(" ");
-        mockMvc.perform(post("/types").contentType(APPLICATION_JSON_UTF8).
-                content(convertToJson(type))).
-                andExpect(status().isBadRequest()).
-                andDo(print());
+        mockMvc.perform(post("/types").
+                contentType(APPLICATION_JSON_UTF8).
+                content(convertToJson(type))
+        ).
+                andExpect(status().isBadRequest());
     }
 
     @Test
     public void loadsAll() throws Exception {
         mockMvc.perform(get("/types")).
                 andExpect(status().isOk()).
-                andExpect(jsonPath("$[0].id", is((int) EXIST_TYPE))).
-                andDo(print());
+                andExpect(jsonPath("$[0].id", is((int) EXIST_TYPE)));
     }
 
     @Test
     public void remembersExistingTypeNames() throws Exception {
         mockMvc.perform(get("/types?isFree={name}", TYPE_NAME)).
                 andExpect(status().isOk()).
-                andExpect(content(false)).
-                andDo(print());
+                andExpect(content(false));
     }
 
     @Test
     public void checksFreeNames() throws Exception {
         mockMvc.perform(get("/types?isFree={name}", "not exist name")).
                 andExpect(status().isOk()).
-                andExpect(content(true)).
-                andDo(print());
+                andExpect(content(true));
     }
 
     @Test
@@ -124,8 +120,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     @SqlGroup(@Sql("type.sql"))
     public void removesExistTypes() throws Exception {
         mockMvc.perform(delete("/types/{id}", EXIST_TYPE)).
-                andExpect(status().isOk()).
-                andDo(print());
+                andExpect(status().isOk());
         assertThat(typeController.loadAll()).isEmpty();
     }
 
@@ -133,8 +128,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     @ClearSchema
     public void failsRemoveIfNotExist() throws Exception {
         mockMvc.perform(delete("/types/{id}", 789L)).
-                andExpect(status().isNotFound()).
-                andDo(print());
+                andExpect(status().isNotFound());
     }
 
     @Test
@@ -145,9 +139,10 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
         final TypeDto type = typeController.findById(EXIST_TYPE);
         type.getFields().get(0).setType(LONG);
 
-        mockMvc.perform(put("/types/{id}", EXIST_TYPE).contentType(APPLICATION_JSON_UTF8).
-                content(convertToJson(type))).
-                andExpect(status().isOk()).
-        andDo(print());
+        mockMvc.perform(put("/types/{id}", EXIST_TYPE).
+                contentType(APPLICATION_JSON_UTF8).
+                content(convertToJson(type))
+        ).
+                andExpect(status().isOk());
     }
 }

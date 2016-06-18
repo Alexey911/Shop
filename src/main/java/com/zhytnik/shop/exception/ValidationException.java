@@ -18,11 +18,6 @@ public class ValidationException extends TranslatableException {
         super(message);
     }
 
-    public ValidationException(String message, boolean temporary) {
-        super(message);
-        hasTranslations = !temporary;
-    }
-
     public ValidationException(String message, Object... arguments) {
         super(message, arguments);
     }

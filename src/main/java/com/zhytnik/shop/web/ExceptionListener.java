@@ -4,7 +4,6 @@ import com.zhytnik.shop.exception.TranslatableException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,11 +38,10 @@ class ExceptionListener {
                                  HttpServletResponse response) throws IOException {
         logger.info(e.getMessage(), e);
         final HttpStatus status = getHttpStatus(e);
-        final String message = getMessage(e, locale);
-        if (message == null) {
+        if (e.getMessage() == null) {
             response.setStatus(status.value());
         } else {
-            response.sendError(status.value(), message);
+            response.sendError(status.value(), extractMessage(e, locale));
         }
     }
 
@@ -51,13 +49,9 @@ class ExceptionListener {
         return e.getClass().getAnnotation(ResponseStatus.class).value();
     }
 
-    private String getMessage(TranslatableException e, Locale locale) {
-        if (e.getMessage() == null) return null;
-        if (!e.isTranslatable()) return e.getMessage();
-        String message = null;
-        try {
-            message = messages.getMessage(e.getMessage(), e.getArguments(), locale);
-        } catch (NoSuchMessageException ignored) {
+    private String extractMessage(TranslatableException e, Locale locale) {
+        final String message = messages.getMessage(e.getMessage(), e.getArguments(), locale);
+        if (e.getMessage().equals(message)) {
             logger.info("There is no translation for " + e.getMessage());
         }
         return message;

@@ -47,22 +47,19 @@ public class TypeControllerTest extends ControllerTest {
     @Test
     public void loadsById() throws Exception {
         mockMvc.perform(get("/types/{id}", EXIST_TYPE)).
-                andExpect(jsonPath("id", is((int) EXIST_TYPE))).
-                andDo(print());
+                andExpect(jsonPath("id", is((int) EXIST_TYPE)));
     }
 
     @Test
     public void removes() throws Exception {
         mockMvc.perform(delete("/types/{id}", EXIST_TYPE)).
-                andExpect(status().isOk()).
-                andDo(print());
+                andExpect(status().isOk());
     }
 
     @Test
     public void checksFreeNames() throws Exception {
         mockMvc.perform(get("/types?isFree={name}", "some name")).
-                andExpect(content("false")).
-                andDo(print());
+                andExpect(content("false"));
     }
 
     @Test
@@ -74,18 +71,20 @@ public class TypeControllerTest extends ControllerTest {
 
     @Test
     public void creates() throws Exception {
-        mockMvc.perform(post("/types").contentType(APPLICATION_JSON_UTF8).
-                content(convertToJson(type))).
-                andExpect(content(EXIST_TYPE)).
-                andDo(print());
+        mockMvc.perform(post("/types").
+                contentType(APPLICATION_JSON_UTF8).
+                content(convertToJson(type))
+        ).
+                andExpect(content(EXIST_TYPE));
     }
 
     @Test
     public void updates() throws Exception {
-        mockMvc.perform(put("/types/{id}", EXIST_TYPE).contentType(APPLICATION_JSON_UTF8).
-                content(convertToJson(type))).
-                andExpect(status().isOk()).
-                andDo(print());
+        mockMvc.perform(put("/types/{id}", EXIST_TYPE).
+                contentType(APPLICATION_JSON_UTF8).
+                content(convertToJson(type))
+        ).
+                andExpect(status().isOk());
     }
 
     @Override
