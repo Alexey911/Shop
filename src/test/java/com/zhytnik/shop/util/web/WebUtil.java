@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.nio.charset.Charset;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static org.hamcrest.core.StringContains.containsString;
 
 /**
  * @author Alexey Zhytnik
@@ -38,15 +39,15 @@ public class WebUtil {
         }
     }
 
-    public static ResultMatcher content(String value) {
-        return MockMvcResultMatchers.content().string(value);
+    public static ResultMatcher contentContains(String value) {
+        return MockMvcResultMatchers.content().string(containsString(value));
     }
 
-    public static ResultMatcher content(Long value) {
-        return content(Long.toString(value));
+    public static ResultMatcher contentContains(Long value) {
+        return contentContains(Long.toString(value));
     }
 
-    public static ResultMatcher content(Boolean value) {
-        return content(Boolean.toString(value).toLowerCase());
+    public static ResultMatcher contentContains(Boolean value) {
+        return contentContains(Boolean.toString(value).toLowerCase());
     }
 }

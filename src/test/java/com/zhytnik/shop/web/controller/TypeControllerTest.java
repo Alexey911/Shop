@@ -59,7 +59,7 @@ public class TypeControllerTest extends ControllerTest {
     @Test
     public void checksFreeNames() throws Exception {
         mockMvc.perform(get("/types?isFree={name}", "some name")).
-                andExpect(content("false"));
+                andExpect(contentContains("false"));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class TypeControllerTest extends ControllerTest {
                 contentType(APPLICATION_JSON_UTF8).
                 content(convertToJson(type))
         ).
-                andExpect(content(EXIST_TYPE));
+                andExpect(contentContains(EXIST_TYPE));
     }
 
     @Test

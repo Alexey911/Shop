@@ -21,7 +21,6 @@ import static com.zhytnik.shop.util.dataset.DropTable.Phase.AFTER;
 import static com.zhytnik.shop.util.web.WebUtil.*;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -68,7 +67,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     public void failsSearchIfNotExist() throws Exception {
         mockMvc.perform(get("/types/{id}", 456L)).
                 andExpect(status().isNotFound()).
-                andExpect(status().reason(notNullValue()));
+                andExpect(contentContains("error"));
     }
 
     @Test
@@ -80,7 +79,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
                 contentType(APPLICATION_JSON_UTF8).
                 content(convertToJson(type))
         ).
-                andExpect(content(EXIST_TYPE));
+                andExpect(contentContains(EXIST_TYPE));
     }
 
     @Test
@@ -105,14 +104,14 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
     public void remembersExistingTypeNames() throws Exception {
         mockMvc.perform(get("/types?isFree={name}", TYPE_NAME)).
                 andExpect(status().isOk()).
-                andExpect(content(false));
+                andExpect(contentContains(false));
     }
 
     @Test
     public void checksFreeNames() throws Exception {
         mockMvc.perform(get("/types?isFree={name}", "not exist name")).
                 andExpect(status().isOk()).
-                andExpect(content(true));
+                andExpect(contentContains(true));
     }
 
     @Test

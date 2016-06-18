@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
 
+import static java.lang.String.format;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
@@ -36,12 +37,12 @@ class ExceptionListener {
     @ExceptionHandler(TranslatableException.class)
     public void handleExceptions(TranslatableException e, Locale locale,
                                  HttpServletResponse response) throws IOException {
-        logger.info(e.getMessage(), e);
+        logger.info(e.getMessage());
         final HttpStatus status = getHttpStatus(e);
-        if (e.getMessage() == null) {
-            response.setStatus(status.value());
-        } else {
-            response.sendError(status.value(), extractMessage(e, locale));
+        response.setStatus(status.value());
+        if (e.getMessage() != null) {
+            final String jsonErrorMessage = format("{\"error\":%s}", extractMessage(e, locale));
+            response.getWriter().write(jsonErrorMessage);
         }
     }
 
