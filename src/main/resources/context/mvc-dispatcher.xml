@@ -32,7 +32,7 @@
     <context:annotation-config/>
 
     <bean id="internalViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:prefix="/WEB-INF/views/" p:suffix=".jsp"/>
+          p:prefix="/views/" p:suffix=".jsp"/>
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"
           p:messageConverters-ref="converters"/>

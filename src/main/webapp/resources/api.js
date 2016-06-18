@@ -89,10 +89,6 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
     $scope.isUnique = false;
     $scope.field = {};
 
-    // $scope.$watch('type.name', function (value) {
-    //     console.log('change value', value);
-    // });
-
     $scope.addField = function () {
         $scope.type.fields.push(angular.copy($scope.field));
         $scope.resetField();
