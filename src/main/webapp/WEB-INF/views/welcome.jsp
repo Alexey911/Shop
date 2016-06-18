@@ -3,68 +3,71 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-    <title>Welcome page</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Ultimate Shop</title>
+    <style>
+        input.ng-invalid {
+            background-color: pink;
+        }
+
+        input.ng-valid {
+            background-color: lightgreen;
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="${contextPath}/resources/api.js"></script>
 </head>
-<body>
-<%--@elvariable id="message" type="java.lang.String"--%>
-<p>Today is ${message}</p>
+<body ng-app="app">
+<div ng-controller="TypeController">
+    <h2>Types</h2>
+    <types></types>
 
-<div ng-app="app" ng-controller="TypeController">
-
-    <p>Types</p>
-    <ul>
-        <li ng-repeat="type in types">
-            <span>{{type.name}}</span>
-        </li>
-    </ul>
-
-    <p>Fields</p>
+    <h3>Fields</h3>
     <ul>
         <li ng-repeat="field in type.fields">
             <span>{{field.name}}</span>
-            <span>({{field.type.name}}, </span>
+            <span>({{field.type}}, </span>
             <span>{{field.required && 'required' || 'not required'}})</span>
         </li>
     </ul>
     <br>
 
-    <label>
-        Enter field name
-        <input type="text" ng-model="field.name" name="field.name" required/>
-    </label>
+    <div ng-form name="fieldForm">
+        <label>
+            Enter field name
+            <input type="text" ng-model="field.name" name="name" required ng-minlength="3"/>
+        </label>
+        <br>
+
+        <label>
+            Is field required
+            <input type="checkbox" ng-model="field.required"/>
+        </label>
+        <br>
+
+        <label>
+            Choose field type
+            <select ng-model="field.type" ng-options="type for type in primitiveTypes" required></select>
+        </label>
+        <br>
+
+        <button ng-click="addField()" ng-disabled="!fieldForm.name.$valid">
+            Add field
+        </button>
+    </div>
+    <br>
     <br>
 
-    <label>
-        Is field required
-        <input type="checkbox" ng-model="field.required"/>
-    </label>
-    <br>
-
-    <label>
-        Choose field type
-        <select ng-model="field.type" ng-options="type.name for type in primitiveTypes" required></select>
-    </label>
-    <br>
-
-    <button ng-click="addField()">
-        Add field
-    </button>
-    <br>
-    <br>
-
-    <label>
-        Enter type name
-        <input type="text" ng-model="type.name">
-    </label>
-    <br>
-    <button ng-click="create()">Create</button>
+    <div ng-form name="typeForm">
+        <label>
+            Enter type name
+            <input type="text" name="name" ng-model="type.name" required ng-minlength="5" unique>
+        </label>
+        <br>
+        <button ng-click="create()" ng-disabled="!typeForm.name.$valid">Create</button>
+    </div>
     <button ng-click="reset()">Reset</button>
     <button ng-click="loadAll()">Load All</button>
-    <br>
-    Is valid type: {{isValid}}
 </div>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-<script src="${contextPath}/resources/api.js"></script>
 </body>
 </html>
