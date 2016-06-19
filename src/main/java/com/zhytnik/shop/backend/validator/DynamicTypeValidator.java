@@ -25,15 +25,26 @@ public class DynamicTypeValidator implements Validator<DynamicType> {
         checkFieldOrder(type.getFields());
         nameValidator.validate(type.getName());
 
+        final Set<String> names = newHashSet();
         for (final DynamicField field : type.getFields()) {
             failOnNotSeatedType(field);
-            nameValidator.validate(field.getName());
+
+            final String name = field.getName();
+            nameValidator.validate(name);
+            failOnNotUnique(names, name);
+            names.add(name);
         }
     }
 
     private void failOnUpperCase(String name) {
         if (!name.toLowerCase().equals(name)) {
             throw new ValidationException("type.name.should.be.lower");
+        }
+    }
+
+    private void failOnNotUnique(Set<String> names, String name) {
+        if (names.contains(name)) {
+            throw new ValidationException("not.unique.field.name");
         }
     }
 

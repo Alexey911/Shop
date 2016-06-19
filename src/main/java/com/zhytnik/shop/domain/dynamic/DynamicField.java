@@ -1,6 +1,5 @@
 package com.zhytnik.shop.domain.dynamic;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zhytnik.shop.domain.DomainObject;
 import org.hibernate.validator.constraints.Length;
 
@@ -31,7 +30,6 @@ public class DynamicField extends DomainObject {
     @Column(name = "REQUIRED")
     private boolean required;
 
-    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "TYPE_ID")
     private DynamicType type;

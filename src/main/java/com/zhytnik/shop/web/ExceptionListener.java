@@ -41,7 +41,7 @@ class ExceptionListener {
         final HttpStatus status = getHttpStatus(e);
         response.setStatus(status.value());
         if (e.getMessage() != null) {
-            final String jsonErrorMessage = format("{\"error\":%s}", extractMessage(e, locale));
+            final String jsonErrorMessage = format("{\"error\":\"%s\"}", extractMessage(e, locale));
             response.getWriter().write(jsonErrorMessage);
         }
     }
