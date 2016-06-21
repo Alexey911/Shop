@@ -1,8 +1,10 @@
 <ul>
     <li ng-repeat="type in types">
-        <span>{{type.name}}</span>
-        <ul ng-repeat="field in type.fields">
-            <li>{{field.name + '(' + field.type + ')'}}</li>
-        </ul>
+        <div ng-mouseenter="onChoice(type)">
+            <span>{{type.name}}</span>
+            <ul ng-repeat="field in type.fields">
+                <li>{{field.name + '(' + field.type + ')'}}</li>
+            </ul>
+        </div>
     </li>
 </ul>

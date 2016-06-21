@@ -34,8 +34,7 @@ class TypeController {
     @ResponseBody
     @RequestMapping(method = POST)
     public Long create(@Valid @RequestBody TypeDto type, BindingResult result) {
-        service.create(type);
-        return type.getId();
+        return service.create(type);
     }
 
     @ResponseBody

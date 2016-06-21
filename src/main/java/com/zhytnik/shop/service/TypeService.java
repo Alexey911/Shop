@@ -43,10 +43,11 @@ public class TypeService {
     }
 
     @Transactional
-    public void create(DynamicType type) {
+    public Long create(DynamicType type) {
         checkUniqueName(type);
         typeCreator.create(type);
         repository.save(type);
+        return type.getId();
     }
 
     private void checkUniqueName(DynamicType type) {

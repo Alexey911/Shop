@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.dialect.Dialect;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
@@ -30,7 +31,7 @@ public class DatabaseUtil {
     public void dropTable(String name) throws DataAccessException {
         logger.info("Drop table " + name);
         try {
-            sessionFactory.getCurrentSession().createSQLQuery("DROP TABLE " + name).executeUpdate();
+            new JdbcTemplate(dataSource).execute("DROP TABLE " + name);
         } catch (Exception e) {
             throw new InfrastructureException(e);
         }

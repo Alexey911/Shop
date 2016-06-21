@@ -36,8 +36,8 @@ public class TypDtoService {
         return service.isUniqueName(name);
     }
 
-    public void create(TypeDto dto) {
-        service.create(dtoConverter.convert(dto));
+    public Long create(TypeDto dto) {
+        return service.create(dtoConverter.convert(dto));
     }
 
     public void remove(Long id) {

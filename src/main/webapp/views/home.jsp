@@ -63,7 +63,10 @@
         <button ng-click="create()" ng-disabled="!typeForm.name.$valid">Create</button>
     </div>
     <button ng-click="reset()">Reset</button>
+    <button ng-click="update()">Update</button>
+    <button ng-click="remove()">Remove</button>
     <button ng-click="loadAll()">Load All</button>
+    <button ng-click="clear()">Clear</button>
 </div>
 
 <script src="${context}/resources/libraries/angular/angular.js"></script>

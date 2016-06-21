@@ -36,18 +36,32 @@ app.service('TypeService', function ($http) {
 
     this.getTypesTemplate = () => shopHost + '/resources/app/type/types.htm';
 
+    this.getPrimitiveTypes = ()=> ['Boolean', 'Float', 'Integer'];
+
     this.create = function (type) {
         type = angular.copy(type);
         setNativeFieldNames(type);
-        return $http.post(typeHost, type);
+        return $http.post(typeHost, type).then(response => response.data);
     };
     this.loadAll = () => $http.get(typeHost).then((response) => changeTypesVisibility(response.data));
     this.isUnique = (name) => $http({method: "GET", url: typeHost, params: {"isFree": name}})
         .then((response) => response.data);
+
+    var remove = (id) => $http({method: "DELETE", url: typeHost + '/' + id});
+
+    this.clear = function () {
+        $http.get(typeHost).then(function (response) {
+            for (var type of response.data) {
+                remove(type.id);
+            }
+        })
+    };
+
+    this.remove = (id) => remove(id);
 });
 
 app.controller('TypeController', function ($scope, $http, TypeService) {
-    $scope.primitiveTypes = ['Boolean', 'Float', 'Integer'];
+    $scope.primitiveTypes = TypeService.getPrimitiveTypes();
     $scope.type = {
         id: null,
         name: "",
@@ -65,9 +79,10 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
         field.type = $scope.primitiveTypes[2];
     };
     var reset = function () {
-        var type = $scope.type;
+        var type = {};
         type.fields = [];
         type.name = "";
+        $scope.type = type;
         resetField();
     };
     var loadAll = () => TypeService.loadAll().then((types) => $scope.types = types);
@@ -77,8 +92,10 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
         resetField();
     };
     $scope.create = function () {
-        TypeService.create($scope.type).then(function () {
-            $scope.types.push(angular.copy($scope.type));
+        TypeService.create($scope.type).then(function (id) {
+            var type = angular.copy($scope.type);
+            type.id = id;
+            $scope.types.push(type);
             reset();
         })
     };
@@ -86,6 +103,21 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
     $scope.loadAll = loadAll;
     $scope.reset = reset;
     $scope.resetField = resetField;
+
+    $scope.clear = function () {
+        TypeService.clear();
+        $scope.types = [];
+    };
+    
+    $scope.onChoice = (type) => $scope.type = type;
+
+    $scope.remove = function () {
+        TypeService.remove($scope.type.id).
+        then(function () {
+            reset();
+            loadAll();
+        });
+    };
 
     resetField();
     loadAll();
