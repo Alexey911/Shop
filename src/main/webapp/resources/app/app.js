@@ -1,7 +1,7 @@
 'use strict';
-var app = angular.module('app', []);
+var app = angular.module('app', ['ngMessages']);
 
-app.service('TypeService', function ($http, $q) {
+app.service('TypeService', function ($http) {
     var shopHost = 'http://' + window.location.host;
     var typeHost = shopHost + '/types';
 
@@ -39,13 +39,7 @@ app.service('TypeService', function ($http, $q) {
     this.create = function (type) {
         type = angular.copy(type);
         setNativeFieldNames(type);
-        var config = {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        };
-        return $http.post(typeHost, type, config);
+        return $http.post(typeHost, type);
     };
     this.loadAll = () => $http.get(typeHost).then((response) => changeTypesVisibility(response.data));
     this.isUnique = (name) => $http({method: "GET", url: typeHost, params: {"isFree": name}})

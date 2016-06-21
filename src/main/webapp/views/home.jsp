@@ -54,13 +54,20 @@
             Enter type name
             <input type="text" name="name" ng-model="type.name" required ng-minlength="5" unique>
         </label>
+        <pre>{{ typeFrom.name.$error | json }}</pre>
+        <div ng-messages="typeForm.name.$error" style="color:maroon" role="alert">
+            <div ng-message="required">You did not enter a field</div>
+            <div ng-message="minlength">Your field is too short</div>
+        </div>
         <br>
         <button ng-click="create()" ng-disabled="!typeForm.name.$valid">Create</button>
     </div>
     <button ng-click="reset()">Reset</button>
     <button ng-click="loadAll()">Load All</button>
 </div>
+
 <script src="${context}/resources/libraries/angular/angular.js"></script>
+<script src="${context}/resources/libraries/angular-messages/angular-messages.js"></script>
 <script src="${context}/resources/app/app.js"></script>
 </body>
 </html>
