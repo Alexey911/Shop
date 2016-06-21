@@ -43,7 +43,6 @@ public class ProductDH {
     private static MultilanguageString createMultiString(String text, Long id) {
         final MultilanguageString title = new MultilanguageString();
         title.setId(id);
-        title.setCode(text);
 
         final MultilanguageTranslation t = new MultilanguageTranslation();
         t.setTranslation(text);

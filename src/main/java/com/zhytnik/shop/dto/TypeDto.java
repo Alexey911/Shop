@@ -4,6 +4,7 @@ import com.zhytnik.shop.dto.core.Dto;
 import com.zhytnik.shop.dto.core.Identity;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class TypeDto implements Dto, Identity {
 
     @NotEmpty
     private String name;
+
+    @Valid
     @NotEmpty
     private List<FieldDto> fields;
 

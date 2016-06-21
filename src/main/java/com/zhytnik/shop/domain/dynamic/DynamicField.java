@@ -1,6 +1,7 @@
 package com.zhytnik.shop.domain.dynamic;
 
 import com.zhytnik.shop.domain.DomainObject;
+import com.zhytnik.shop.domain.text.MultilanguageString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -33,6 +34,10 @@ public class DynamicField extends DomainObject {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "TYPE_ID")
     private DynamicType type;
+
+    @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    private MultilanguageString description;
 
     public String getName() {
         return name;
@@ -72,5 +77,13 @@ public class DynamicField extends DomainObject {
 
     public DynamicType getType() {
         return type;
+    }
+
+    public MultilanguageString getDescription() {
+        return description;
+    }
+
+    public void setDescription(MultilanguageString description) {
+        this.description = description;
     }
 }

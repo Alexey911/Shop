@@ -21,10 +21,12 @@ public class FieldDto implements Dto, Identity {
     private Integer order;
     @NotNull
     private PrimitiveType type;
+    @NotNull
+    private MultiStringDto description;
 
     private boolean required;
 
-    public FieldDto(){
+    public FieldDto() {
     }
 
     @Override
@@ -67,5 +69,13 @@ public class FieldDto implements Dto, Identity {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public MultiStringDto getDescription() {
+        return description;
+    }
+
+    public void setDescription(MultiStringDto description) {
+        this.description = description;
     }
 }

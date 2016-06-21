@@ -6,8 +6,13 @@
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
        default-lazy-init="true">
 
-    <bean id="fieldConverter" class="com.zhytnik.shop.dto.core.converter.impl.FieldConverter"/>
-    <bean id="fieldDtoConverter" class="com.zhytnik.shop.dto.core.converter.impl.FieldDtoConverter"/>
+    <bean id="stringConverter" class="com.zhytnik.shop.dto.core.converter.impl.MultiStringConverter"/>
+    <bean id="stringDtoConverter" class="com.zhytnik.shop.dto.core.converter.impl.MultiStringDtoConverter"/>
+
+    <bean id="fieldConverter" class="com.zhytnik.shop.dto.core.converter.impl.FieldConverter"
+          p:multiLanguageConverter-ref="stringConverter"/>
+    <bean id="fieldDtoConverter" class="com.zhytnik.shop.dto.core.converter.impl.FieldDtoConverter"
+          p:multiLanguageConverter-ref="stringDtoConverter"/>
 
     <bean id="typeConverter" class="com.zhytnik.shop.dto.core.converter.impl.TypeConverter"
           p:fieldConverter-ref="fieldConverter"/>

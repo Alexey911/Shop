@@ -62,6 +62,7 @@ app.service('TypeService', function ($http) {
 
 app.controller('TypeController', function ($scope, $http, TypeService) {
     $scope.primitiveTypes = TypeService.getPrimitiveTypes();
+    $scope.languages = ['ru', 'en'];
     $scope.type = {
         id: null,
         name: "",
@@ -71,12 +72,14 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
     $scope.types = [];
     $scope.isUnique = false;
     $scope.field = {};
+    $scope.translation = {};
 
     var resetField = function () {
         var field = $scope.field;
         field.name = "";
         field.required = false;
         field.type = $scope.primitiveTypes[2];
+        field.description = {};
     };
     var reset = function () {
         var type = {};
@@ -88,7 +91,11 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
     var loadAll = () => TypeService.loadAll().then((types) => $scope.types = types);
 
     $scope.addField = function () {
-        $scope.type.fields.push(angular.copy($scope.field));
+        var field = angular.copy($scope.field);
+        var translation = {};
+        translation[field.description.language] = field.description.translate;
+        field.description = {'translations' : translation};
+        $scope.type.fields.push(field);
         resetField();
     };
     $scope.create = function () {
@@ -108,15 +115,23 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
         TypeService.clear();
         $scope.types = [];
     };
-    
+
     $scope.onChoice = (type) => $scope.type = type;
 
     $scope.remove = function () {
-        TypeService.remove($scope.type.id).
-        then(function () {
+        TypeService.remove($scope.type.id).then(function () {
             reset();
             loadAll();
         });
+    };
+
+    $scope.description = function (field) {
+        var translations = field.description.translations;
+        for(var locale in translations)
+            if(translations.hasOwnProperty(locale)){
+                return translations[locale];
+            }
+        return 'not found';
     };
 
     resetField();

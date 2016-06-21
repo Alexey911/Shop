@@ -15,14 +15,11 @@ import static com.google.common.collect.Sets.newHashSet;
 @Entity
 public class MultilanguageString extends VersionableEntity {
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "TRANSLATIONS",
             joinColumns = @JoinColumn(name = "STRING_ID"),
             inverseJoinColumns = @JoinColumn(name = "TRANSLATION_ID"))
     private Set<MultilanguageTranslation> translations;
-
-    @Column(name = "CODE")
-    private String code;
 
     public Set<MultilanguageTranslation> getTranslations() {
         return translations;
@@ -35,13 +32,5 @@ public class MultilanguageString extends VersionableEntity {
 
     public void setTranslations(Set<MultilanguageTranslation> translations) {
         this.translations = translations;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 }

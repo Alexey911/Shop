@@ -8,19 +8,19 @@
     <title>Ultimate Shop</title>
     <link rel="stylesheet" type="text/css" href="${context}/resources/css/main.css">
 </head>
-<body ng-app="app">
-<div ng-controller="TypeController">
+<body>
+<div ng-app="app" ng-controller="TypeController">
     <h2>Types</h2>
     <types></types>
 
-    <h3>Fields</h3>
-    <ul>
-        <li ng-repeat="field in type.fields">
-            <span>{{field.name}}</span>
-            <span>({{field.type}}, </span>
-            <span>{{field.required && 'required' || 'not required'}})</span>
-        </li>
-    </ul>
+    <h3>Fields of {{type.name || 'new type'}}</h3>
+    <table>
+        <tr ng-repeat="field in type.fields">
+            <td>{{field.name}}</td>
+            <td>{{field.type}}</td>
+            <td>{{field.required && 'required' || 'not required'}}</td>
+        </tr>
+    </table>
     <br>
 
     <div ng-form name="fieldForm">
@@ -33,6 +33,14 @@
         <label>
             Is field required
             <input type="checkbox" ng-model="field.required"/>
+        </label>
+        <br>
+
+        <label>
+            Enter field translation
+            <input type="text" ng-model="field.description.translate" required/>
+            <br>
+            <select ng-model="field.description.language" ng-options="language for language in languages" required></select>
         </label>
         <br>
 
@@ -63,7 +71,6 @@
         <button ng-click="create()" ng-disabled="!typeForm.name.$valid">Create</button>
     </div>
     <button ng-click="reset()">Reset</button>
-    <button ng-click="update()">Update</button>
     <button ng-click="remove()">Remove</button>
     <button ng-click="loadAll()">Load All</button>
     <button ng-click="clear()">Clear</button>
