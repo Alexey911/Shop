@@ -21,49 +21,35 @@ app.service('TypeService', function ($http, $q) {
         };
         return names[name];
     };
-
-    this.getTypesTemplate = () => shopHost + '/resources/app/type/types.htm';
-
-    this.create = function (type) {
+    var setNativeFieldNames = function (type) {
         var order = 0;
         for (var field of type.fields) {
             field.type = nativeTypeName(field.type);
             field.order = order++;
         }
+    };
+    var changeTypesVisibility = function (types) {
+        for (var type of types) for (var field of type.fields)
+            field.type = visibleTypeName(field.type);
+        return types;
+    };
+
+    this.getTypesTemplate = () => shopHost + '/resources/app/type/types.htm';
+
+    this.create = function (type) {
+        type = angular.copy(type);
+        setNativeFieldNames(type);
         var config = {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         };
-        $http.post(typeHost, type, config)
-            .success(function (data, status) {
-                console.log(status, data);
-            })
-            .error(function (data, status) {
-                console.log(status);
-            });
+        return $http.post(typeHost, type, config);
     };
-    this.loadAll = function (success) {
-        var deferred = $q.defer();
-        $http.get(typeHost)
-            .success(function (data, status) {
-                if (status == 200) {
-                    for (var type of data) {
-                        for (var field of type.fields) {
-                            field.type = visibleTypeName(field.type);
-                        }
-                    }
-                }
-                console.log(status, data);
-                success(data);
-            })
-            .error(function (data, status) {
-                console.log(status, data);
-            });
-    };
-
-    this.isUnique = (name) => $http({method: "GET", url: typeHost, params: {"isFree": name}});
+    this.loadAll = () => $http.get(typeHost).then((response) => changeTypesVisibility(response.data));
+    this.isUnique = (name) => $http({method: "GET", url: typeHost, params: {"isFree": name}})
+        .then((response) => response.data);
 });
 
 app.controller('TypeController', function ($scope, $http, TypeService) {
@@ -78,27 +64,40 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
     $scope.isUnique = false;
     $scope.field = {};
 
+    var resetField = function () {
+        var field = $scope.field;
+        field.name = "";
+        field.required = false;
+        field.type = $scope.primitiveTypes[2];
+    };
+    var reset = function () {
+        var type = $scope.type;
+        type.fields = [];
+        type.name = "";
+        resetField();
+    };
+    var loadAll = () => TypeService.loadAll().then((types) => $scope.types = types);
+
     $scope.addField = function () {
         $scope.type.fields.push(angular.copy($scope.field));
-        $scope.resetField();
+        resetField();
     };
-    $scope.create = () => TypeService.create(angular.copy($scope.type));
-    $scope.loadAll = () => TypeService.loadAll((data) => $scope.types = data);
-    $scope.reset = function () {
-        $scope.type.fields = [];
-        $scope.type.name = "";
-        $scope.resetField();
+    $scope.create = function () {
+        TypeService.create($scope.type).then(function () {
+            $scope.types.push(angular.copy($scope.type));
+            reset();
+        })
     };
-    $scope.resetField = function () {
-        $scope.field.name = "";
-        $scope.field.required = false;
-        $scope.field.type = $scope.primitiveTypes[2];
-    };
-    $scope.resetField();
-    $scope.loadAll();
+
+    $scope.loadAll = loadAll;
+    $scope.reset = reset;
+    $scope.resetField = resetField;
+
+    resetField();
+    loadAll();
 });
 
-app.directive('unique', function ($q, TypeService) {
+app.directive('unique', function (TypeService) {
     return {
         restrict: 'A',
         require: 'ngModel',
