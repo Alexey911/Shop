@@ -1,7 +1,7 @@
 'use strict';
-var app = angular.module("app", []);
+var app = angular.module('app', []);
 
-app.service('TypeService', function ($http) {
+app.service('TypeService', function ($http, $q) {
     this.HOME = 'http://' + window.location.host;
     this.URL = this.HOME + '/types';
 
@@ -43,6 +43,7 @@ app.service('TypeService', function ($http) {
             });
     };
     this.loadAll = function (success) {
+        var deferred = $q.defer();
         $http.get(this.URL)
             .success(function (data, status) {
                 if (status == 200) {
@@ -71,7 +72,7 @@ app.service('TypeService', function ($http) {
     };
     this.loadTypesTemplate = function () {
         var request = new XMLHttpRequest();
-        request.open('GET', this.HOME + '/resources/types.htm', false);
+        request.open('GET', this.HOME + '/resources/app/type/types.htm', false);
         request.send();
         return request.responseText;
     }
@@ -93,35 +94,22 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
         $scope.type.fields.push(angular.copy($scope.field));
         $scope.resetField();
     };
-    $scope.resetField = function () {
-        $scope.field.name = "";
-        $scope.field.required = false;
-        $scope.field.type = $scope.primitiveTypes[2];
-    };
-    $scope.create = function () {
-        TypeService.create(angular.copy($scope.type));
-    };
-    $scope.loadAll = function () {
-        TypeService.loadAll(function (data) {
-            $scope.types = data;
-        });
-    };
+    $scope.create = () => TypeService.create(angular.copy($scope.type));
+    $scope.loadAll = () => TypeService.loadAll((data) => $scope.types = data);
     $scope.reset = function () {
         $scope.type.fields = [];
         $scope.type.name = "";
         $scope.resetField();
     };
+    $scope.resetField = function () {
+        $scope.field.name = "";
+        $scope.field.required = false;
+        $scope.field.type = $scope.primitiveTypes[2];
+    };
     $scope.resetField();
     $scope.loadAll();
 });
 
-app.directive('types', function (TypeService) {
-    return {
-        restrict: 'E',
-        replace: false,
-        template: TypeService.loadTypesTemplate()
-    };
-});
 app.directive('unique', function (TypeService) {
     return {
         restrict: 'A',
@@ -133,4 +121,11 @@ app.directive('unique', function (TypeService) {
             });
         }
     }
+});
+app.directive('types', function (TypeService) {
+    return {
+        restrict: 'E',
+        replace: false,
+        template: TypeService.loadTypesTemplate()
+    };
 });

@@ -6,7 +6,6 @@
   ],
   "description": "High performance shop",
   "dependencies": {
-    "angular": "1.5.7",
-    "requirejs": "2.2.0"
+    "angular": "1.5.7"
   }
 }
