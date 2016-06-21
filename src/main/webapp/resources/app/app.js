@@ -2,8 +2,8 @@
 var app = angular.module('app', []);
 
 app.service('TypeService', function ($http, $q) {
-    this.HOME = 'http://' + window.location.host;
-    this.URL = this.HOME + '/types';
+    var shopHost = 'http://' + window.location.host;
+    var typeHost = shopHost + '/types';
 
     var nativeTypeName = function (name) {
         var names = {
@@ -22,6 +22,8 @@ app.service('TypeService', function ($http, $q) {
         return names[name];
     };
 
+    this.getTypesTemplate = () => shopHost + '/resources/app/type/types.htm';
+
     this.create = function (type) {
         var order = 0;
         for (var field of type.fields) {
@@ -34,7 +36,7 @@ app.service('TypeService', function ($http, $q) {
                 'Content-Type': 'application/json'
             }
         };
-        $http.post(this.URL, type, config)
+        $http.post(typeHost, type, config)
             .success(function (data, status) {
                 console.log(status, data);
             })
@@ -44,7 +46,7 @@ app.service('TypeService', function ($http, $q) {
     };
     this.loadAll = function (success) {
         var deferred = $q.defer();
-        $http.get(this.URL)
+        $http.get(typeHost)
             .success(function (data, status) {
                 if (status == 200) {
                     for (var type of data) {
@@ -61,21 +63,13 @@ app.service('TypeService', function ($http, $q) {
             });
     };
     this.isUnique = function (name, success) {
-        $http({
-            method: "GET",
-            url: this.URL + "?isFree=" + name
-        }).then(function onSuccess(response) {
-            success(response.data);
-        }, function onError(response) {
-            console.log("error", response);
-        });
+        $http({method: "GET", url: typeHost, params: {"isFree": name}})
+            .then(function onSuccess(response) {
+                success(response.data);
+            }, function onError(response) {
+                console.log("error", response);
+            });
     };
-    this.loadTypesTemplate = function () {
-        var request = new XMLHttpRequest();
-        request.open('GET', this.HOME + '/resources/app/type/types.htm', false);
-        request.send();
-        return request.responseText;
-    }
 });
 
 app.controller('TypeController', function ($scope, $http, TypeService) {
@@ -126,6 +120,6 @@ app.directive('types', function (TypeService) {
     return {
         restrict: 'E',
         replace: false,
-        template: TypeService.loadTypesTemplate()
-    };
+        templateUrl: TypeService.getTypesTemplate()
+    }
 });
