@@ -62,14 +62,8 @@ app.service('TypeService', function ($http, $q) {
                 console.log(status, data);
             });
     };
-    this.isUnique = function (name, success) {
-        $http({method: "GET", url: typeHost, params: {"isFree": name}})
-            .then(function onSuccess(response) {
-                success(response.data);
-            }, function onError(response) {
-                console.log("error", response);
-            });
-    };
+
+    this.isUnique = (name) => $http({method: "GET", url: typeHost, params: {"isFree": name}});
 });
 
 app.controller('TypeController', function ($scope, $http, TypeService) {
@@ -104,14 +98,14 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
     $scope.loadAll();
 });
 
-app.directive('unique', function (TypeService) {
+app.directive('unique', function ($q, TypeService) {
     return {
         restrict: 'A',
         require: 'ngModel',
         link: function ($scope, elem, attrs, ctrl) {
-            $scope.$watch(attrs.ngModel, function (value) {
-                TypeService.isUnique(value,
-                    (unique) => ctrl.$setValidity('unique', unique));
+            $scope.$watch(attrs.ngModel, function (name) {
+                TypeService.isUnique(name)
+                    .then((unique) => ctrl.$setValidity('unique', unique));
             });
         }
     }
