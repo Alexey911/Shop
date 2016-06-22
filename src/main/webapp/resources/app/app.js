@@ -1,8 +1,9 @@
 'use strict';
+
+var shopHost = 'http://' + window.location.host;
 var app = angular.module('app', ['ngMessages']);
 
 app.service('TypeService', function ($http) {
-    var shopHost = 'http://' + window.location.host;
     var typeHost = shopHost + '/types';
 
     var nativeTypeName = function (name) {
@@ -94,7 +95,7 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
         var field = angular.copy($scope.field);
         var translation = {};
         translation[field.description.language] = field.description.translate;
-        field.description = {'translations' : translation};
+        field.description = {'translations': translation};
         $scope.type.fields.push(field);
         resetField();
     };
@@ -127,8 +128,8 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
 
     $scope.description = function (field) {
         var translations = field.description.translations;
-        for(var locale in translations)
-            if(translations.hasOwnProperty(locale)){
+        for (var locale in translations)
+            if (translations.hasOwnProperty(locale)) {
                 return translations[locale];
             }
         return 'not found';
@@ -136,6 +137,13 @@ app.controller('TypeController', function ($scope, $http, TypeService) {
 
     resetField();
     loadAll();
+});
+
+app.controller('SystemController', function ($scope, $http, $interval) {
+    $scope.system = {};
+    var update = () => $http.get(shopHost + '/system')
+        .then((response) => $scope.system = response.data);
+    $interval(update, 400);
 });
 
 app.directive('unique', function (TypeService) {

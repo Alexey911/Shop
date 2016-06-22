@@ -8,8 +8,8 @@
     <title>Ultimate Shop</title>
     <link rel="stylesheet" type="text/css" href="${context}/resources/css/main.css">
 </head>
-<body>
-<div ng-app="app" ng-controller="TypeController">
+<body ng-app="app">
+<div ng-controller="TypeController">
     <h2>Types</h2>
     <types></types>
 
@@ -40,7 +40,8 @@
             Enter field translation
             <input type="text" ng-model="field.description.translate" required/>
             <br>
-            <select ng-model="field.description.language" ng-options="language for language in languages" required></select>
+            <select ng-model="field.description.language" ng-options="language for language in languages"
+                    required></select>
         </label>
         <br>
 
@@ -74,6 +75,16 @@
     <button ng-click="remove()">Remove</button>
     <button ng-click="loadAll()">Load All</button>
     <button ng-click="clear()">Clear</button>
+</div>
+<div ng-controller="SystemController">
+    <p>JVM load {{system.jvmLoad}} %</p>
+    <p>CPU load {{system.cpuLoad}} %</p>
+    <p>Using memory {{system.usingMemory}}</p>
+    <p>Initial memory {{system.initialMemory}}</p>
+    <p>Commited memory {{system.commitedMemory}}</p>
+    <p>Using system memory {{system.totalMemory - system.freeMemory}}</p>
+    <p>Free system memory {{system.freeMemory}}</p>
+    <p>Total system memory {{system.totalMemory}}</p>
 </div>
 
 <script src="${context}/resources/libraries/angular/angular.js"></script>
