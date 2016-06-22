@@ -87,6 +87,16 @@
     <p>Total system memory {{system.totalMemory}}</p>
 </div>
 
+<div ng-controller="ProductController">
+    <h3>Products</h3>
+    <br>
+    <div ng-repeat="product in products">
+        <p>{{product.shortName}}</p>
+        <p>{{product.title}}</p>
+        <p>{{product.description}}</p>
+    </div>
+</div>
+
 <script src="${context}/resources/libraries/angular/angular.js"></script>
 <script src="${context}/resources/libraries/angular-messages/angular-messages.js"></script>
 <script src="${context}/resources/app/app.js"></script>

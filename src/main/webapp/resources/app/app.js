@@ -10,7 +10,8 @@ app.service('TypeService', function ($http) {
         var names = {
             'Boolean': 'BOOLEAN',
             'Float': 'DOUBLE',
-            'Integer': 'LONG'
+            'Integer': 'LONG',
+            'MultiString': 'STRING'
         };
         return names[name];
     };
@@ -18,7 +19,8 @@ app.service('TypeService', function ($http) {
         var names = {
             'BOOLEAN': 'Boolean',
             'DOUBLE': 'Float',
-            'LONG': 'Integer'
+            'LONG': 'Integer',
+            'STRING': 'MultiString'
         };
         return names[name];
     };
@@ -37,7 +39,7 @@ app.service('TypeService', function ($http) {
 
     this.getTypesTemplate = () => shopHost + '/resources/app/type/types.htm';
 
-    this.getPrimitiveTypes = ()=> ['Boolean', 'Float', 'Integer'];
+    this.getPrimitiveTypes = ()=> ['Boolean', 'Float', 'Integer', 'MultiString'];
 
     this.create = function (type) {
         type = angular.copy(type);
@@ -143,7 +145,38 @@ app.controller('SystemController', function ($scope, $http, $interval) {
     $scope.system = {};
     var update = () => $http.get(shopHost + '/system')
         .then((response) => $scope.system = response.data);
-    $interval(update, 400);
+    // $interval(update, 400);
+});
+
+app.service('ProductService', function ($http) {
+    var productHost = shopHost + '/products';
+
+    this.loadAll = () => $http.get(productHost).then((response) => (response.data));
+
+    this.create = (product) => $http.post(productHost, product).then(response => response.data);
+});
+
+app.controller('ProductController', function ($scope, ProductService) {
+    $scope.products = [];
+
+    var product = {};
+
+    $scope.product = product;
+
+
+    product.id = 5;
+    product.type = 4025;
+    product.shortName = 'Short product name';
+    product.title = {"id": 1047, "translations": {"ru": "Заголовок"}};
+    product.description = {"id": 1047, "translations": {"ru": "Описание"}};
+    product.textField = {"id": 1047, "translations": {"ru": "Описание"}};
+
+    $scope.loadAll = () => ProductService.loadAll().then((products) => $scope.products = products);
+
+    $scope.create = () => ProductService.create($scope.product);
+
+    $scope.create();
+    $scope.loadAll();
 });
 
 app.directive('unique', function (TypeService) {

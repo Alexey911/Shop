@@ -1,11 +1,12 @@
 package com.zhytnik.shop.service;
 
 import com.zhytnik.shop.backend.dao.ProductDao;
-import com.zhytnik.shop.backend.dao.search.Filter;
 import com.zhytnik.shop.backend.tool.HistoryUtil;
 import com.zhytnik.shop.backend.validator.Validator;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.market.product.Product;
+import com.zhytnik.shop.domain.text.MultilanguageString;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,21 @@ public class ProductService {
     private ProductDao dao;
 
     private Validator<Product> validator;
+
+    @Transactional(readOnly = true)
+    public Product findById(Long id) {
+        return dao.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> loadAll() {
+        return dao.loadAll();
+    }
+
+    @Transactional
+    public Long create(Product product) {
+        return product.getId();
+    }
 
     public Product createByType(DynamicType type) {
         final Product product = new Product();
@@ -36,21 +52,13 @@ public class ProductService {
         dao.persist(p);
     }
 
-    public Product loadById(Long id) {
-        return dao.findById(id);
-    }
-
 //    public Product loadByCode(Long code) {
 //        return dao.findByCode(code);
-//    }
+//}
 
     public void update(Product p) {
         validator.validate(p);
         dao.update(p);
-    }
-
-    public List<Product> loadAll() {
-        return dao.loadAll();
     }
 
     public List<Product> findByKeywords(String... keywords) {

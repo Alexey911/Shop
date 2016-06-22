@@ -21,6 +21,11 @@ public class DynamicAccessUtil {
     }
 
     @SuppressWarnings("deprecation")
+    public static void initialDynamicValues(IDynamicEntity entity, int size) {
+        entity.setDynamicFieldsValues(new Object[size]);
+    }
+
+    @SuppressWarnings("deprecation")
     public static void setDynamicValue(IDynamicEntity entity, int pos, Object value) {
         entity.getDynamicFieldsValues()[pos] = value;
     }

@@ -10,21 +10,25 @@ import com.zhytnik.shop.domain.market.Category;
 import com.zhytnik.shop.domain.market.Comment;
 import com.zhytnik.shop.domain.market.Supply;
 import com.zhytnik.shop.domain.text.MultilanguageString;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
  * @author Alexey Zhytnik
  * @since 28.05.2016
  */
-@Table(name = "T_PRODUCT")
 @Entity
+@Table(name = "T_PRODUCT")
 public class Product extends VersionableEntity implements IDynamicEntity, IHistorizable<ProductPointer> {
 
+    @NotEmpty
     @Column(name = "SHORT_NAME", length = 30)
     private String shortName;
 
+    @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
     private MultilanguageString title;
 
@@ -53,6 +57,7 @@ public class Product extends VersionableEntity implements IDynamicEntity, IHisto
     )
     private Set<Comment> comments;
 
+    @NotNull
     @ManyToOne
     private DynamicType type;
 

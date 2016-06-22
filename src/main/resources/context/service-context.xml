@@ -19,6 +19,14 @@
           p:dao-ref="productDao"
           p:validator-ref="productValidator"/>
 
+    <bean id="productDtoService" class="com.zhytnik.shop.service.ProductDtoService"
+          p:service-ref="productService"
+          p:productConverter-ref="productConverter"
+          p:dtoConverter-ref="productDtoConverter"/>
+
+    <bean id="typeManager" class="com.zhytnik.shop.dto.core.converter.impl.TypeManager"
+          p:typeService-ref="typeService"/>
+
     <bean id="typeCreator" class="com.zhytnik.shop.backend.tool.TypeCreator"
           p:jdbcTemplate-ref="template"
           p:validator-ref="typeValidator"

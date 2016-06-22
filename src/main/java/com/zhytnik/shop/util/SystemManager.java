@@ -61,7 +61,7 @@ public class SystemManager {
     }
 
     private static double round(double value) {
-        BigDecimal bg = new BigDecimal(value);
+        BigDecimal bg = new BigDecimal(value).multiply(new BigDecimal(100L));
         return bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 

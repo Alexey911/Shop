@@ -18,4 +18,9 @@
           p:fieldConverter-ref="fieldConverter"/>
     <bean id="typeDtoConverter" class="com.zhytnik.shop.dto.core.converter.impl.TypeDtoConverter"
           p:fieldConverter-ref="fieldDtoConverter"/>
+
+    <bean id="productConverter" class="com.zhytnik.shop.dto.core.converter.impl.ProductConverter"
+          p:stringConverter-ref="stringConverter"/>
+    <bean id="productDtoConverter" class="com.zhytnik.shop.dto.core.converter.impl.ProductDtoConverter"
+          p:stringDtoConverter-ref="stringDtoConverter" p:typeManager-ref="typeManager"/>
 </beans>
