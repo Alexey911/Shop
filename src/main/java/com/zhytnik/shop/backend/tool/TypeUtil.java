@@ -40,10 +40,11 @@ public class TypeUtil {
 
         TYPE_CONVERTER = ImmutableMap.<PrimitiveType, Type>builder().
                 put(PrimitiveType.LONG, LongType.INSTANCE).
+                put(PrimitiveType.STRING, LongType.INSTANCE).
                 put(PrimitiveType.TEXT, StringType.INSTANCE).
                 put(PrimitiveType.DOUBLE, DoubleType.INSTANCE).
                 put(PrimitiveType.BOOLEAN, BooleanType.INSTANCE).
-                put(PrimitiveType.DATE, DateType.INSTANCE).build();
+                put(PrimitiveType.DATE, DbTimestampType.INSTANCE).build();
     }
 
     private TypeUtil() {

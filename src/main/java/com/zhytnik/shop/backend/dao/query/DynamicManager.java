@@ -73,7 +73,7 @@ public class DynamicManager {
     private void loadNotSimpleFields(IDynamicEntity entity) {
         for (DynamicField field : entity.getDynamicType().getFields()) {
             final PrimitiveType type = field.getPrimitiveType();
-            if (type == PrimitiveType.TEXT) {
+            if (type == PrimitiveType.STRING) {
                 final Long strID = (Long) getDynamicValue(entity, field.getOrder());
                 final MultilanguageString str = entityManager.find(MultilanguageString.class, strID);
                 setDynamicValue(entity, field.getOrder(), str);

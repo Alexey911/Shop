@@ -55,6 +55,7 @@ class QueryBuilder {
         return delete;
     }
 
+    //TODO: use join
     static Select createSelect(IDynamicEntity entity) {
         return getDefaultSelect(entity.getDynamicType(), false).
                 setWhereClause(DYNAMIC_ID_FIELD + " = " + entity.getId());

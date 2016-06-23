@@ -21,6 +21,7 @@ class TableScriptGenerator {
 
     private String schema;
 
+    //TODO: in future user FK
     public String generate(String tableName, List<DynamicField> fields) {
         final Table table = new Table(tableName);
 
@@ -56,6 +57,6 @@ class TableScriptGenerator {
     }
 
     public void setSchema(String schema) {
-        if(!schema.isEmpty()) this.schema = schema;
+        if (!schema.isEmpty()) this.schema = schema;
     }
 }
