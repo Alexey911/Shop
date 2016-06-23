@@ -11,7 +11,9 @@ app.service('TypeService', function ($http) {
             'Boolean': 'BOOLEAN',
             'Float': 'DOUBLE',
             'Integer': 'LONG',
-            'MultiString': 'STRING'
+            'MultiString': 'STRING',
+            'String': 'TEXT',
+            'Time': 'DATE'
         };
         return names[name];
     };
@@ -20,7 +22,9 @@ app.service('TypeService', function ($http) {
             'BOOLEAN': 'Boolean',
             'DOUBLE': 'Float',
             'LONG': 'Integer',
-            'STRING': 'MultiString'
+            'STRING': 'MultiString',
+            'TEXT': 'String',
+            'DATE': 'Time'
         };
         return names[name];
     };
@@ -39,7 +43,7 @@ app.service('TypeService', function ($http) {
 
     this.getTypesTemplate = () => shopHost + '/resources/app/type/types.htm';
 
-    this.getPrimitiveTypes = ()=> ['Boolean', 'Float', 'Integer', 'MultiString'];
+    this.getPrimitiveTypes = ()=> ['Boolean', 'Float', 'Integer', 'MultiString', 'String', 'Time'];
 
     this.create = function (type) {
         type = angular.copy(type);
@@ -165,11 +169,16 @@ app.controller('ProductController', function ($scope, ProductService) {
 
 
     product.id = 5;
-    product.type = 4025;
+    product.type = 4790;
     product.shortName = 'Short product name';
     product.title = {"id": 1047, "translations": {"ru": "Заголовок"}};
     product.description = {"id": 1047, "translations": {"ru": "Описание"}};
-    product.textField = {"id": 1047, "translations": {"ru": "Описание"}};
+    product.IntegerField = 777;
+    product.booleanField = true;
+    product.FloatField = 45.6;
+    product.MultiString = {"id": 1047, "translations": {"ru": "Описание"}};
+    product.StringField = 'string value';
+    product.TimeField = new Date().getTime();
 
     $scope.loadAll = () => ProductService.loadAll().then((products) => $scope.products = products);
 

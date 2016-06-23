@@ -5,7 +5,6 @@ import com.zhytnik.shop.backend.tool.HistoryUtil;
 import com.zhytnik.shop.backend.validator.Validator;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.market.product.Product;
-import com.zhytnik.shop.domain.text.MultilanguageString;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,6 +33,7 @@ public class ProductService {
 
     @Transactional
     public Long create(Product product) {
+        validator.validate(product);
         return product.getId();
     }
 

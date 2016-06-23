@@ -14,7 +14,7 @@ import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.zhytnik.shop.backend.validator.LengthValidator.MAX_LENGTH;
 import static com.zhytnik.shop.datahelper.DynamicTypeDH.createTypeWithSingleField;
 import static com.zhytnik.shop.datahelper.ProductDH.createProductByType;
-import static com.zhytnik.shop.domain.dynamic.PrimitiveType.STRING;
+import static com.zhytnik.shop.domain.dynamic.PrimitiveType.TEXT;
 
 /**
  * @author Alexey Zhytnik
@@ -38,7 +38,7 @@ public class DynamicEntityValidatorTest {
 
         final DynamicField field = getOnlyElement(type.getFields());
         field.setName(ENTITY_FIELD);
-        field.setPrimitiveType(STRING);
+        field.setPrimitiveType(TEXT);
         field.setRequired(true);
     }
 

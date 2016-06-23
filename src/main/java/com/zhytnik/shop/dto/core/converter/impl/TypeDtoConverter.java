@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zhytnik.shop.dto.core.converter.impl.DtoUtil.mergeIdentity;
+import static com.zhytnik.shop.dto.core.converter.impl.DtoManager.mergeIdentity;
 
 /**
  * @author Alexey Zhytnik

@@ -18,6 +18,7 @@ public class DynamicEntityValidator implements Validator<IDynamicEntity> {
 
     private LengthValidator lengthValidator = new LengthValidator();
 
+    //TODO: validate dynamic
     @Override
     public void validate(IDynamicEntity entity) {
         final List<DynamicField> columns = entity.getDynamicType().getFields();
@@ -30,7 +31,7 @@ public class DynamicEntityValidator implements Validator<IDynamicEntity> {
             if (type.isRequired() && value == null) {
                 failOnEmptyRequiredField(type);
             }
-            if (type.getPrimitiveType() == PrimitiveType.STRING) {
+            if (type.getPrimitiveType() == PrimitiveType.TEXT) {
                 lengthValidator.validate((String) value);
             }
         }

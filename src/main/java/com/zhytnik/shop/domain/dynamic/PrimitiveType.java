@@ -5,5 +5,5 @@ package com.zhytnik.shop.domain.dynamic;
  * @since 28.05.2016
  */
 public enum PrimitiveType {
-    BOOLEAN, DOUBLE, LONG, DATE, STRING, GALLERY, MAP, CURRENCY
+    BOOLEAN, DOUBLE, LONG, DATE, TEXT, STRING, GALLERY, MAP, CURRENCY
 }

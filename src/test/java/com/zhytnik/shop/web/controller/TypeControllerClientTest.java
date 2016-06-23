@@ -16,7 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.LONG;
-import static com.zhytnik.shop.domain.dynamic.PrimitiveType.STRING;
+import static com.zhytnik.shop.domain.dynamic.PrimitiveType.TEXT;
 import static com.zhytnik.shop.util.dataset.DropTable.Phase.AFTER;
 import static com.zhytnik.shop.util.web.WebUtil.*;
 import static java.util.Collections.singletonList;
@@ -48,7 +48,7 @@ public class TypeControllerClientTest extends IntegrationControllerTest {
         super.setUp();
 
         field.setName("field1");
-        field.setType(STRING);
+        field.setType(TEXT);
         field.setOrder(0);
 
         type.setId(EXIST_TYPE);

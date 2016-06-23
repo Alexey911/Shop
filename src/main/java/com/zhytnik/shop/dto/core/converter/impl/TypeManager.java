@@ -3,7 +3,6 @@ package com.zhytnik.shop.dto.core.converter.impl;
 import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 import com.zhytnik.shop.domain.market.product.Product;
-import com.zhytnik.shop.dto.core.Dto;
 import com.zhytnik.shop.service.TypeService;
 
 import java.util.AbstractMap;
@@ -12,13 +11,13 @@ import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static com.zhytnik.shop.backend.access.DynamicAccessUtil.initialDynamicValues;
-import static com.zhytnik.shop.dto.core.converter.impl.DtoUtil.getDtoClass;
+import static com.zhytnik.shop.dto.core.converter.impl.DtoManager.getDtoClass;
 
 /**
  * @author Alexey Zhytnik
  * @since 22.06.2016
  */
-//TODO: merge with DynamicAccessor
+//TODO: merge with DynamicAccessor and transfer to another package
 class TypeManager {
 
     private TypeService service;
@@ -31,14 +30,14 @@ class TypeManager {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Map.Entry<Integer, Class<? extends Dto>>> getTypeDescription(Product product) {
+    public Map<String, Map.Entry<Integer, Class<?>>> getTypeDescription(Product product) {
         final DynamicType type = product.getDynamicType();
         final List<DynamicField> fields = type.getFields();
 
-        final Map<String, Map.Entry<Integer, Class<? extends Dto>>> description = newHashMap();
+        final Map<String, Map.Entry<Integer, Class<?>>> description = newHashMap();
         for (DynamicField field : fields) {
             final Integer order = field.getOrder();
-            final Class<? extends Dto> clazz = getDtoClass(field.getPrimitiveType());
+            final Class<?> clazz = getDtoClass(field.getPrimitiveType());
             description.put(field.getName(), new AbstractMap.SimpleEntry(order, clazz));
         }
         return description;

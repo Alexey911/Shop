@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 public class InfrastructureException extends TranslatableException {
 
-    public InfrastructureException(Throwable cause){
+    public InfrastructureException() {
+        super();
+    }
+
+    public InfrastructureException(Throwable cause) {
         super(cause);
     }
 

@@ -25,21 +25,22 @@ public class TypeUtil {
     static {
         TYPE_MAPPING = ImmutableMap.<PrimitiveType, Integer>builder().
                 put(PrimitiveType.LONG, Types.BIGINT).
-                put(PrimitiveType.STRING, Types.VARCHAR).
+                put(PrimitiveType.TEXT, Types.VARCHAR).
                 put(PrimitiveType.DOUBLE, Types.DOUBLE).
                 put(PrimitiveType.BOOLEAN, Types.BOOLEAN).
+                put(PrimitiveType.STRING, Types.BIGINT).
                 put(PrimitiveType.DATE, Types.DATE).build();
 
         TYPE_REFLECTION = ImmutableMap.<PrimitiveType, Class>builder().
                 put(PrimitiveType.LONG, Long.class).
-                put(PrimitiveType.STRING, String.class).
+                put(PrimitiveType.TEXT, String.class).
                 put(PrimitiveType.DOUBLE, Double.class).
                 put(PrimitiveType.BOOLEAN, Boolean.class).
                 put(PrimitiveType.DATE, Date.class).build();
 
         TYPE_CONVERTER = ImmutableMap.<PrimitiveType, Type>builder().
                 put(PrimitiveType.LONG, LongType.INSTANCE).
-                put(PrimitiveType.STRING, StringType.INSTANCE).
+                put(PrimitiveType.TEXT, StringType.INSTANCE).
                 put(PrimitiveType.DOUBLE, DoubleType.INSTANCE).
                 put(PrimitiveType.BOOLEAN, BooleanType.INSTANCE).
                 put(PrimitiveType.DATE, DateType.INSTANCE).build();
@@ -51,7 +52,7 @@ public class TypeUtil {
     public static String getSqlType(Dialect dialect, PrimitiveType type) {
         final Integer code = TYPE_MAPPING.get(type);
         if (code == null) failOnUnknownType(type);
-        return (type == PrimitiveType.STRING) ?
+        return (type == PrimitiveType.TEXT) ?
                 dialect.getTypeName(code, MAX_LENGTH, 0, 0) :
                 dialect.getTypeName(code);
     }

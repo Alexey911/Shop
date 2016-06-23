@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import static com.zhytnik.shop.datahelper.ProductDH.createProduct;
-import static com.zhytnik.shop.domain.dynamic.PrimitiveType.STRING;
+import static com.zhytnik.shop.domain.dynamic.PrimitiveType.TEXT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DynamicAccessorTest {
 
     static final String FIELD_NAME = "custom_field";
-    static final PrimitiveType FIELD_TYPE = STRING;
+    static final PrimitiveType FIELD_TYPE = TEXT;
 
     DynamicAccessor accessor;
 

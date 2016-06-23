@@ -4,6 +4,7 @@ import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.dto.ProductDto;
 import com.zhytnik.shop.dto.core.converter.IDtoConverter;
 import com.zhytnik.shop.dto.core.converter.IEntityConverter;
+import com.zhytnik.shop.service.support.ClientSupportManager;
 
 import java.util.List;
 
@@ -16,24 +17,46 @@ import static com.google.common.collect.Lists.newArrayList;
 public class ProductDtoService {
 
     private ProductService service;
+    private ClientSupportManager supportManager;
 
     private IDtoConverter<Product, ProductDto> dtoConverter;
     private IEntityConverter<Product, ProductDto> productConverter;
 
     public ProductDto findById(Long id) {
-        return productConverter.convert(service.findById(id));
-    }
-
-    public Long create(ProductDto dto) {
-        return service.create(dtoConverter.convert(dto));
+        final Product product = service.findById(id);
+        prepareBeforeSend(product);
+        return productConverter.convert(product);
     }
 
     public List<ProductDto> loadAll() {
         final List<ProductDto> dtos = newArrayList();
-        for(Product product : service.loadAll()){
+        for (Product product : service.loadAll()) {
+            prepareBeforeSend(product);
             dtos.add(productConverter.convert(product));
         }
         return dtos;
+    }
+
+    public Long create(ProductDto dto) {
+        final Product product = dtoConverter.convert(dto);
+        prepareBeforeSave(product);
+        return service.create(product);
+    }
+
+    private void prepareBeforeSend(Product product) {
+        supportManager.prepareBeforeSend(product);
+        supportManager.prepareBeforeSend(product.getTitle());
+        supportManager.prepareBeforeSend(product.getDescription());
+    }
+
+    private void prepareBeforeSave(Product product) {
+        supportManager.prepareBeforeSave(product);
+        supportManager.prepareBeforeSave(product.getTitle());
+        supportManager.prepareBeforeSave(product.getDescription());
+    }
+
+    public void setClientSupportManager(ClientSupportManager clientSupportManager) {
+        supportManager = clientSupportManager;
     }
 
     public void setDtoConverter(IDtoConverter<Product, ProductDto> dtoConverter) {

@@ -13,7 +13,7 @@ import java.util.List;
 import static com.zhytnik.shop.backend.tool.TypeUtil.getSqlType;
 import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.LONG;
-import static com.zhytnik.shop.domain.dynamic.PrimitiveType.STRING;
+import static com.zhytnik.shop.domain.dynamic.PrimitiveType.TEXT;
 import static java.text.MessageFormat.format;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,7 +41,7 @@ public class TableScriptGeneratorTest {
         generator.setDialect(dialect);
 
         field.setOrder(0);
-        field.setPrimitiveType(STRING);
+        field.setPrimitiveType(TEXT);
         field.setName(CUSTOM_FIELD);
     }
 
@@ -54,7 +54,7 @@ public class TableScriptGeneratorTest {
     public void shouldGenerateValidScript() {
         final String expected = format("create table {0} ({1} {2}, {3} {4} not null)",
                 TABLE_NAME,
-                CUSTOM_FIELD, getSqlType(dialect, STRING),
+                CUSTOM_FIELD, getSqlType(dialect, TEXT),
                 DYNAMIC_ID_FIELD, getSqlType(dialect, LONG));
         assertThat(generator.generate(TABLE_NAME, fields)).isEqualTo(expected);
     }

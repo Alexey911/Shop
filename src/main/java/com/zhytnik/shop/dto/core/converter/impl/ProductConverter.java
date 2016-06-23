@@ -22,6 +22,7 @@ class ProductConverter implements IEntityConverter<Product, ProductDto> {
         dto.setType(product.getDynamicType().getId());
         dto.setTitle(stringConverter.convert(product.getTitle()));
         dto.setDescription(stringConverter.convert(product.getDescription()));
+        //TODO: convert dynamic-part
         return dto;
     }
 

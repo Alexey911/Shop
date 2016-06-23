@@ -20,17 +20,13 @@ public class ProductValidator implements Validator<Product> {
 
     @Override
     public void validate(Product product) {
-        if (isNull(product.getDynamicType())) {
-            failOnEmptyField("Dynamic type");
-        }
+        if (isNull(product.getDynamicType())) failOnEmptyField("Dynamic type");
         dynamicValidator.validate(product);
 
-        if (isNull(product.getCode())) failOnEmptyField("Code");
+//        if (isNull(product.getCode())) failOnEmptyField("Code");
         if (isEmpty(product.getShortName())) failOnEmptyField("Short name");
 
-        if (isNull(product.getTitle()) || !containsTitle(product)) {
-            failOnEmptyField("Title");
-        }
+        if (isNull(product.getTitle()) || !containsTitle(product)) failOnEmptyField("Title");
     }
 
     private boolean containsTitle(Product product) {
