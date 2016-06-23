@@ -22,8 +22,8 @@
     <bean id="productConverter" class="com.zhytnik.shop.dto.core.converter.impl.ProductConverter"
           p:stringConverter-ref="stringConverter"/>
     <bean id="productDtoConverter" class="com.zhytnik.shop.dto.core.converter.impl.ProductDtoConverter"
-`          p:stringDtoConverter-ref="stringDtoConverter"
           p:productCreator-ref="productCreator"
+          p:stringDtoConverter-ref="stringDtoConverter"
           p:dynamicDtoConverter-ref="dynamicDtoConverter"/>
 
     <bean id="dynamicDtoConverter" class="com.zhytnik.shop.dto.core.converter.impl.DynamicDtoConverter"/>
