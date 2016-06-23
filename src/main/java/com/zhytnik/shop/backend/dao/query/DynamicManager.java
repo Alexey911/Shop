@@ -56,9 +56,19 @@ public class DynamicManager {
         query.executeUpdate();
     }
 
-    public void delete(IDynamicEntity entity) {
+    public void remove(IDynamicEntity entity) {
         final Delete delete = createDelete(entity.getDynamicType(), entity.getId());
         entityManager.createNativeQuery(delete.toStatementString()).executeUpdate();
+        removeComplexFields(entity);
+    }
+
+    private void removeComplexFields(IDynamicEntity entity) {
+        for (DynamicField field : entity.getDynamicType().getFields()) {
+            if (field.getPrimitiveType() == PrimitiveType.STRING) {
+                final MultilanguageString str = (MultilanguageString) getDynamicValue(entity, field.getOrder());
+                entityManager.remove(str);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")

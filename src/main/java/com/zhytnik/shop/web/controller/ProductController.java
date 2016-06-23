@@ -3,6 +3,7 @@ package com.zhytnik.shop.web.controller;
 import com.zhytnik.shop.dto.ProductDto;
 import com.zhytnik.shop.service.ProductDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -47,5 +49,11 @@ class ProductController {
     @RequestMapping(method = POST)
     public Long create(@Valid @RequestBody ProductDto product, BindingResult result) {
         return service.create(product);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "{id}", method = DELETE)
+    public void remove(@PathVariable Long id) {
+        service.remove(id);
     }
 }

@@ -50,10 +50,10 @@ public class DynamicEntityDao<T extends IDynamicEntity> {
         return entity;
     }
 
-    public void delete(Long id) {
-        final T entity = entityManager.find(clazz, id);
+    public void remove(Long id) {
+        final T entity = findById(id);
         entityManager.remove(entity);
-        dynamicManager.delete(entity);
+        dynamicManager.remove(entity);
     }
 
     public List<T> loadAll() {

@@ -81,7 +81,7 @@ public class ProductDaoTest extends TransactionalTest {
     @Commit
     @DataSet("load")
     public void shouldDelete() {
-        productDao.delete(PRODUCT);
+        productDao.remove(PRODUCT);
         assertThat(productDao.loadAll()).isEmpty();
     }
 

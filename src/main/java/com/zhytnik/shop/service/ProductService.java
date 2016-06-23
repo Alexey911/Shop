@@ -39,6 +39,11 @@ public class ProductService {
         return product.getId();
     }
 
+    @Transactional
+    public void remove(Long id) {
+        dao.remove(id);
+    }
+
 //    public Product loadByCode(Long code) {
 //        return dao.findByCode(code);
 //}
@@ -51,10 +56,6 @@ public class ProductService {
 //    public List<Product> findByFilter(DynamicType type, Filter filter) {
 //        return dao.findByQuery(type, filter);
 //    }
-
-    public void delete(Long id) {
-        dao.delete(id);
-    }
 
     public void setDao(ProductDao dao) {
         this.dao = dao;

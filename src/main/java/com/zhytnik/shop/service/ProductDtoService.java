@@ -51,6 +51,10 @@ public class ProductDtoService {
         return service.create(product);
     }
 
+    public void remove(Long id){
+        service.remove(id);
+    }
+
     private void prepareBeforeSend(Product product) {
         supportManager.prepareBeforeSend(product);
         supportManager.prepareBeforeSend(product.getTitle());
