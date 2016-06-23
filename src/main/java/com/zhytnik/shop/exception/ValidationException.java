@@ -3,7 +3,6 @@ package com.zhytnik.shop.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -14,6 +13,8 @@ import java.util.List;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ValidationException extends TranslatableException {
 
+    private List<ObjectError> errors;
+
     public ValidationException(String message) {
         super(message);
     }
@@ -23,6 +24,14 @@ public class ValidationException extends TranslatableException {
     }
 
     public ValidationException(List<ObjectError> errors) {
-        throw new NotImplementedException();
+        this.errors = errors;
+    }
+
+    public boolean hasFieldsErrors() {
+        return errors != null && !errors.isEmpty();
+    }
+
+    public List<ObjectError> getErrors() {
+        return errors;
     }
 }

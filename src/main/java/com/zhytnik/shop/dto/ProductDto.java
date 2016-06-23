@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.zhytnik.shop.dto.core.Dto;
 import com.zhytnik.shop.dto.core.Identity;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -16,9 +19,17 @@ import static com.google.common.collect.Maps.newHashMap;
 public class ProductDto implements Dto, Identity {
 
     private Long id;
+
+    @NotNull
     private Long type;
+
+    @Max(50)
+    @NotEmpty
     private String shortName;
+
+    @NotNull
     private MultiStringDto title;
+
     private MultiStringDto description;
 
     private Map<String, Object> fields = newHashMap();
