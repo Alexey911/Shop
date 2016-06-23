@@ -3,6 +3,7 @@ package com.zhytnik.shop.backend.tool;
 import com.google.common.collect.ImmutableMap;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.exception.InfrastructureException;
+import org.hibernate.HibernateException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.type.*;
 
@@ -43,7 +44,7 @@ public class TypeUtil {
                 put(PrimitiveType.STRING, LongType.INSTANCE).
                 put(PrimitiveType.TEXT, StringType.INSTANCE).
                 put(PrimitiveType.DOUBLE, DoubleType.INSTANCE).
-                put(PrimitiveType.BOOLEAN, BooleanType.INSTANCE).
+                put(PrimitiveType.BOOLEAN, BooleanAdapter.BOOLEAN_ADAPTER).
                 put(PrimitiveType.DATE, DbTimestampType.INSTANCE).build();
     }
 
@@ -72,5 +73,16 @@ public class TypeUtil {
 
     private static String failOnUnknownType(PrimitiveType type) {
         throw new InfrastructureException("unsupported.type", type);
+    }
+
+    private static class BooleanAdapter extends BooleanType {
+
+        public static final BooleanAdapter BOOLEAN_ADAPTER = new BooleanAdapter();
+
+        @Override
+        public Boolean fromStringValue(String value) throws HibernateException {
+            if (value != null && value.equals("1")) return true;
+            return super.fromStringValue(value);
+        }
     }
 }

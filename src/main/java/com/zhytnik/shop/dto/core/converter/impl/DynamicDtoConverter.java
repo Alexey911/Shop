@@ -54,6 +54,7 @@ class DynamicDtoConverter {
     }
 
     private Object convert(Object rowField, Class type) {
+        if (rowField == null) return null;
         if (DtoSupport.isPrimitive(type)) return rowField;
         if (type.equals(Date.class)) return new Date(Long.valueOf(rowField.toString()));
         return convertComplexDto(rowField, type);

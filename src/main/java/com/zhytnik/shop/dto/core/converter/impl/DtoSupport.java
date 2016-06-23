@@ -8,6 +8,8 @@ import com.zhytnik.shop.exception.InfrastructureException;
 
 import java.util.Date;
 
+import static com.zhytnik.shop.domain.dynamic.PrimitiveType.*;
+
 /**
  * @author Alexey Zhytnik
  * @since 17.06.2016
@@ -39,6 +41,11 @@ class DtoSupport {
                 return Date.class;
         }
         throw new InfrastructureException();
+    }
+
+    static boolean isPrimitive(PrimitiveType type) {
+        return type.equals(BOOLEAN) || type.equals(DOUBLE) ||
+                type.equals(LONG) || type.equals(TEXT);
     }
 
     static boolean isPrimitive(Class<?> clazz) {

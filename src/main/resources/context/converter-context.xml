@@ -20,11 +20,13 @@
           p:fieldConverter-ref="fieldDtoConverter"/>
 
     <bean id="productConverter" class="com.zhytnik.shop.dto.core.converter.impl.ProductConverter"
-          p:stringConverter-ref="stringConverter"/>
+          p:stringConverter-ref="stringConverter"
+          p:dynamicConverter-ref="dynamicConverter"/>
     <bean id="productDtoConverter" class="com.zhytnik.shop.dto.core.converter.impl.ProductDtoConverter"
           p:productCreator-ref="productCreator"
           p:stringDtoConverter-ref="stringDtoConverter"
           p:dynamicDtoConverter-ref="dynamicDtoConverter"/>
 
+    <bean id="dynamicConverter" class="com.zhytnik.shop.dto.core.converter.impl.DynamicConverter"/>
     <bean id="dynamicDtoConverter" class="com.zhytnik.shop.dto.core.converter.impl.DynamicDtoConverter"/>
 </beans>
