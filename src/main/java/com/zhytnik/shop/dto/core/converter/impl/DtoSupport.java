@@ -3,8 +3,8 @@ package com.zhytnik.shop.dto.core.converter.impl;
 import com.zhytnik.shop.domain.IDomainObject;
 import com.zhytnik.shop.domain.dynamic.PrimitiveType;
 import com.zhytnik.shop.dto.MultiStringDto;
-import com.zhytnik.shop.dto.core.Dto;
 import com.zhytnik.shop.dto.core.Identity;
+import com.zhytnik.shop.exception.InfrastructureException;
 
 import java.util.Date;
 
@@ -12,11 +12,9 @@ import java.util.Date;
  * @author Alexey Zhytnik
  * @since 17.06.2016
  */
-class DtoManager {
+class DtoSupport {
 
-    private static MultiStringDtoConverter stringDtoConverter = new MultiStringDtoConverter();
-
-    private DtoManager() {
+    private DtoSupport() {
     }
 
     static void mergeIdentity(IDomainObject domainObject, Identity dto) {
@@ -40,23 +38,11 @@ class DtoManager {
             case DATE:
                 return Date.class;
         }
-        throw new RuntimeException();
+        throw new InfrastructureException();
     }
 
     static boolean isPrimitive(Class<?> clazz) {
         return clazz.equals(Boolean.class) || clazz.equals(Double.class) ||
                 clazz.equals(Long.class) || clazz.equals(String.class);
-    }
-
-    public static Object convertDto(Dto dto, Class<? extends Dto> type) {
-        Object value = null;
-        if (type.equals(MultiStringDto.class)) {
-            value = stringDtoConverter.convert((MultiStringDto) dto);
-        }
-        return value;
-    }
-
-    static Class<? extends Dto> getDto() {
-        return MultiStringDto.class;
     }
 }

@@ -28,9 +28,6 @@
           p:dtoConverter-ref="productDtoConverter"
           p:clientSupportManager-ref="clientManager"/>
 
-    <bean id="typeManager" class="com.zhytnik.shop.dto.core.converter.impl.TypeManager"
-          p:typeService-ref="typeService"/>
-
     <bean id="typeCreator" class="com.zhytnik.shop.backend.tool.TypeCreator"
           p:jdbcTemplate-ref="template"
           p:validator-ref="typeValidator"

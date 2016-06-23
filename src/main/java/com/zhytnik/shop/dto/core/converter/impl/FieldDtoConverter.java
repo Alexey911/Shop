@@ -6,7 +6,7 @@ import com.zhytnik.shop.dto.FieldDto;
 import com.zhytnik.shop.dto.MultiStringDto;
 import com.zhytnik.shop.dto.core.converter.IDtoConverter;
 
-import static com.zhytnik.shop.dto.core.converter.impl.DtoManager.mergeIdentity;
+import static com.zhytnik.shop.dto.core.converter.impl.DtoSupport.mergeIdentity;
 
 /**
  * @author Alexey Zhytnik

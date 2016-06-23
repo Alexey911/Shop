@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
-import static com.zhytnik.shop.dto.core.converter.impl.DtoManager.mergeIdentity;
+import static com.zhytnik.shop.dto.core.converter.impl.DtoSupport.mergeIdentity;
 
 /**
  * @author Alexey Zhytnik

@@ -72,4 +72,7 @@
 
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate"
           p:sessionFactory-ref="sessionFactory"/>
+
+    <bean id="productCreator" class="com.zhytnik.shop.backend.tool.ProductCreator"
+          p:typeRepository-ref="typeRepository"/>
 </beans>
