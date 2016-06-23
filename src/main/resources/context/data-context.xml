@@ -35,7 +35,7 @@
           p:password="${db.password}"
           p:url="${db.url}"
           p:poolPreparedStatements="true"
-          p:maxOpenPreparedStatements="1"
+          p:maxOpenPreparedStatements="15"
           p:defaultAutoCommit="false"
           p:initialSize="1"/>
 
