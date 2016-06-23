@@ -1,5 +1,7 @@
 package com.zhytnik.shop.web;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.zhytnik.shop.exception.TranslatableException;
 import com.zhytnik.shop.exception.ValidationException;
 import org.apache.log4j.Logger;
@@ -14,10 +16,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Locale;
 
-import static java.lang.String.format;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
@@ -45,18 +45,15 @@ class ExceptionListener {
         log(e);
         response.setStatus(SC_BAD_REQUEST);
         if (e.hasFieldsErrors()) {
-            final StringBuilder sb = new StringBuilder(150);
+            final JsonObject message = new JsonObject();
+            final JsonArray errors = new JsonArray();
 
-            sb.append("{\"errors\": [");
-            final Iterator<ObjectError> iterator = e.getErrors().iterator();
-            while (iterator.hasNext()) {
-                final ObjectError error = iterator.next();
-                sb.append("{\"error\":\"").append(extractMessage(error, locale)).append("\"}");
-                if (iterator.hasNext()) sb.append(',');
+            for (ObjectError error : e.getErrors()) {
+                errors.add(extractMessage(error, locale));
             }
-            sb.append("]}");
+            message.add("errors", errors);
 
-            response.getWriter().write(sb.toString());
+            response.getWriter().write(message.toString());
         } else {
             sendErrorMessage(response, locale, e);
         }
@@ -96,8 +93,9 @@ class ExceptionListener {
     private void sendErrorMessage(HttpServletResponse response, Locale locale,
                                   TranslatableException e) throws IOException {
         if (e.getMessage() == null) return;
-        final String jsonErrorMessage = format("{\"error\":\"%s\"}", extractMessage(e, locale));
-        response.getWriter().write(jsonErrorMessage);
+        final JsonObject message = new JsonObject();
+        message.addProperty("error", extractMessage(e, locale));
+        response.getWriter().write(message.toString());
     }
 
     private String extractMessage(TranslatableException e, Locale locale) {
