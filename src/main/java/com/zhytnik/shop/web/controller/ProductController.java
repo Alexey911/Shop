@@ -5,10 +5,7 @@ import com.zhytnik.shop.service.ProductDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -35,14 +32,20 @@ class ProductController {
     }
 
     @ResponseBody
-    @RequestMapping(method = POST)
-    public Long create(@Valid @RequestBody ProductDto product, BindingResult result) {
-        return service.create(product);
-    }
-
-    @ResponseBody
     @RequestMapping(method = GET)
     public List<ProductDto> loadAll() {
         return service.loadAll();
+    }
+
+    @ResponseBody
+    @RequestMapping(method = GET, params = "keywords")
+    public List<ProductDto> loadByKeywords(@RequestParam("keywords") String... keywords) {
+        return service.findByKeywords(keywords);
+    }
+
+    @ResponseBody
+    @RequestMapping(method = POST)
+    public Long create(@Valid @RequestBody ProductDto product, BindingResult result) {
+        return service.create(product);
     }
 }

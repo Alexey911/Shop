@@ -28,9 +28,17 @@ public class ProductDtoService {
         return productConverter.convert(product);
     }
 
+    public List<ProductDto> findByKeywords(String... keywords) {
+        return convert(service.findByKeywords(keywords));
+    }
+
     public List<ProductDto> loadAll() {
+        return convert(service.loadAll());
+    }
+
+    private List<ProductDto> convert(List<Product> products) {
         final List<ProductDto> dtos = newArrayList();
-        for (Product product : service.loadAll()) {
+        for (Product product : products) {
             prepareBeforeSend(product);
             dtos.add(productConverter.convert(product));
         }

@@ -27,16 +27,16 @@ public class ProductService {
         return dao.loadAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<Product> findByKeywords(String... keywords) {
+        return dao.findByKeywords(keywords);
+    }
+
     @Transactional
     public Long create(Product product) {
         validator.validate(product);
         dao.persist(product);
         return product.getId();
-    }
-
-    public void save(Product p) {
-        validator.validate(p);
-        dao.persist(p);
     }
 
 //    public Product loadByCode(Long code) {
@@ -46,10 +46,6 @@ public class ProductService {
     public void update(Product p) {
         validator.validate(p);
         dao.update(p);
-    }
-
-    public List<Product> findByKeywords(String... keywords) {
-        return dao.findByKeywords(keywords);
     }
 
 //    public List<Product> findByFilter(DynamicType type, Filter filter) {
