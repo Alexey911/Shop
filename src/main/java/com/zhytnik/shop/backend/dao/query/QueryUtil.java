@@ -7,7 +7,6 @@ import org.hibernate.type.StringRepresentableType;
 
 import javax.persistence.Query;
 import java.util.List;
-import java.util.Set;
 
 import static com.zhytnik.shop.backend.access.DynamicAccessUtil.getDynamicValues;
 import static com.zhytnik.shop.backend.access.DynamicAccessUtil.setDynamicValues;
@@ -34,14 +33,6 @@ class QueryUtil {
             return ((IDomainObject) value).getId();
         }
         return value;
-    }
-
-    static void fillQueryByFields(Query query, IDynamicEntity entity, Set<Integer> fields) {
-        final Object[] values = getDynamicValues(entity);
-        int pos = 1;
-        for (int field : fields) {
-            query.setParameter(pos++, values[field]);
-        }
     }
 
     static void fillDynamic(Object rowValues, IDynamicEntity entity) {

@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * @author Alexey Zhytnik
@@ -55,5 +53,12 @@ class ProductController {
     @RequestMapping(value = "{id}", method = DELETE)
     public void remove(@PathVariable Long id) {
         service.remove(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "{id}", method = PUT)
+    public void update(@PathVariable Long id, @Valid @RequestBody ProductDto product, BindingResult result) {
+        product.setId(id);
+        service.update(product);
     }
 }

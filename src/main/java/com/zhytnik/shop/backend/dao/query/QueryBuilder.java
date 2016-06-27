@@ -11,7 +11,6 @@ import org.hibernate.sql.Update;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import static com.zhytnik.shop.domain.dynamic.DynamicType.DYNAMIC_ID_FIELD;
 
@@ -24,14 +23,13 @@ class QueryBuilder {
     private QueryBuilder() {
     }
 
-    static Update createUpdate(DynamicType type, Set<Integer> fields, Long id) {
+    static Update createUpdate(DynamicType type, Long id) {
         final Update update = new Update(DatabaseUtil.getInstance().getDialect());
         update.setTableName(type.getName()).
                 addWhereColumn(DYNAMIC_ID_FIELD, "=" + Long.toString(id));
 
-        final List<DynamicField> columns = type.getFields();
-        for (int field : fields) {
-            update.addColumn(columns.get(field).getName());
+        for (DynamicField column : type.getFields()) {
+            update.addColumn(column.getName());
         }
         return update;
     }

@@ -30,8 +30,8 @@ public class DomainObjectUtil {
         return enable == null || enable;
     }
 
-    public static boolean isUnknown(IDomainObject object) {
-        return object.getId() == null;
+    public static boolean areEqual(IDomainObject a, IDomainObject b) {
+        return a.getId() != null && a.getId().equals(b.getId());
     }
 
     public void setGenerate(boolean value) {

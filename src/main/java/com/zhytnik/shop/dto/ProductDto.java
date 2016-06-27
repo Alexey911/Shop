@@ -6,8 +6,8 @@ import com.zhytnik.shop.dto.core.Dto;
 import com.zhytnik.shop.dto.core.Identity;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 import static com.google.common.collect.Maps.newHashMap;
@@ -23,7 +23,7 @@ public class ProductDto implements Dto, Identity {
     @NotNull
     private Long type;
 
-    @Max(50)
+    @Size(min = 3, max = 50)
     @NotEmpty
     private String shortName;
 

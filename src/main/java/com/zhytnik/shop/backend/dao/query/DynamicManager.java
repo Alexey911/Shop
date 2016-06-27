@@ -17,6 +17,7 @@ import javax.persistence.Query;
 import static com.zhytnik.shop.backend.access.DynamicAccessUtil.*;
 import static com.zhytnik.shop.backend.dao.query.QueryBuilder.*;
 import static com.zhytnik.shop.backend.dao.query.QueryUtil.fillDynamic;
+import static com.zhytnik.shop.domain.DomainObjectUtil.areEqual;
 
 /**
  * @author Alexey Zhytnik
@@ -49,20 +50,47 @@ public class DynamicManager {
     }
 
     public void update(IDynamicEntity entity) {
-        if (!hasChanges(entity)) return;
-        final Update update = createUpdate(entity.getDynamicType(), getChangesFields(entity), entity.getId());
+        final Update update = createUpdate(entity.getDynamicType(), entity.getId());
         final Query query = entityManager.createNativeQuery(update.toStatementString());
-        QueryUtil.fillQueryByFields(query, entity, getChangesFields(entity));
+
+        final Select select = createSelect(entity);
+        final Query selectQuery = entityManager.createNativeQuery(select.toStatementString());
+        //TODO: work with any args count (now works only with args > 1)
+        final Object[] lastValues = (Object[]) selectQuery.getSingleResult();
+
+        final int size = entity.getDynamicType().getFields().size();
+        final Object[] values = getDynamicValues(entity);
+        for (int i = 0; i < size; i++) {
+            final Object item = values[i];
+            if (item instanceof IDomainObject) {
+                if (areEqual(asDomainObject(lastValues[i]), asDomainObject(item)))
+                    updateIfNotPrimitive(item);
+                else
+                    persistIfNotPrimitive(item);
+            }
+        }
+        QueryUtil.fillQuery(query, entity);
         query.executeUpdate();
+    }
+
+
+    private IDomainObject asDomainObject(Object object) {
+        return (IDomainObject) object;
+    }
+
+    private void updateIfNotPrimitive(Object item) {
+        if (item instanceof IDomainObject) {
+            entityManager.merge(item);
+        }
     }
 
     public void remove(IDynamicEntity entity) {
         final Delete delete = createDelete(entity.getDynamicType(), entity.getId());
         entityManager.createNativeQuery(delete.toStatementString()).executeUpdate();
-        removeComplexFields(entity);
+        removeIfNotPrimitive(entity);
     }
 
-    private void removeComplexFields(IDynamicEntity entity) {
+    private void removeIfNotPrimitive(IDynamicEntity entity) {
         for (DynamicField field : entity.getDynamicType().getFields()) {
             if (field.getPrimitiveType() == PrimitiveType.STRING) {
                 final MultilanguageString str = (MultilanguageString) getDynamicValue(entity, field.getOrder());

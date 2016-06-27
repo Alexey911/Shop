@@ -55,6 +55,10 @@ public class ProductDtoService {
         service.remove(id);
     }
 
+    public void update(ProductDto dto){
+        service.update(dtoConverter.convert(dto));
+    }
+
     private void prepareBeforeSend(Product product) {
         supportManager.prepareBeforeSend(product);
         supportManager.prepareBeforeSend(product.getTitle());

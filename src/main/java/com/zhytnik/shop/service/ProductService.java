@@ -44,14 +44,15 @@ public class ProductService {
         dao.remove(id);
     }
 
-//    public Product loadByCode(Long code) {
-//        return dao.findByCode(code);
-//}
-
+    @Transactional
     public void update(Product p) {
         validator.validate(p);
         dao.update(p);
     }
+
+//    public Product loadByCode(Long code) {
+//        return dao.findByCode(code);
+//}
 
 //    public List<Product> findByFilter(DynamicType type, Filter filter) {
 //        return dao.findByQuery(type, filter);
