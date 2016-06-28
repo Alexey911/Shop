@@ -30,7 +30,7 @@ public class ProductDtoConverterLoadTest extends BenchmarkRunner {
     @State(Scope.Benchmark)
     public static class Parameters {
 
-        static final Long TYPE = 75L;
+        static final Long TYPE = 45L;
 
         ProductDtoConverter converter;
         ProductDto dto;
@@ -51,6 +51,7 @@ public class ProductDtoConverterLoadTest extends BenchmarkRunner {
             final DynamicType type = new DynamicType();
             final DynamicField field = new DynamicField();
             field.setOrder(0);
+            field.setName("field");
             field.setPrimitiveType(PrimitiveType.LONG);
             type.setFields(newArrayList(field));
 

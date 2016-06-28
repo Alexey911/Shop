@@ -8,6 +8,7 @@ import com.zhytnik.shop.dto.ProductDto;
 import com.zhytnik.shop.dto.core.converter.IDtoConverter;
 
 import static com.zhytnik.shop.backend.access.DynamicAccessUtil.setDynamicValues;
+import static com.zhytnik.shop.dto.core.converter.impl.DtoSupport.mergeIdentity;
 
 /**
  * @author Alexey Zhytnik
@@ -22,6 +23,7 @@ class ProductDtoConverter implements IDtoConverter<Product, ProductDto> {
     @Override
     public Product convert(ProductDto dto) {
         final Product product = creator.createByType(dto.getType());
+        mergeIdentity(product, dto);
         product.setShortName(dto.getShortName());
         product.setTitle(stringDtoConverter.convert(dto.getTitle()));
         product.setDescription(stringDtoConverter.convert(dto.getDescription()));
