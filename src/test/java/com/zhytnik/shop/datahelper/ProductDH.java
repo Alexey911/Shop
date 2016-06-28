@@ -6,8 +6,6 @@ import com.zhytnik.shop.domain.market.product.Product;
 import com.zhytnik.shop.domain.text.MultilanguageString;
 import com.zhytnik.shop.domain.text.MultilanguageTranslation;
 
-import java.util.Locale;
-
 import static com.google.common.collect.Sets.newHashSet;
 import static com.zhytnik.shop.datahelper.DynamicTypeDH.createTypeWithSingleField;
 import static java.util.Locale.ENGLISH;
@@ -30,7 +28,6 @@ public class ProductDH {
         p.setId(85L);
         p.setDynamicType(type);
         p.setDynamicFieldsValues(new Object[type.getFields().size()]);
-
         p.setCode(88L);
         p.setShortName("product_1");
         p.setTitle(createMultiString("title", 1L));

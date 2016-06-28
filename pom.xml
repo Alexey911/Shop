@@ -19,6 +19,7 @@
 
     <properties>
         <java.version>1.7</java.version>
+        <jmh.version>1.12</jmh.version>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.2.1.RELEASE</spring.version>
@@ -235,6 +236,18 @@
             <version>1.4.192</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>${jmh.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>${jmh.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -251,6 +264,12 @@
             <id>integration-testing</id>
             <properties>
                 <testcase.groups>com.zhytnik.shop.testing.IntegrationTest</testcase.groups>
+            </properties>
+        </profile>
+        <profile>
+            <id>performance-testing</id>
+            <properties>
+                <testcase.groups>com.zhytnik.shop.testing.PerformanceTest</testcase.groups>
             </properties>
         </profile>
     </profiles>
