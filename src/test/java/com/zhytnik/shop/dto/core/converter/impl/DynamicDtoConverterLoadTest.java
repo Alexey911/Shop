@@ -13,8 +13,11 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
 import static com.zhytnik.shop.datahelper.StringDH.createString;
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.*;
 
@@ -23,17 +26,18 @@ import static com.zhytnik.shop.domain.dynamic.PrimitiveType.*;
  * @since 30.06.2016
  */
 @Category(PerformanceTest.class)
-public class DynamicConverterLoadTest extends BenchmarkRunner {
+public class DynamicDtoConverterLoadTest extends BenchmarkRunner {
+
 
     @State(Scope.Benchmark)
     public static class Parameters {
-        DynamicConverter converter;
+        DynamicDtoConverter converter;
+        Map<String, Object> values;
         DynamicType type;
-        Object[] values;
 
         @Setup
         public void setUp() {
-            converter = new DynamicConverter();
+            converter = new DynamicDtoConverter();
             type = new DynamicType();
             type.setFields(newArrayList(
                     create(0, BOOLEAN, "boolean_field"),
@@ -42,7 +46,13 @@ public class DynamicConverterLoadTest extends BenchmarkRunner {
                     create(3, DATE, "date_field"),
                     create(4, TEXT, "text_field"),
                     create(5, STRING, "string_field")));
-            values = new Object[]{true, 456.0d, 78L, new Date(), "simple text", createString()};
+            values = newHashMap();
+            values.put("boolean_field", true);
+            values.put("double_field", 456.0d);
+            values.put("long_field", 35);
+            values.put("date_field", new Date().getTime());
+            values.put("text_field", "some text");
+            values.put("string_field", createString(45L, Locale.CANADA, "string"));
         }
 
         private DynamicField create(int order, PrimitiveType type, String name) {

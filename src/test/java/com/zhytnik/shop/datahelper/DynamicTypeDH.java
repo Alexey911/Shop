@@ -4,7 +4,7 @@ import com.zhytnik.shop.domain.dynamic.DynamicField;
 import com.zhytnik.shop.domain.dynamic.DynamicType;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.zhytnik.shop.datahelper.MultiStringDH.createString;
+import static com.zhytnik.shop.datahelper.StringDH.createString;
 import static com.zhytnik.shop.domain.dynamic.PrimitiveType.LONG;
 
 /**

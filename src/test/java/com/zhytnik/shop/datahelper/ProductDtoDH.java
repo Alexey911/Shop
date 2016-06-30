@@ -1,11 +1,10 @@
 package com.zhytnik.shop.datahelper;
 
-import com.zhytnik.shop.dto.MultiStringDto;
 import com.zhytnik.shop.dto.ProductDto;
 
 import java.util.Locale;
 
-import static java.util.Collections.singletonMap;
+import static com.zhytnik.shop.datahelper.StringDH.createString;
 
 /**
  * @author Alexey Zhytnik
@@ -24,12 +23,5 @@ public class ProductDtoDH {
         dto.setDescription(createString(2L, Locale.CANADA, "description"));
         dto.setTitle(createString(3L, Locale.ENGLISH, "title"));
         return dto;
-    }
-
-    private static MultiStringDto createString(Long id, Locale lang, String value) {
-        final MultiStringDto str = new MultiStringDto();
-        str.setId(id);
-        str.setTranslations(singletonMap(lang, value));
-        return str;
     }
 }
