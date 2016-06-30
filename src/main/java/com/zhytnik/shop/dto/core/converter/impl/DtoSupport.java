@@ -43,12 +43,12 @@ class DtoSupport {
         throw new InfrastructureException();
     }
 
-    static boolean isPrimitive(PrimitiveType type) {
+    static boolean isSimple(PrimitiveType type) {
         return type.equals(BOOLEAN) || type.equals(DOUBLE) ||
                 type.equals(LONG) || type.equals(TEXT);
     }
 
-    static boolean isPrimitive(Class<?> clazz) {
+    static boolean isSimple(Class<?> clazz) {
         return clazz.equals(Boolean.class) || clazz.equals(Double.class) ||
                 clazz.equals(Long.class) || clazz.equals(String.class);
     }

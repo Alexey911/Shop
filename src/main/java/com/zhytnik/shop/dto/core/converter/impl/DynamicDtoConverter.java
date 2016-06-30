@@ -7,11 +7,15 @@ import com.zhytnik.shop.dto.MultiStringDto;
 import com.zhytnik.shop.dto.core.Dto;
 import com.zhytnik.shop.exception.InfrastructureException;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static com.zhytnik.shop.dto.core.converter.impl.DtoSupport.getDtoClass;
+import static com.zhytnik.shop.dto.core.converter.impl.DtoSupport.isSimple;
 
 /**
  * @author Alexey Zhytnik
@@ -52,7 +56,7 @@ class DynamicDtoConverter {
 
     private Object convert(Object rowField, Class type) {
         if (rowField == null) return null;
-        if (DtoSupport.isPrimitive(type)) return rowField;
+        if (isSimple(type)) return rowField;
         if (type.equals(Date.class)) return new Date(Long.valueOf(rowField.toString()));
         return convertComplexDto(rowField, type);
     }

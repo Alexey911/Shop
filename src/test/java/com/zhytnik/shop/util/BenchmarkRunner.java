@@ -2,8 +2,6 @@ package com.zhytnik.shop.util;
 
 import org.junit.Test;
 import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.profile.GCProfiler;
-import org.openjdk.jmh.profile.Profiler;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
