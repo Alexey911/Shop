@@ -16,6 +16,7 @@ import java.util.Date;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.zhytnik.shop.datahelper.MultiStringDH.createString;
+import static com.zhytnik.shop.domain.dynamic.PrimitiveType.*;
 
 /**
  * @author Alexey Zhytnik
@@ -24,30 +25,30 @@ import static com.zhytnik.shop.datahelper.MultiStringDH.createString;
 @Category(PerformanceTest.class)
 public class DynamicConverterLoadTest extends BenchmarkRunner {
 
-
     @State(Scope.Benchmark)
     public static class Parameters {
         DynamicConverter converter;
-        Object[] values;
         DynamicType type;
+        Object[] values;
 
         @Setup
         public void setUp() {
             converter = new DynamicConverter();
             type = new DynamicType();
             type.setFields(newArrayList(
-                    create(0, PrimitiveType.BOOLEAN),
-                    create(1, PrimitiveType.DOUBLE),
-                    create(2, PrimitiveType.LONG),
-                    create(3, PrimitiveType.DATE),
-                    create(4, PrimitiveType.TEXT),
-                    create(5, PrimitiveType.STRING)));
+                    create(0, BOOLEAN, "boolean_field"),
+                    create(1, DOUBLE, "double_field"),
+                    create(2, LONG, "long_field"),
+                    create(3, DATE, "date_field"),
+                    create(4, TEXT, "text_field"),
+                    create(5, STRING, "string_field")));
             values = new Object[]{true, 456.0d, 78L, new Date(), "simple text", createString()};
         }
 
-        private DynamicField create(int order, PrimitiveType type) {
+        private DynamicField create(int order, PrimitiveType type, String name) {
             final DynamicField field = new DynamicField();
             field.setOrder(order);
+            field.setName(name);
             field.setPrimitiveType(type);
             return field;
         }
@@ -57,5 +58,4 @@ public class DynamicConverterLoadTest extends BenchmarkRunner {
     public void benchmark(Parameters p, Blackhole bh) {
         bh.consume(p.converter.convert(p.values, p.type));
     }
-
 }
